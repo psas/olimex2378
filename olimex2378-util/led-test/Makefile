@@ -3,7 +3,9 @@ NAME            := led-test
 LPCLIBDIR       := ../../liblpc23xx
 LIBDIR          := ../..
 
+
 CROSS           := /opt/cross
+GCC_VERSION     ?= 4.5.2
 
 CC              := arm-elf-gcc
 LD              := arm-elf-ld
@@ -26,7 +28,7 @@ TARGET          ?=
 DEBUG           ?=
 #DEBUG           = -DDEBUG
                   
-CFLAGS          = $(INCLUDE) $(DEBUG) $(TARGET) -c -Wall -Werror -fno-common -O0 -g -mcpu=arm7tdmi-s
+CFLAGS          = $(INCLUDE) $(DEBUG) $(TARGET) -c -Wall -Werror -flto -fno-common -O2 -g -mcpu=arm7tdmi-s
 
 AFLAGS          = -g  -ahls -mapcs-32
 
@@ -62,7 +64,7 @@ PROGS           = $(NAME).out
 	@echo "======== COMPILING $@ ========================"
 	$(AS) $(AFLAGS) -o $@ $< > $*.lst
         
-all:  $(PROGS) $(EXLIBS) $(NAME).hex Makefile
+all:  $(PROGS) $(EXLIBS) $(NAME).hex Makefile $(NAME).s
 
 $(COBJS): include/*.h
 
@@ -72,7 +74,7 @@ $(EXLIBS):
 
 $(PROGS): $(AOBJS) $(COBJS) $(EXLIBS)
 	@echo "========= LINKING $@ ========================"
-	$(LD) $(LDFLAGS) -o $@ $(AOBJS) $(COBJS) $(EXLIBS) -L$(CROSS)/arm-elf/lib -lc -L$(CROSS)/lib/gcc/arm-elf/4.2.1 -lgcc
+	$(LD) $(LDFLAGS) -o $@ $(AOBJS) $(COBJS) $(EXLIBS) -L$(CROSS)/arm-elf/lib -lc -L$(CROSS)/lib/gcc/arm-elf/$(GCC_VERSION) -lgcc
 
 $(NAME).s: $(NAME).c
 	@echo "========= Combined Assembler and Source for $@ =================="
