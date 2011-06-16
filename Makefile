@@ -4,12 +4,11 @@
 #
 
 NAME            := libolimex2378
-
 LPCLIBDIR       := ./liblpc23xx
 
 CC              := arm-elf-gcc
-LD              := arm-elf-ld -v
-AR              := arm-elf-ar rvs
+LD              := arm-elf-ld
+AR              := arm-elf-ar
 AS              := arm-elf-as
 CP              := arm-elf-objcopy
 OD              := arm-elf-objdump
@@ -45,19 +44,12 @@ COBJS           = $(CSRCS:.c=.o)
 
 AOBJS           = $(ASRCS:.s=.o)
                   
-#CFLAGS          = $(INCLUDE) $(DEBUG) $(TARGET) -fwhopr -flto -c -Wall -fno-common -O0 -g -mcpu=arm7tdmi-s
-CFLAGS          = $(INCLUDE) $(DEBUG) $(TARGET) -c -Wall -Werror -fno-common -O0 -g -mcpu=arm7tdmi-s
+#CFLAGS          = $(INCLUDE) $(DEBUG) -fwhopr -flto -c -Wall -fno-common -O0 -g -mcpu=arm7tdmi-s
+CFLAGS          = $(INCLUDE) $(DEBUG) -g -c -Wall -Werror -fno-common -O2 -mcpu=arm7tdmi-s
 
-AFLAGS          = -g  -ahls -mapcs-32
+ARCHIVEFLAGS    = rvs
 
-ASFLAGS         = -S -c -g $(INCLUDE)
-
-LDFLAGS         = -T $(TYPE).ld -nostartfiles -Map $(NAME).map
-
-CPFLAGS         := -O binary
-HEXFLAGS        := -O ihex
-ODFLAGS         := -x --syms
-
+ASFLAGS         = -g -ahls -mfloat-abi=softfp $(INCLUDE) 
  
 .PHONY: clean allclean rebuild
 
@@ -69,7 +61,7 @@ ODFLAGS         := -x --syms
 
 .s.o :
 	@echo "======== COMPILING $@ ========================"
-	$(AS) $(AFLAGS) -o $@ $< > $*.lst
+	$(AS) $(ASFLAGS) -o $@ $< > $*.lst
         
 all: $(LIBS) $(EXLIBS) $(TESTS) Makefile
 
@@ -81,15 +73,11 @@ $(EXLIBS):
 
 $(LIBS): $(AOBJS) $(COBJS) $(EXLIBS)
 	@echo "========= Making Library $@ ========================"
-	$(AR) $@ $(AOBJS) $(COBJS)
+	$(AR) $(ARCHIVEFLAGS) $@ $(AOBJS) $(COBJS)
 
 $(TESTS): $(LIBS)
 	@echo "========= Recursive make: $(@D) ========================"
-	$(MAKE) TARGET=$(TARGET) -s -C $(@D) $(@F)
-
-$(NAME).s: $(NAME).c
-	@echo "========= Combined Assembler and Source for $@ =================="
-	$(CC) $(ASFLAGS) -o $@ $(NAME).c
+	$(MAKE) -s -C $(@D) $(@F)
 
 clean:
 	$(RM)  $(LIBS) $(AOBJS) $(COBJS) $(COBJS) \
@@ -101,8 +89,4 @@ allclean: clean
 	
 rebuild: allclean
 	$(MAKE)
-
-
-
-
 

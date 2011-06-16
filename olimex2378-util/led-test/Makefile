@@ -3,13 +3,14 @@ NAME            := led-test
 LPCLIBDIR       := ../../liblpc23xx
 LIBDIR          := ../..
 
-
-CROSS           := /opt/cross
 GCC_VERSION     ?= 4.5.2
+CROSS           ?= /opt/cross
+ARMLINUXGCCLIB  := $(CROSS)/lib/gcc/arm-elf/$(GCC_VERSION)
+ARMLINUXLIB     := $(CROSS)/arm-elf/lib
 
 CC              := arm-elf-gcc
 LD              := arm-elf-ld
-AR              := arm-elf-ar rvs
+AR              := arm-elf-ar
 AS              := arm-elf-as
 CP              := arm-elf-objcopy
 OD              := arm-elf-objdump
@@ -28,7 +29,8 @@ TARGET          ?=
 DEBUG           ?=
 #DEBUG           = -DDEBUG
                   
-CFLAGS          = $(INCLUDE) $(DEBUG) $(TARGET) -c -Wall -Werror -flto -fno-common -O2 -g -mcpu=arm7tdmi-s
+#CFLAGS          = $(INCLUDE) $(DEBUG) $(TARGET) -c -Wall -Werror -flto -fno-common -O2 -g -mcpu=arm7tdmi-s
+CFLAGS          = $(INCLUDE) $(DEBUG) $(TARGET) -c -Wall -Werror -fno-common -O2 -g -mfloat-abi=soft -mcpu=arm7tdmi-s
 
 AFLAGS          = -g  -ahls -mapcs-32
 
@@ -74,7 +76,8 @@ $(EXLIBS):
 
 $(PROGS): $(AOBJS) $(COBJS) $(EXLIBS)
 	@echo "========= LINKING $@ ========================"
-	$(LD) $(LDFLAGS) -o $@ $(AOBJS) $(COBJS) $(EXLIBS) -L$(CROSS)/arm-elf/lib -lc -L$(CROSS)/lib/gcc/arm-elf/$(GCC_VERSION) -lgcc
+#	$(LD) $(LDFLAGS) -o $@ $(AOBJS) $(COBJS) $(EXLIBS) -L$(CROSS)/arm-elf/lib -lc -L$(CROSS)/lib/gcc/arm-elf/$(GCC_VERSION) -lgcc
+	$(LD) $(LDFLAGS) -o $@ $(AOBJS) $(COBJS) $(EXLIBS) -L$(ARMLINUXLIB) -lc -L$(ARMLINUXGCCLIB) -lgcc
 
 $(NAME).s: $(NAME).c
 	@echo "========= Combined Assembler and Source for $@ =================="
