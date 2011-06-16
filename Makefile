@@ -5,13 +5,14 @@
 
 NAME            := libolimex2378
 LPCLIBDIR       := ./liblpc23xx
+CROSS           ?= /opt/cross
 
-CC              := arm-elf-gcc
-LD              := arm-elf-ld
-AR              := arm-elf-ar
-AS              := arm-elf-as
-CP              := arm-elf-objcopy
-OD              := arm-elf-objdump
+CC              := $(CROSS)/bin/arm-elf-gcc
+LD              := $(CROSS)/bin/arm-elf-ld
+AR              := $(CROSS)/bin/arm-elf-ar
+AS              := $(CROSS)/bin/arm-elf-as
+CP              := $(CROSS)/bin/arm-elf-objcopy
+OD              := $(CROSS)/bin/arm-elf-objdump
 
 TYPE            ?= lpc23xx
 
@@ -44,8 +45,7 @@ COBJS           = $(CSRCS:.c=.o)
 
 AOBJS           = $(ASRCS:.s=.o)
                   
-#CFLAGS          = $(INCLUDE) $(DEBUG) -fwhopr -flto -c -Wall -fno-common -O0 -g -mcpu=arm7tdmi-s
-CFLAGS          = $(INCLUDE) $(DEBUG) -g -c -Wall -Werror -fno-common -O2 -mcpu=arm7tdmi-s
+CFLAGS          = $(INCLUDE) $(DEBUG) -g -c -Wall -Werror -mfloat-abi=softfp -fno-common -O2 -mcpu=arm7tdmi-s
 
 ARCHIVEFLAGS    = rvs
 
