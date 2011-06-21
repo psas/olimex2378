@@ -1,0 +1,244 @@
+Archive member included because of file (symbol)
+
+../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+                              blinkm-test.o (pllstart_seventytwomhz)
+../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+                              blinkm-test.o (uart0_putstring)
+../../libolimex2378.a(olimex2378_util.o)
+                              blinkm-test.o (stat_led_flash)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+flash            0x0000000000000000 0x000000000007d000
+ram              0x0000000040000000 0x0000000000008000
+usbram           0x000000007fd00000 0x0000000000002000
+ethram           0x000000007fe00000 0x0000000000004000
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000040007ffc                __stack_end__ = 0x40007ffc
+                0x0000000000000000                . = 0x0
+
+startup         0x0000000000000000       0x44
+ *(.startup)
+ .startup       0x0000000000000000       0x44 boot.o
+
+prog            0x0000000000000044      0x820
+ *(.text)
+ .text          0x0000000000000044       0xb8 boot.o
+                0x0000000000000044                start
+                0x00000000000000e0                endless_loop
+ .text          0x00000000000000fc       0x34 blinkm-test.o
+                0x00000000000000fc                main
+ .text          0x0000000000000130       0x10 hwsys.o
+                0x000000000000013c                UNDEF_Routine
+                0x0000000000000138                SWI_Routine
+                0x0000000000000134                FIQ_Routine
+                0x0000000000000130                IRQ_Routine
+ .text          0x0000000000000140      0x274 ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+                0x0000000000000310                pllstart_fourtyeightmhz
+                0x000000000000017c                pllstop
+                0x0000000000000150                pllfeed
+                0x00000000000001bc                pllstart_seventytwomhz
+                0x0000000000000140                pllquery_cclk_mhz
+                0x0000000000000268                pllstart_sixtymhz
+ .text          0x00000000000003b4      0x370 ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+                0x000000000000048c                uart0_getstring
+                0x00000000000003d4                uart0_query_stopbits
+                0x00000000000005f8                uart0_init_9600
+                0x0000000000000468                uart0_getchar
+                0x00000000000003c4                uart0_query_charlength
+                0x00000000000003b4                uart0_query_baud
+                0x00000000000003e4                uart0_putchar
+                0x00000000000004d4                uart0_init_115200
+                0x0000000000000434                uart0_putstring
+ .text          0x0000000000000724      0x108 ../../libolimex2378.a(olimex2378_util.o)
+                0x0000000000000750                stat_led_flash
+                0x0000000000000724                init_stat_led
+ *(.rodata)
+ *(.rodata*)
+ .rodata.str1.4
+                0x000000000000082c       0x38 blinkm-test.o
+ *(.glue_7)
+ .glue_7        0x0000000000000864        0x0 boot.o
+ .glue_7        0x0000000000000864        0x0 blinkm-test.o
+ .glue_7        0x0000000000000864        0x0 hwsys.o
+ .glue_7        0x0000000000000864        0x0 ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+ .glue_7        0x0000000000000864        0x0 ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+ .glue_7        0x0000000000000864        0x0 ../../libolimex2378.a(olimex2378_util.o)
+ *(.glue_7t)
+ .glue_7t       0x0000000000000864        0x0 boot.o
+ .glue_7t       0x0000000000000864        0x0 blinkm-test.o
+ .glue_7t       0x0000000000000864        0x0 hwsys.o
+ .glue_7t       0x0000000000000864        0x0 ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+ .glue_7t       0x0000000000000864        0x0 ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+ .glue_7t       0x0000000000000864        0x0 ../../libolimex2378.a(olimex2378_util.o)
+                0x0000000000000864                __end_of_text__ = .
+
+.vfp11_veneer   0x0000000000000864        0x0
+ .vfp11_veneer  0x0000000000000864        0x0 boot.o
+ .vfp11_veneer  0x0000000000000864        0x0 blinkm-test.o
+ .vfp11_veneer  0x0000000000000864        0x0 hwsys.o
+ .vfp11_veneer  0x0000000000000864        0x0 ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+ .vfp11_veneer  0x0000000000000864        0x0 ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+ .vfp11_veneer  0x0000000000000864        0x0 ../../libolimex2378.a(olimex2378_util.o)
+
+.v4_bx          0x0000000000000864        0x0
+ .v4_bx         0x0000000000000864        0x0 boot.o
+ .v4_bx         0x0000000000000864        0x0 blinkm-test.o
+ .v4_bx         0x0000000000000864        0x0 hwsys.o
+ .v4_bx         0x0000000000000864        0x0 ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+ .v4_bx         0x0000000000000864        0x0 ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+ .v4_bx         0x0000000000000864        0x0 ../../libolimex2378.a(olimex2378_util.o)
+
+.data           0x0000000040000000        0x0 load address 0x0000000000000864
+                0x0000000040000000                __data_beg__ = .
+                0x0000000000000864                __data_beg_src__ = __end_of_text__
+ *(.data)
+ .data          0x0000000040000000        0x0 boot.o
+ .data          0x0000000040000000        0x0 blinkm-test.o
+ .data          0x0000000040000000        0x0 hwsys.o
+ .data          0x0000000040000000        0x0 ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+ .data          0x0000000040000000        0x0 ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+ .data          0x0000000040000000        0x0 ../../libolimex2378.a(olimex2378_util.o)
+                0x0000000040000000                __data_end__ = .
+
+.bss            0x0000000040000000       0x88
+                0x0000000040000000                __bss_beg__ = .
+ *(.bss)
+ .bss           0x0000000040000000        0x0 boot.o
+ .bss           0x0000000040000000        0x0 blinkm-test.o
+ .bss           0x0000000040000000        0x0 hwsys.o
+ .bss           0x0000000040000000        0x4 ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+                0x0000000040000000                pllstat
+ .bss           0x0000000040000004       0x84 ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+                0x0000000040000080                uart0stat
+ .bss           0x0000000040000088        0x0 ../../libolimex2378.a(olimex2378_util.o)
+                0x0000000040000088                . = ALIGN (0x4)
+                0x0000000040000088                _bss_end__ = .
+                0x0000000040000088                __bss_end__ = .
+                0x0000000040000088                __end__ = .
+
+.usbram         0x000000007fd00000        0x0
+                0x000000007fd00000                __usbram_beg__ = .
+ *(.dmaram)
+                0x000000007fd00000                __usbram_end__ = .
+
+.ethram         0x000000007fe00000        0x0
+                0x000000007fe00000                __ethram_beg__ = .
+ *(.ethram)
+                0x000000007fe00000                __ethram_end__ = .
+                0x000000007fe00000                . = ALIGN (0x4)
+                0x000000007fe00000                _end = .
+                0x000000007fe00000                PROVIDE (end, .)
+LOAD boot.o
+LOAD blinkm-test.o
+LOAD hwsys.o
+LOAD ../../liblpc23xx/liblpc23xx.a
+LOAD ../../libolimex2378.a
+LOAD /opt/cross/arm-elf/lib/libc.a
+LOAD /opt/cross/lib/gcc/arm-elf/4.2.1/libgcc.a
+OUTPUT(blinkm-test.out elf32-littlearm)
+
+.ARM.attributes
+                0x0000000000000000       0x10
+ .ARM.attributes
+                0x0000000000000000       0x10 boot.o
+ .ARM.attributes
+                0x0000000000000010       0x10 blinkm-test.o
+ .ARM.attributes
+                0x0000000000000020       0x10 hwsys.o
+ .ARM.attributes
+                0x0000000000000030       0x10 ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+ .ARM.attributes
+                0x0000000000000040       0x10 ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+ .ARM.attributes
+                0x0000000000000050       0x10 ../../libolimex2378.a(olimex2378_util.o)
+
+.debug_line     0x0000000000000000      0x4e2
+ .debug_line    0x0000000000000000       0x78 boot.o
+ .debug_line    0x0000000000000078       0x90 blinkm-test.o
+ .debug_line    0x0000000000000108       0x3d hwsys.o
+ .debug_line    0x0000000000000145      0x10f ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+ .debug_line    0x0000000000000254      0x19c ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+ .debug_line    0x00000000000003f0       0xf2 ../../libolimex2378.a(olimex2378_util.o)
+
+.debug_info     0x0000000000000000      0x6ea
+ .debug_info    0x0000000000000000       0x72 boot.o
+ .debug_info    0x0000000000000072       0x9f blinkm-test.o
+ .debug_info    0x0000000000000111       0x72 hwsys.o
+ .debug_info    0x0000000000000183      0x181 ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+ .debug_info    0x0000000000000304      0x2cc ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+ .debug_info    0x00000000000005d0      0x11a ../../libolimex2378.a(olimex2378_util.o)
+
+.debug_abbrev   0x0000000000000000      0x374
+ .debug_abbrev  0x0000000000000000       0x12 boot.o
+ .debug_abbrev  0x0000000000000012       0x64 blinkm-test.o
+ .debug_abbrev  0x0000000000000076       0x29 hwsys.o
+ .debug_abbrev  0x000000000000009f       0xf6 ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+ .debug_abbrev  0x0000000000000195      0x132 ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+ .debug_abbrev  0x00000000000002c7       0xad ../../libolimex2378.a(olimex2378_util.o)
+
+.debug_aranges  0x0000000000000000       0xc8
+ .debug_aranges
+                0x0000000000000000       0x28 boot.o
+ .debug_aranges
+                0x0000000000000028       0x20 blinkm-test.o
+ .debug_aranges
+                0x0000000000000048       0x20 hwsys.o
+ .debug_aranges
+                0x0000000000000068       0x20 ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+ .debug_aranges
+                0x0000000000000088       0x20 ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+ .debug_aranges
+                0x00000000000000a8       0x20 ../../libolimex2378.a(olimex2378_util.o)
+
+.debug_ranges   0x0000000000000000       0x20
+ .debug_ranges  0x0000000000000000       0x20 boot.o
+
+.debug_frame    0x0000000000000000      0x218
+ .debug_frame   0x0000000000000000       0x28 blinkm-test.o
+ .debug_frame   0x0000000000000028       0x50 hwsys.o
+ .debug_frame   0x0000000000000078       0x9c ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+ .debug_frame   0x0000000000000114       0xcc ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+ .debug_frame   0x00000000000001e0       0x38 ../../libolimex2378.a(olimex2378_util.o)
+
+.debug_loc      0x0000000000000000      0x1df
+ .debug_loc     0x0000000000000000       0x1f blinkm-test.o
+ .debug_loc     0x000000000000001f       0x8f ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+ .debug_loc     0x00000000000000ae       0xb8 ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+ .debug_loc     0x0000000000000166       0x79 ../../libolimex2378.a(olimex2378_util.o)
+
+.debug_pubnames
+                0x0000000000000000      0x21e
+ .debug_pubnames
+                0x0000000000000000       0x1b blinkm-test.o
+ .debug_pubnames
+                0x000000000000001b       0x54 hwsys.o
+ .debug_pubnames
+                0x000000000000006f       0x99 ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+ .debug_pubnames
+                0x0000000000000108       0xdf ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+ .debug_pubnames
+                0x00000000000001e7       0x37 ../../libolimex2378.a(olimex2378_util.o)
+
+.debug_str      0x0000000000000000      0x423
+ .debug_str     0x0000000000000000       0xbf blinkm-test.o
+                                         0xfb (size before relaxing)
+ .debug_str     0x00000000000000bf       0x3a hwsys.o
+                                         0x8f (size before relaxing)
+ .debug_str     0x00000000000000f9      0x120 ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+                                        0x1c0 (size before relaxing)
+ .debug_str     0x0000000000000219      0x194 ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+                                        0x2c4 (size before relaxing)
+ .debug_str     0x00000000000003ad       0x76 ../../libolimex2378.a(olimex2378_util.o)
+                                        0x15e (size before relaxing)
+
+.comment        0x0000000000000000       0x5a
+ .comment       0x0000000000000000       0x12 blinkm-test.o
+ .comment       0x0000000000000012       0x12 hwsys.o
+ .comment       0x0000000000000024       0x12 ../../liblpc23xx/liblpc23xx.a(lpc23xx-pll.o)
+ .comment       0x0000000000000036       0x12 ../../liblpc23xx/liblpc23xx.a(lpc23xx-uart.o)
+ .comment       0x0000000000000048       0x12 ../../libolimex2378.a(olimex2378_util.o)

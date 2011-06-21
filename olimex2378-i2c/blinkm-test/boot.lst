@@ -1,0 +1,216 @@
+ARM GAS  boot.s 			page 1
+
+
+   1              		/* Sample initialization file */
+   2              	
+   3              		.extern main
+   4              		.extern exit
+   5              	
+   6              		.text
+   7              		.code 32
+   8              	
+   9              	
+  10              		.align  0
+  11              	
+  12              		.extern __bss_beg__
+  13              		.extern __bss_end__
+  14              		.extern __stack_end__
+  15              		.extern __data_beg__
+  16              		.extern __data_end__
+  17              		.extern __data+beg_src__
+  18              	
+  19              		.global start
+  20              		.global endless_loop
+  21              	
+  22              		/* Stack Sizes */
+  23              	    .set  UND_STACK_SIZE, 0x00000004
+  24              	    .set  ABT_STACK_SIZE, 0x00000004
+  25              	    .set  FIQ_STACK_SIZE, 0x00000004
+  26              	    .set  IRQ_STACK_SIZE, 0X00000100
+  27              	    .set  SVC_STACK_SIZE, 0x00000100
+  28              	
+  29              		/* Standard definitions of Mode bits and Interrupt (I & F) flags in PSRs */
+  30              	    .set  MODE_USR, 0x10            /* User Mode */
+  31              	    .set  MODE_FIQ, 0x11            /* FIQ Mode */
+  32              	    .set  MODE_IRQ, 0x12            /* IRQ Mode */
+  33              	    .set  MODE_SVC, 0x13            /* Supervisor Mode */
+  34              	    .set  MODE_ABT, 0x17            /* Abort Mode */
+  35              	    .set  MODE_UND, 0x1B            /* Undefined Mode */
+  36              	    .set  MODE_SYS, 0x1F            /* System Mode */
+  37              	
+  38              	    .equ  I_BIT, 0x80               /* when I bit is set, IRQ is disabled */
+  39              	    .equ  F_BIT, 0x40               /* when F bit is set, FIQ is disabled */
+  40              	
+  41              	
+  42              	start:
+  43              	_start:
+  44              	_mainCRTStartup:
+  45              	
+  46              		/* Setup a stack for each mode - note that this only sets up a usable stack
+  47              		for system/user, SWI and IRQ modes.   Also each mode is setup with
+  48              		interrupts initially disabled. */
+  49 0000 AC009FE5 	    ldr   r0, .LC6
+  50 0004 DBF021E3 	    msr   CPSR_c, #MODE_UND|I_BIT|F_BIT /* Undefined Instruction Mode
+  51              	    mov   sp, r0
+  52              	    sub   r0, r0, #UND_STACK_SIZE
+  53              	    msr   CPSR_c, #MODE_ABT|I_BIT|F_BIT /* Abort Mode */
+  54 0008 00D0A0E1 	    mov   sp, r0
+  55 000c 040040E2 	    sub   r0, r0, #ABT_STACK_SIZE
+  56 0010 D1F021E3 	    msr   CPSR_c, #MODE_FIQ|I_BIT|F_BIT /* FIQ Mode */
+  57 0014 00D0A0E1 	    mov   sp, r0
+ARM GAS  boot.s 			page 2
+
+
+  58 0018 040040E2 	    sub   r0, r0, #FIQ_STACK_SIZE
+  59 001c D2F021E3 	    msr   CPSR_c, #MODE_IRQ|I_BIT|F_BIT /* IRQ Mode */
+  60 0020 00D0A0E1 	    mov   sp, r0
+  61 0024 010C40E2 	    sub   r0, r0, #IRQ_STACK_SIZE
+  62 0028 D3F021E3 	    msr   CPSR_c, #MODE_SVC|I_BIT|F_BIT /* Supervisor Mode */
+  63 002c 00D0A0E1 	    mov   sp, r0
+  64 0030 010C40E2 	    sub   r0, r0, #SVC_STACK_SIZE
+  65 0034 DFF021E3 	    msr   CPSR_c, #MODE_SYS|I_BIT|F_BIT /* System Mode */
+  66 0038 00D0A0E1 	    mov   sp, r0
+  67              	
+  68              		/* We want to start in supervisor mode.  Operation will switch to system
+  69              		mode when the first task starts. */
+  70 003c D3F021E3 		msr   CPSR_c, #MODE_SVC|I_BIT|F_BIT
+  71              	
+  72              		/* Clear BSS. */
+  73              	
+  74 0040 0010A0E3 		mov     a2, #0			/* Fill value */
+  75 0044 01B0A0E1 		mov		fp, a2			/* Null frame pointer */
+  76 0048 0170A0E1 		mov		r7, a2			/* Null frame pointer for Thumb */
+  77              	
+  78 004c 4C109FE5 		ldr		r1, .LC1		/* Start of memory block */
+  79 0050 4C309FE5 		ldr		r3, .LC2		/* End of memory block */
+  80 0054 013053E0 		subs	r3, r3, r1      /* Length of block */
+  81 0058 0300000A 		beq		.end_clear_loop
+  82 005c 0020A0E3 		mov		r2, #0
+  83              	
+  84              	.clear_loop:
+  85 0060 0120C1E4 		strb	r2, [r1], #1
+  86 0064 013053E2 		subs	r3, r3, #1
+  87 0068 FCFFFFCA 		bgt		.clear_loop
+  88              	
+  89              	.end_clear_loop:
+  90              	
+  91              		/* Initialise data. */
+  92              	
+  93 006c 34109FE5 		ldr		r1, .LC3		/* Start of memory block */
+  94 0070 34209FE5 		ldr		r2, .LC4		/* End of memory block */
+  95 0074 34309FE5 		ldr		r3, .LC5
+  96 0078 013053E0 		subs	r3, r3, r1		/* Length of block */
+  97 007c 0300000A 		beq		.end_set_loop
+  98              	
+  99              	.set_loop:
+ 100 0080 0140D2E4 		ldrb	r4, [r2], #1
+ 101 0084 0140C1E4 		strb	r4, [r1], #1
+ 102 0088 013053E2 		subs	r3, r3, #1
+ 103 008c FBFFFFCA 		bgt		.set_loop
+ 104              	
+ 105              	.end_set_loop:
+ 106              	
+ 107 0090 0000A0E3 		mov		r0, #0          /* no arguments  */
+ 108 0094 0010A0E3 		mov		r1, #0          /* no argv either */
+ 109              	
+ 110 0098 FEFFFFEB 		bl		main
+ 111              	
+ 112              	endless_loop:
+ 113 009c FEFFFFEA 		b               endless_loop
+ 114              	
+ARM GAS  boot.s 			page 3
+
+
+ 115              	
+ 116              		.align 0
+ 117              	
+ 118              		.LC1:
+ 119 00a0 00000000 		.word   __bss_beg__
+ 120              		.LC2:
+ 121 00a4 00000000 		.word   __bss_end__
+ 122              		.LC3:
+ 123 00a8 00000000 		.word   __data_beg__
+ 124              		.LC4:
+ 125 00ac 00000000 		.word   __data_beg_src__
+ 126              		.LC5:
+ 127 00b0 00000000 		.word   __data_end__
+ 128              		.LC6:
+ 129 00b4 00000000 		.word   __stack_end__
+ 130              	
+ 131              	
+ 132              		/* Setup vector table.  Note that undf, pabt, dabt, fiq just execute
+ 133              		a null loop. */
+ 134              	
+ 135              	.section .startup,"ax"
+ 136              	         .code 32
+ 137              	         .align 0
+ 138              	
+ 139 0000 FEFFFFEA 		b     _start						/* reset - _start			*/
+ 140 0004 14F09FE5 		ldr   pc, _undf						/* undefined - _undf		*/
+ 141 0008 14F09FE5 		ldr   pc, _swi						/* SWI - _swi				*/
+ 142 000c 14F09FE5 		ldr   pc, _pabt						/* program abort - _pabt	*/
+ 143 0010 14F09FE5 		ldr   pc, _dabt						/* data abort - _dabt		*/
+ 144 0014 0000A0E1 		nop									/* reserved					*/
+ 145 0018 20F11FE5 		ldr   pc, [pc,#-0x120]				/* IRQ - read the VIC		*/
+ 146 001c 0CF09FE5 		ldr   pc, _fiq						/* FIQ - _fiq				*/
+ 147              	
+ 148 0020 34000000 	_undf:  .word __undf                    /* undefined				*/
+ 149 0024 00000000 	_swi:   .word SWI_Routine       /* SWI						*/
+ 150 0028 38000000 	_pabt:  .word __pabt                    /* program abort			*/
+ 151 002c 3C000000 	_dabt:  .word __dabt                    /* data abort				*/
+ 152 0030 40000000 	_fiq:   .word __fiq                     /* FIQ						*/
+ 153              	
+ 154 0034 FEFFFFEA 	__undf: b     .                         /* undefined				*/
+ 155 0038 FEFFFFEA 	__pabt: b     .                         /* program abort			*/
+ 156 003c FEFFFFEA 	__dabt: b     .                         /* data abort				*/
+ 157 0040 FEFFFFEA 	__fiq:  b     .                         /* FIQ						*/
+ARM GAS  boot.s 			page 4
+
+
+DEFINED SYMBOLS
+              boot.s:7      .text:0000000000000000 $a
+              boot.s:42     .text:0000000000000000 start
+              boot.s:112    .text:000000000000009c endless_loop
+              boot.s:23     *ABS*:0000000000000004 UND_STACK_SIZE
+              boot.s:24     *ABS*:0000000000000004 ABT_STACK_SIZE
+              boot.s:25     *ABS*:0000000000000004 FIQ_STACK_SIZE
+              boot.s:26     *ABS*:0000000000000100 IRQ_STACK_SIZE
+              boot.s:27     *ABS*:0000000000000100 SVC_STACK_SIZE
+              boot.s:30     *ABS*:0000000000000010 MODE_USR
+              boot.s:31     *ABS*:0000000000000011 MODE_FIQ
+              boot.s:32     *ABS*:0000000000000012 MODE_IRQ
+              boot.s:33     *ABS*:0000000000000013 MODE_SVC
+              boot.s:34     *ABS*:0000000000000017 MODE_ABT
+              boot.s:35     *ABS*:000000000000001b MODE_UND
+              boot.s:36     *ABS*:000000000000001f MODE_SYS
+              boot.s:38     *ABS*:0000000000000080 I_BIT
+              boot.s:39     *ABS*:0000000000000040 F_BIT
+              boot.s:43     .text:0000000000000000 _start
+              boot.s:44     .text:0000000000000000 _mainCRTStartup
+              boot.s:89     .text:000000000000006c .end_clear_loop
+              boot.s:84     .text:0000000000000060 .clear_loop
+              boot.s:105    .text:0000000000000090 .end_set_loop
+              boot.s:99     .text:0000000000000080 .set_loop
+              boot.s:119    .text:00000000000000a0 $d
+              boot.s:136    .startup:0000000000000000 $a
+              boot.s:148    .startup:0000000000000020 _undf
+              boot.s:149    .startup:0000000000000024 _swi
+              boot.s:150    .startup:0000000000000028 _pabt
+              boot.s:151    .startup:000000000000002c _dabt
+              boot.s:152    .startup:0000000000000030 _fiq
+              boot.s:148    .startup:0000000000000020 $d
+              boot.s:154    .startup:0000000000000034 __undf
+              boot.s:155    .startup:0000000000000038 __pabt
+              boot.s:156    .startup:000000000000003c __dabt
+              boot.s:157    .startup:0000000000000040 __fiq
+              boot.s:154    .startup:0000000000000034 $a
+
+UNDEFINED SYMBOLS
+main
+__bss_beg__
+__bss_end__
+__data_beg__
+__data_beg_src__
+__data_end__
+__stack_end__
+SWI_Routine
