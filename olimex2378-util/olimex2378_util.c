@@ -16,42 +16,12 @@
 #include "olimex2378-util.h"
 
 /*
- * uitoa - unsigned int to ascii?
+ * init_stat_led
  */
-/*
- * itoa
- */
-char* itoa(int32_t val, uint32_t base) {
-
-    static char ibuf[MAX_I2ASTRING];
-
-    int         i     = MAX_I2ASTRING-2;
-    int         minus = 0;
-
-    memset(ibuf,'\0',MAX_I2ASTRING);
-
-    if(val < 0) {
-        val   = -val;
-        minus = 1;
-    }
-
-    if(val == 0) { 
-        ibuf[0] = '0';
-        return &ibuf[0];
-    } else {
-        for(; val && i ; --i, val /= base) {
-            ibuf[i] = "0123456789abcdef"[val % base];
-        }
-
-        if(minus == 1 && base == 10) {
-            ibuf[i] = '-';
-            return &ibuf[i];
-        } else {
-            return &ibuf[i+1];
-        }
-    }
+void init_stat_led() {
+    FIO_ENABLE;
+    STAT_LED_ENABLE;
 }
-
 
 /*
  * stat_led_flash

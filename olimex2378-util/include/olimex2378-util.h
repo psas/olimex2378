@@ -19,7 +19,7 @@
 #define STAT_LED_ON      ( FIO1CLR = (1 << 19) )
 #define STAT_LED_OFF     ( FIO1SET = (1 << 19) )
 
-char* itoa(int32_t val, uint32_t base) ;
+void init_stat_led() ;
 void stat_led_flash(uint32_t cycles) ;
 
 #endif
