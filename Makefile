@@ -35,7 +35,8 @@ EXLIBS          = ./liblpc23xx/liblpc23xx.a
 
 LIBS            = $(NAME).a
 
-TESTS           = ./olimex2378-util/led-test/led-test.hex
+TESTS           = ./olimex2378-util/led-test/led-test.hex\
+		  ./olimex2378-i2c/blinkm-test/blinkm-test.hex
 
 ASRCS           := $(wildcard olimex2378-util/*.s)
 
@@ -83,6 +84,7 @@ clean:
 	$(RM)  $(LIBS) $(AOBJS) $(COBJS) $(COBJS) \
 	*.map *.hex *.bin *.lst *~ ./include/*~ a.out 
 	$(MAKE) -s -C olimex2378-util/led-test clean
+	$(MAKE) -s -C olimex2378-i2c/blinkm-test clean
 
 allclean: clean
 	$(MAKE) -s -C liblpc23xx clean

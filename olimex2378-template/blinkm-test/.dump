@@ -1,0 +1,2350 @@
+
+blinkm-test.out:     file format elf32-littlearm
+
+SYMBOL TABLE:
+00000000 l    d  startup	00000000 startup
+00000044 l    d  prog	00000000 prog
+40000000 l    d  .bss	00000000 .bss
+00000000 l    d  .ARM.attributes	00000000 .ARM.attributes
+00000000 l    d  .comment	00000000 .comment
+00000000 l    d  .debug_line	00000000 .debug_line
+00000000 l    d  .debug_info	00000000 .debug_info
+00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
+00000000 l    d  .debug_aranges	00000000 .debug_aranges
+00000000 l    d  .debug_ranges	00000000 .debug_ranges
+00000000 l    d  .debug_loc	00000000 .debug_loc
+00000000 l    d  .debug_pubnames	00000000 .debug_pubnames
+00000000 l    d  .debug_pubtypes	00000000 .debug_pubtypes
+00000000 l    d  .debug_str	00000000 .debug_str
+00000000 l    d  .debug_frame	00000000 .debug_frame
+00000004 l       *ABS*	00000000 UND_STACK_SIZE
+00000004 l       *ABS*	00000000 ABT_STACK_SIZE
+00000004 l       *ABS*	00000000 FIQ_STACK_SIZE
+00000100 l       *ABS*	00000000 IRQ_STACK_SIZE
+00000100 l       *ABS*	00000000 SVC_STACK_SIZE
+00000010 l       *ABS*	00000000 MODE_USR
+00000011 l       *ABS*	00000000 MODE_FIQ
+00000012 l       *ABS*	00000000 MODE_IRQ
+00000013 l       *ABS*	00000000 MODE_SVC
+00000017 l       *ABS*	00000000 MODE_ABT
+0000001b l       *ABS*	00000000 MODE_UND
+0000001f l       *ABS*	00000000 MODE_SYS
+00000080 l       *ABS*	00000000 I_BIT
+00000040 l       *ABS*	00000000 F_BIT
+00000044 l       prog	00000000 _start
+00000044 l       prog	00000000 _mainCRTStartup
+000000b0 l       prog	00000000 .end_clear_loop
+000000a4 l       prog	00000000 .clear_loop
+000000d4 l       prog	00000000 .end_set_loop
+000000c4 l       prog	00000000 .set_loop
+00000020 l       startup	00000000 _undf
+00000024 l       startup	00000000 _swi
+00000028 l       startup	00000000 _pabt
+0000002c l       startup	00000000 _dabt
+00000030 l       startup	00000000 _fiq
+00000034 l       startup	00000000 __undf
+00000038 l       startup	00000000 __pabt
+0000003c l       startup	00000000 __dabt
+00000040 l       startup	00000000 __fiq
+00000000 l    df *ABS*	00000000 blinkm-test.c
+00000000 l    df *ABS*	00000000 hwsys.c
+00000000 l    df *ABS*	00000000 lpc23xx-pll.c
+00000000 l    df *ABS*	00000000 lpc23xx-uart.c
+4000000c l     O .bss	00000079 uart0_linebuffer.1328
+00000000 l    df *ABS*	00000000 olimex2378_util.c
+000003d0 g     F prog	000000ec pllstart_fourtyeightmhz
+000007e8 g     F prog	00000060 uart0_getstring
+00000144 g     F prog	00000004 UNDEF_Routine
+40000088 g       *ABS*	00000000 _bss_end__
+00000184 g     F prog	00000068 pllstop
+40000000 g     O .bss	00000004 pllstat
+00000158 g     F prog	0000002c pllfeed
+000004dc g     F prog	00000010 uart0_query_stopbits
+000004ec g     F prog	00000118 uart0_init_9600
+00000140 g     F prog	00000004 SWI_Routine
+000001ec g     F prog	000000f4 pllstart_seventytwomhz
+40000a38 g       prog	00000000 __data_beg_src__
+7fe00000 g       .ARM.attributes	00000000 __ethram_end__
+0000013c g     F prog	00000004 FIQ_Routine
+00000874 g     F prog	000000c8 stat_led_flash_slow
+40000000 g       prog	00000000 __data_end__
+00000148 g     F prog	00000010 pllquery_cclk_mhz
+7fe00000 g       .ARM.attributes	00000000 __ethram_beg__
+40000088 g       *ABS*	00000000 __bss_end__
+000007bc g     F prog	0000002c uart0_getchar
+40000000 g       prog	00000000 __data_beg__
+000004cc g     F prog	00000010 uart0_query_charlength
+000000fc g     F prog	0000003c main
+000002e0 g     F prog	000000f0 pllstart_sixtymhz
+00000a38 g       *ABS*	00000000 __end_of_text__
+40000088 g       *ABS*	00000000 __end__
+000004bc g     F prog	00000010 uart0_query_baud
+00000138 g     F prog	00000004 IRQ_Routine
+7fd00000 g       .ARM.attributes	00000000 __usbram_end__
+0000072c g     F prog	00000060 uart0_putchar
+7fd00000 g       .ARM.attributes	00000000 __usbram_beg__
+7fe00000 g       *ABS*	00000000 _end
+40000000 g       .bss	00000000 __bss_beg__
+00000044 g       prog	00000000 start
+00000604 g     F prog	00000128 uart0_init_115200
+40007ffc g       *ABS*	00000000 __stack_end__
+000000e0 g       prog	00000000 endless_loop
+0000078c g     F prog	00000030 uart0_putstring
+0000093c g     F prog	000000c8 stat_led_flash
+00000848 g     F prog	0000002c init_stat_led
+40000004 g     O .bss	00000008 uart0stat
+
+
+
+Disassembly of section startup:
+
+00000000 <_undf-0x20>:
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:139
+
+.section .startup,"ax"
+         .code 32
+         .align 0
+
+	b     _start						/* reset - _start			*/
+   0:	ea00000f 	b	44 <start>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:140
+	ldr   pc, _undf						/* undefined - _undf		*/
+   4:	e59ff014 	ldr	pc, [pc, #20]	; 20 <_undf>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:141
+	ldr   pc, _swi						/* SWI - _swi				*/
+   8:	e59ff014 	ldr	pc, [pc, #20]	; 24 <_swi>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:142
+	ldr   pc, _pabt						/* program abort - _pabt	*/
+   c:	e59ff014 	ldr	pc, [pc, #20]	; 28 <_pabt>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:143
+	ldr   pc, _dabt						/* data abort - _dabt		*/
+  10:	e59ff014 	ldr	pc, [pc, #20]	; 2c <_dabt>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:144
+	nop									/* reserved					*/
+  14:	e1a00000 	nop			; (mov r0, r0)
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:145
+	ldr   pc, [pc,#-0x120]				/* IRQ - read the VIC		*/
+  18:	e51ff120 	ldr	pc, [pc, #-288]	; ffffff00 <_end+0x801fff00>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:146
+	ldr   pc, _fiq						/* FIQ - _fiq				*/
+  1c:	e59ff00c 	ldr	pc, [pc, #12]	; 30 <_fiq>
+
+00000020 <_undf>:
+_undf():
+  20:	00000034 	.word	0x00000034
+
+00000024 <_swi>:
+_swi():
+  24:	00000140 	.word	0x00000140
+
+00000028 <_pabt>:
+_pabt():
+  28:	00000038 	.word	0x00000038
+
+0000002c <_dabt>:
+_dabt():
+  2c:	0000003c 	.word	0x0000003c
+
+00000030 <_fiq>:
+_fiq():
+  30:	00000040 	.word	0x00000040
+
+00000034 <__undf>:
+__undf():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:154
+_swi:   .word SWI_Routine       /* SWI						*/
+_pabt:  .word __pabt                    /* program abort			*/
+_dabt:  .word __dabt                    /* data abort				*/
+_fiq:   .word __fiq                     /* FIQ						*/
+
+__undf: b     .                         /* undefined				*/
+  34:	eafffffe 	b	34 <__undf>
+
+00000038 <__pabt>:
+__pabt():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:155
+__pabt: b     .                         /* program abort			*/
+  38:	eafffffe 	b	38 <__pabt>
+
+0000003c <__dabt>:
+__dabt():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:156
+__dabt: b     .                         /* data abort				*/
+  3c:	eafffffe 	b	3c <__dabt>
+
+00000040 <__fiq>:
+__fiq():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:157
+__fiq:  b     .                         /* FIQ						*/
+  40:	eafffffe 	b	40 <__fiq>
+
+Disassembly of section prog:
+
+00000044 <start>:
+start():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:49
+_mainCRTStartup:
+
+	/* Setup a stack for each mode - note that this only sets up a usable stack
+	for system/user, SWI and IRQ modes.   Also each mode is setup with
+	interrupts initially disabled. */
+    ldr   r0, .LC6
+  44:	e59f00ac 	ldr	r0, [pc, #172]	; f8 <endless_loop+0x18>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:50
+    msr   CPSR_c, #MODE_UND|I_BIT|F_BIT /* Undefined Instruction Mode
+  48:	e321f0db 	msr	CPSR_c, #219	; 0xdb
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:54
+    mov   sp, r0
+    sub   r0, r0, #UND_STACK_SIZE
+    msr   CPSR_c, #MODE_ABT|I_BIT|F_BIT /* Abort Mode */
+    mov   sp, r0
+  4c:	e1a0d000 	mov	sp, r0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:55
+    sub   r0, r0, #ABT_STACK_SIZE
+  50:	e2400004 	sub	r0, r0, #4
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:56
+    msr   CPSR_c, #MODE_FIQ|I_BIT|F_BIT /* FIQ Mode */
+  54:	e321f0d1 	msr	CPSR_c, #209	; 0xd1
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:57
+    mov   sp, r0
+  58:	e1a0d000 	mov	sp, r0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:58
+    sub   r0, r0, #FIQ_STACK_SIZE
+  5c:	e2400004 	sub	r0, r0, #4
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:59
+    msr   CPSR_c, #MODE_IRQ|I_BIT|F_BIT /* IRQ Mode */
+  60:	e321f0d2 	msr	CPSR_c, #210	; 0xd2
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:60
+    mov   sp, r0
+  64:	e1a0d000 	mov	sp, r0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:61
+    sub   r0, r0, #IRQ_STACK_SIZE
+  68:	e2400c01 	sub	r0, r0, #256	; 0x100
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:62
+    msr   CPSR_c, #MODE_SVC|I_BIT|F_BIT /* Supervisor Mode */
+  6c:	e321f0d3 	msr	CPSR_c, #211	; 0xd3
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:63
+    mov   sp, r0
+  70:	e1a0d000 	mov	sp, r0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:64
+    sub   r0, r0, #SVC_STACK_SIZE
+  74:	e2400c01 	sub	r0, r0, #256	; 0x100
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:65
+    msr   CPSR_c, #MODE_SYS|I_BIT|F_BIT /* System Mode */
+  78:	e321f0df 	msr	CPSR_c, #223	; 0xdf
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:66
+    mov   sp, r0
+  7c:	e1a0d000 	mov	sp, r0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:70
+
+	/* We want to start in supervisor mode.  Operation will switch to system
+	mode when the first task starts. */
+	msr   CPSR_c, #MODE_SVC|I_BIT|F_BIT
+  80:	e321f0d3 	msr	CPSR_c, #211	; 0xd3
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:74
+
+	/* Clear BSS. */
+
+	mov     a2, #0			/* Fill value */
+  84:	e3a01000 	mov	r1, #0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:75
+	mov		fp, a2			/* Null frame pointer */
+  88:	e1a0b001 	mov	fp, r1
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:76
+	mov		r7, a2			/* Null frame pointer for Thumb */
+  8c:	e1a07001 	mov	r7, r1
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:78
+
+	ldr		r1, .LC1		/* Start of memory block */
+  90:	e59f104c 	ldr	r1, [pc, #76]	; e4 <endless_loop+0x4>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:79
+	ldr		r3, .LC2		/* End of memory block */
+  94:	e59f304c 	ldr	r3, [pc, #76]	; e8 <endless_loop+0x8>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:80
+	subs	r3, r3, r1      /* Length of block */
+  98:	e0533001 	subs	r3, r3, r1
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:81
+	beq		.end_clear_loop
+  9c:	0a000003 	beq	b0 <.end_clear_loop>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:82
+	mov		r2, #0
+  a0:	e3a02000 	mov	r2, #0
+
+000000a4 <.clear_loop>:
+.clear_loop():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:85
+
+.clear_loop:
+	strb	r2, [r1], #1
+  a4:	e4c12001 	strb	r2, [r1], #1
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:86
+	subs	r3, r3, #1
+  a8:	e2533001 	subs	r3, r3, #1
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:87
+	bgt		.clear_loop
+  ac:	cafffffc 	bgt	a4 <.clear_loop>
+
+000000b0 <.end_clear_loop>:
+.end_clear_loop():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:93
+
+.end_clear_loop:
+
+	/* Initialise data. */
+
+	ldr		r1, .LC3		/* Start of memory block */
+  b0:	e59f1034 	ldr	r1, [pc, #52]	; ec <endless_loop+0xc>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:94
+	ldr		r2, .LC4		/* End of memory block */
+  b4:	e59f2034 	ldr	r2, [pc, #52]	; f0 <endless_loop+0x10>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:95
+	ldr		r3, .LC5
+  b8:	e59f3034 	ldr	r3, [pc, #52]	; f4 <endless_loop+0x14>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:96
+	subs	r3, r3, r1		/* Length of block */
+  bc:	e0533001 	subs	r3, r3, r1
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:97
+	beq		.end_set_loop
+  c0:	0a000003 	beq	d4 <.end_set_loop>
+
+000000c4 <.set_loop>:
+.set_loop():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:100
+
+.set_loop:
+	ldrb	r4, [r2], #1
+  c4:	e4d24001 	ldrb	r4, [r2], #1
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:101
+	strb	r4, [r1], #1
+  c8:	e4c14001 	strb	r4, [r1], #1
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:102
+	subs	r3, r3, #1
+  cc:	e2533001 	subs	r3, r3, #1
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:103
+	bgt		.set_loop
+  d0:	cafffffb 	bgt	c4 <.set_loop>
+
+000000d4 <.end_set_loop>:
+.end_set_loop():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:107
+
+.end_set_loop:
+
+	mov		r0, #0          /* no arguments  */
+  d4:	e3a00000 	mov	r0, #0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:108
+	mov		r1, #0          /* no argv either */
+  d8:	e3a01000 	mov	r1, #0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:110
+
+	bl		main
+  dc:	eb000006 	bl	fc <main>
+
+000000e0 <endless_loop>:
+endless_loop():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/boot.s:113
+
+endless_loop:
+	b               endless_loop
+  e0:	eafffffe 	b	e0 <endless_loop>
+  e4:	40000000 	.word	0x40000000
+  e8:	40000088 	.word	0x40000088
+  ec:	40000000 	.word	0x40000000
+  f0:	40000a38 	.word	0x40000a38
+  f4:	40000000 	.word	0x40000000
+  f8:	40007ffc 	.word	0x40007ffc
+
+000000fc <main>:
+main():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/blinkm-test.c:20
+#include "lpc23xx-util.h"
+
+#include "olimex2378-util.h"
+#include "blinkm-test.h"
+
+int main (void) {
+  fc:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/blinkm-test.c:24
+
+    int32_t cycles = 5;
+
+    pllstart_seventytwomhz() ;
+ 100:	eb000039 	bl	1ec <pllstart_seventytwomhz>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/blinkm-test.c:28
+ //   pllstart_sixtymhz() ;
+ //   pllstart_fourtyeightmhz() ;
+
+    uart0_init_115200() ;
+ 104:	eb00013e 	bl	604 <uart0_init_115200>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/blinkm-test.c:30
+
+    uart0_putstring("\n***Starting olimex blinkm test***\n\n");
+ 108:	e59f0020 	ldr	r0, [pc, #32]	; 130 <IRQ_STACK_SIZE+0x30>
+ 10c:	eb00019e 	bl	78c <uart0_putstring>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/blinkm-test.c:32
+
+    stat_led_flash(cycles+10); // initial visual check
+ 110:	e3a0000f 	mov	r0, #15
+ 114:	eb000208 	bl	93c <stat_led_flash>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/blinkm-test.c:41
+
+
+
+
+
+    stat_led_flash_slow(cycles);
+ 118:	e3a00005 	mov	r0, #5
+ 11c:	eb0001d4 	bl	874 <stat_led_flash_slow>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/blinkm-test.c:43
+
+    uart0_putstring("\n\n***Done***\n\n");
+ 120:	e59f000c 	ldr	r0, [pc, #12]	; 134 <IRQ_STACK_SIZE+0x34>
+ 124:	eb000198 	bl	78c <uart0_putstring>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/blinkm-test.c:47
+
+    return(0);
+
+}
+ 128:	e3a00000 	mov	r0, #0
+ 12c:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+ 130:	00000a04 	.word	0x00000a04
+ 134:	00000a29 	.word	0x00000a29
+
+00000138 <IRQ_Routine>:
+IRQ_Routine():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/hwsys.c:12
+
+/*
+ *  Stubs for various interrupts 
+ */
+
+void IRQ_Routine (void) {
+ 138:	eafffffe 	b	138 <IRQ_Routine>
+
+0000013c <FIQ_Routine>:
+FIQ_Routine():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/hwsys.c:16
+	while (1) ;	
+}
+
+void FIQ_Routine (void)  {
+ 13c:	eafffffe 	b	13c <FIQ_Routine>
+
+00000140 <SWI_Routine>:
+SWI_Routine():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/hwsys.c:20
+	while (1) ;	
+}
+
+void SWI_Routine (void)  {
+ 140:	eafffffe 	b	140 <SWI_Routine>
+
+00000144 <UNDEF_Routine>:
+UNDEF_Routine():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-template/blinkm-test/hwsys.c:24
+	while (1) ;	
+}
+
+void UNDEF_Routine (void) {
+ 144:	eafffffe 	b	144 <UNDEF_Routine>
+
+00000148 <pllquery_cclk_mhz>:
+pllquery_cclk_mhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:18
+
+/*
+ * pllquery_clk_mhz
+ */
+Freq    pllquery_cclk_mhz(void) {
+    return(pllstat.cclk_mhz);
+ 148:	e59f3004 	ldr	r3, [pc, #4]	; 154 <pllquery_cclk_mhz+0xc>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:19
+}
+ 14c:	e5930000 	ldr	r0, [r3]
+ 150:	e12fff1e 	bx	lr
+ 154:	40000000 	.word	0x40000000
+
+00000158 <pllfeed>:
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:31
+ */
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+ 158:	e3e03000 	mvn	r3, #0
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+
+    PLLFEED         = FEEDBYTE_A;
+ 15c:	e3a0220e 	mov	r2, #-536870912	; 0xe0000000
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:31
+ */
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+ 160:	e5131fef 	ldr	r1, [r3, #-4079]	; 0xfef
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+
+    PLLFEED         = FEEDBYTE_A;
+ 164:	e282297f 	add	r2, r2, #2080768	; 0x1fc000
+ 168:	e3e00055 	mvn	r0, #85	; 0x55
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:32
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+ 16c:	e5033feb 	str	r3, [r3, #-4075]	; 0xfeb
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+
+    PLLFEED         = FEEDBYTE_A;
+ 170:	e5c2008c 	strb	r0, [r2, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 174:	e3a00055 	mov	r0, #85	; 0x55
+ 178:	e5c2008c 	strb	r0, [r2, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:38
+
+    /* restore interrupts */
+    VICIntEnable    = savedInterrupts;
+ 17c:	e5031fef 	str	r1, [r3, #-4079]	; 0xfef
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:39
+}
+ 180:	e12fff1e 	bx	lr
+
+00000184 <pllstop>:
+pllstop():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:48
+ */
+void pllstop(void) {
+
+    uint32_t status;
+
+    status          = PLLSTAT;
+ 184:	e3a0320e 	mov	r3, #-536870912	; 0xe0000000
+ 188:	e283397f 	add	r3, r3, #2080768	; 0x1fc000
+ 18c:	e5932088 	ldr	r2, [r3, #136]	; 0x88
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:50
+
+    if(PLLC != 0) {
+ 190:	e5932088 	ldr	r2, [r3, #136]	; 0x88
+ 194:	e3120402 	tst	r2, #33554432	; 0x2000000
+ 198:	012fff1e 	bxeq	lr
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:51
+        CLEAR_PLLC; 
+ 19c:	e5d32080 	ldrb	r2, [r3, #128]	; 0x80
+ 1a0:	e20220fd 	and	r2, r2, #253	; 0xfd
+ 1a4:	e5c32080 	strb	r2, [r3, #128]	; 0x80
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:31
+ */
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+ 1a8:	e3e02000 	mvn	r2, #0
+ 1ac:	e512cfef 	ldr	ip, [r2, #-4079]	; 0xfef
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+
+    PLLFEED         = FEEDBYTE_A;
+ 1b0:	e3e00055 	mvn	r0, #85	; 0x55
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 1b4:	e3a01055 	mov	r1, #85	; 0x55
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:32
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+ 1b8:	e5022feb 	str	r2, [r2, #-4075]	; 0xfeb
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+
+    PLLFEED         = FEEDBYTE_A;
+ 1bc:	e5c3008c 	strb	r0, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 1c0:	e5c3108c 	strb	r1, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:38
+
+    /* restore interrupts */
+    VICIntEnable    = savedInterrupts;
+ 1c4:	e502cfef 	str	ip, [r2, #-4079]	; 0xfef
+pllstop():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:53
+    status          = PLLSTAT;
+
+    if(PLLC != 0) {
+        CLEAR_PLLC; 
+        pllfeed();
+        CLEAR_PLLE; 
+ 1c8:	e5d3c080 	ldrb	ip, [r3, #128]	; 0x80
+ 1cc:	e20cc0fe 	and	ip, ip, #254	; 0xfe
+ 1d0:	e5c3c080 	strb	ip, [r3, #128]	; 0x80
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:31
+ */
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+ 1d4:	e512cfef 	ldr	ip, [r2, #-4079]	; 0xfef
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:32
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+ 1d8:	e5022feb 	str	r2, [r2, #-4075]	; 0xfeb
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+
+    PLLFEED         = FEEDBYTE_A;
+ 1dc:	e5c3008c 	strb	r0, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 1e0:	e5c3108c 	strb	r1, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:38
+
+    /* restore interrupts */
+    VICIntEnable    = savedInterrupts;
+ 1e4:	e502cfef 	str	ip, [r2, #-4079]	; 0xfef
+ 1e8:	e12fff1e 	bx	lr
+
+000001ec <pllstart_seventytwomhz>:
+pllstart_seventytwomhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:63
+/*
+ * pllstart_seventytwomhz
+ * lpc23xx rev03 p60
+ * Fcco = 288Mhz, M=12, N=1, Fin = 12Mhz 
+ */
+void pllstart_seventytwomhz(void) { 
+ 1ec:	e92d4010 	push	{r4, lr}
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:64
+    pllstat.cclk_mhz = ZERO;
+ 1f0:	e59f40e4 	ldr	r4, [pc, #228]	; 2dc <pllstart_seventytwomhz+0xf0>
+ 1f4:	e3a03000 	mov	r3, #0
+ 1f8:	e5843000 	str	r3, [r4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:66
+
+    pllstop();
+ 1fc:	ebffffe0 	bl	184 <pllstop>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:68
+
+    mainOSC_ENABLE;
+ 200:	e3a0120e 	mov	r1, #-536870912	; 0xe0000000
+ 204:	e281197f 	add	r1, r1, #2080768	; 0x1fc000
+ 208:	e59131a0 	ldr	r3, [r1, #416]	; 0x1a0
+ 20c:	e3833020 	orr	r3, r3, #32
+ 210:	e58131a0 	str	r3, [r1, #416]	; 0x1a0
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:69
+    while (!mainOSC_READY);
+ 214:	e59121a0 	ldr	r2, [r1, #416]	; 0x1a0
+ 218:	e3a0320e 	mov	r3, #-536870912	; 0xe0000000
+ 21c:	e3120040 	tst	r2, #64	; 0x40
+ 220:	e283397f 	add	r3, r3, #2080768	; 0x1fc000
+ 224:	0afffffa 	beq	214 <pllstart_seventytwomhz+0x28>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:71
+
+    mainOSC_SELECT;
+ 228:	e3a02001 	mov	r2, #1
+ 22c:	e583210c 	str	r2, [r3, #268]	; 0x10c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:73
+
+    FCCO_TWO_EIGHTY_EIGHT_MHZ;
+ 230:	e3a0200b 	mov	r2, #11
+ 234:	e5832084 	str	r2, [r3, #132]	; 0x84
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:31
+ */
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+ 238:	e3e02000 	mvn	r2, #0
+ 23c:	e512cfef 	ldr	ip, [r2, #-4079]	; 0xfef
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+
+    PLLFEED         = FEEDBYTE_A;
+ 240:	e3e00055 	mvn	r0, #85	; 0x55
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 244:	e3a01055 	mov	r1, #85	; 0x55
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:32
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+ 248:	e5022feb 	str	r2, [r2, #-4075]	; 0xfeb
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+
+    PLLFEED         = FEEDBYTE_A;
+ 24c:	e5c3008c 	strb	r0, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 250:	e5c3108c 	strb	r1, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:38
+
+    /* restore interrupts */
+    VICIntEnable    = savedInterrupts;
+ 254:	e502cfef 	str	ip, [r2, #-4079]	; 0xfef
+pllstart_seventytwomhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:76
+    mainOSC_SELECT;
+
+    FCCO_TWO_EIGHTY_EIGHT_MHZ;
+    pllfeed();
+
+    SET_PLLE;
+ 258:	e5d3c080 	ldrb	ip, [r3, #128]	; 0x80
+ 25c:	e38cc001 	orr	ip, ip, #1
+ 260:	e5c3c080 	strb	ip, [r3, #128]	; 0x80
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:31
+ */
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+ 264:	e512cfef 	ldr	ip, [r2, #-4079]	; 0xfef
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:32
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+ 268:	e5022feb 	str	r2, [r2, #-4075]	; 0xfeb
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+
+    PLLFEED         = FEEDBYTE_A;
+ 26c:	e5c3008c 	strb	r0, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 270:	e5c3108c 	strb	r1, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:38
+
+    /* restore interrupts */
+    VICIntEnable    = savedInterrupts;
+ 274:	e502cfef 	str	ip, [r2, #-4079]	; 0xfef
+pllstart_seventytwomhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:79
+    pllfeed();
+
+    SET_PLLE;
+    pllfeed();
+
+    CCLK_IS_FCCODIV4;
+ 278:	e3a02003 	mov	r2, #3
+ 27c:	e5832104 	str	r2, [r3, #260]	; 0x104
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:80
+    USB_IS_FCCODIV6;
+ 280:	e3a02005 	mov	r2, #5
+ 284:	e5832108 	str	r2, [r3, #264]	; 0x108
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:82
+
+    while(!PLOCK);
+ 288:	e5931088 	ldr	r1, [r3, #136]	; 0x88
+ 28c:	e3a0220e 	mov	r2, #-536870912	; 0xe0000000
+ 290:	e3110301 	tst	r1, #67108864	; 0x4000000
+ 294:	e282297f 	add	r2, r2, #2080768	; 0x1fc000
+ 298:	0afffffa 	beq	288 <pllstart_seventytwomhz+0x9c>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:84
+
+    SET_PLLC;
+ 29c:	e5d23080 	ldrb	r3, [r2, #128]	; 0x80
+ 2a0:	e3833002 	orr	r3, r3, #2
+ 2a4:	e5c23080 	strb	r3, [r2, #128]	; 0x80
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:31
+ */
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+ 2a8:	e3e01000 	mvn	r1, #0
+pllstart_seventytwomhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:86
+
+    while(!PLOCK);
+
+    SET_PLLC;
+    pllfeed();
+    pllstat.cclk_mhz = SEVENTY_TWO_MHZ;
+ 2ac:	e3a03511 	mov	r3, #71303168	; 0x4400000
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:31
+ */
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+ 2b0:	e5110fef 	ldr	r0, [r1, #-4079]	; 0xfef
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+
+    PLLFEED         = FEEDBYTE_A;
+ 2b4:	e3e0c055 	mvn	ip, #85	; 0x55
+pllstart_seventytwomhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:86
+
+    while(!PLOCK);
+
+    SET_PLLC;
+    pllfeed();
+    pllstat.cclk_mhz = SEVENTY_TWO_MHZ;
+ 2b8:	e2833aaa 	add	r3, r3, #696320	; 0xaa000
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:32
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+ 2bc:	e5011feb 	str	r1, [r1, #-4075]	; 0xfeb
+pllstart_seventytwomhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:86
+
+    while(!PLOCK);
+
+    SET_PLLC;
+    pllfeed();
+    pllstat.cclk_mhz = SEVENTY_TWO_MHZ;
+ 2c0:	e2833c02 	add	r3, r3, #512	; 0x200
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+
+    PLLFEED         = FEEDBYTE_A;
+ 2c4:	e5c2c08c 	strb	ip, [r2, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 2c8:	e3a0c055 	mov	ip, #85	; 0x55
+ 2cc:	e5c2c08c 	strb	ip, [r2, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:38
+
+    /* restore interrupts */
+    VICIntEnable    = savedInterrupts;
+ 2d0:	e5010fef 	str	r0, [r1, #-4079]	; 0xfef
+pllstart_seventytwomhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:86
+
+    while(!PLOCK);
+
+    SET_PLLC;
+    pllfeed();
+    pllstat.cclk_mhz = SEVENTY_TWO_MHZ;
+ 2d4:	e5843000 	str	r3, [r4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:87
+}
+ 2d8:	e8bd8010 	pop	{r4, pc}
+ 2dc:	40000000 	.word	0x40000000
+
+000002e0 <pllstart_sixtymhz>:
+pllstart_sixtymhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:95
+/*
+ * pllstart_sixtymhz
+ * lpc23xx rev03 p60
+ * Fcco = 480Mhz, M=20, N=1, Fin = 12Mhz 
+ */
+void pllstart_sixtymhz(void) { 
+ 2e0:	e92d4010 	push	{r4, lr}
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:96
+    pllstat.cclk_mhz = ZERO;
+ 2e4:	e59f40e0 	ldr	r4, [pc, #224]	; 3cc <pllstart_sixtymhz+0xec>
+ 2e8:	e3a03000 	mov	r3, #0
+ 2ec:	e5843000 	str	r3, [r4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:98
+
+    pllstop();
+ 2f0:	ebffffa3 	bl	184 <pllstop>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:100
+
+    mainOSC_ENABLE;
+ 2f4:	e3a0120e 	mov	r1, #-536870912	; 0xe0000000
+ 2f8:	e281197f 	add	r1, r1, #2080768	; 0x1fc000
+ 2fc:	e59131a0 	ldr	r3, [r1, #416]	; 0x1a0
+ 300:	e3833020 	orr	r3, r3, #32
+ 304:	e58131a0 	str	r3, [r1, #416]	; 0x1a0
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:101
+    while (!mainOSC_READY);
+ 308:	e59121a0 	ldr	r2, [r1, #416]	; 0x1a0
+ 30c:	e3a0320e 	mov	r3, #-536870912	; 0xe0000000
+ 310:	e3120040 	tst	r2, #64	; 0x40
+ 314:	e283397f 	add	r3, r3, #2080768	; 0x1fc000
+ 318:	0afffffa 	beq	308 <pllstart_sixtymhz+0x28>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:103
+
+    mainOSC_SELECT;
+ 31c:	e3a02001 	mov	r2, #1
+ 320:	e583210c 	str	r2, [r3, #268]	; 0x10c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:105
+
+    FCCO_FOUR_EIGHTY_MHZ;
+ 324:	e3a02013 	mov	r2, #19
+ 328:	e5832084 	str	r2, [r3, #132]	; 0x84
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:31
+ */
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+ 32c:	e3e02000 	mvn	r2, #0
+ 330:	e512cfef 	ldr	ip, [r2, #-4079]	; 0xfef
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+
+    PLLFEED         = FEEDBYTE_A;
+ 334:	e3e00055 	mvn	r0, #85	; 0x55
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 338:	e3a01055 	mov	r1, #85	; 0x55
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:32
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+ 33c:	e5022feb 	str	r2, [r2, #-4075]	; 0xfeb
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+
+    PLLFEED         = FEEDBYTE_A;
+ 340:	e5c3008c 	strb	r0, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 344:	e5c3108c 	strb	r1, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:38
+
+    /* restore interrupts */
+    VICIntEnable    = savedInterrupts;
+ 348:	e502cfef 	str	ip, [r2, #-4079]	; 0xfef
+pllstart_sixtymhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:108
+    mainOSC_SELECT;
+
+    FCCO_FOUR_EIGHTY_MHZ;
+    pllfeed();
+
+    SET_PLLE;
+ 34c:	e5d3c080 	ldrb	ip, [r3, #128]	; 0x80
+ 350:	e38cc001 	orr	ip, ip, #1
+ 354:	e5c3c080 	strb	ip, [r3, #128]	; 0x80
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:31
+ */
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+ 358:	e512cfef 	ldr	ip, [r2, #-4079]	; 0xfef
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:32
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+ 35c:	e5022feb 	str	r2, [r2, #-4075]	; 0xfeb
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+
+    PLLFEED         = FEEDBYTE_A;
+ 360:	e5c3008c 	strb	r0, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 364:	e5c3108c 	strb	r1, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:38
+
+    /* restore interrupts */
+    VICIntEnable    = savedInterrupts;
+ 368:	e502cfef 	str	ip, [r2, #-4079]	; 0xfef
+pllstart_sixtymhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:111
+    pllfeed();
+
+    SET_PLLE;
+    pllfeed();
+
+    CCLK_IS_FCCODIV8;
+ 36c:	e3a02007 	mov	r2, #7
+ 370:	e5832104 	str	r2, [r3, #260]	; 0x104
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:112
+    USB_IS_FCCODIV10;
+ 374:	e3a02009 	mov	r2, #9
+ 378:	e5832108 	str	r2, [r3, #264]	; 0x108
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:114
+
+    while(!PLOCK);
+ 37c:	e5931088 	ldr	r1, [r3, #136]	; 0x88
+ 380:	e3a0220e 	mov	r2, #-536870912	; 0xe0000000
+ 384:	e3110301 	tst	r1, #67108864	; 0x4000000
+ 388:	e282297f 	add	r2, r2, #2080768	; 0x1fc000
+ 38c:	0afffffa 	beq	37c <pllstart_sixtymhz+0x9c>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:116
+
+    SET_PLLC;
+ 390:	e5d23080 	ldrb	r3, [r2, #128]	; 0x80
+ 394:	e3833002 	orr	r3, r3, #2
+ 398:	e5c23080 	strb	r3, [r2, #128]	; 0x80
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:31
+ */
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+ 39c:	e3e03000 	mvn	r3, #0
+ 3a0:	e5130fef 	ldr	r0, [r3, #-4079]	; 0xfef
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+
+    PLLFEED         = FEEDBYTE_A;
+ 3a4:	e3e0c055 	mvn	ip, #85	; 0x55
+pllstart_sixtymhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:118
+
+    while(!PLOCK);
+
+    SET_PLLC;
+    pllfeed();
+    pllstat.cclk_mhz = SIXTY_MHZ;
+ 3a8:	e3a017e5 	mov	r1, #60030976	; 0x3940000
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:32
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+ 3ac:	e5033feb 	str	r3, [r3, #-4075]	; 0xfeb
+pllstart_sixtymhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:118
+
+    while(!PLOCK);
+
+    SET_PLLC;
+    pllfeed();
+    pllstat.cclk_mhz = SIXTY_MHZ;
+ 3b0:	e2411c79 	sub	r1, r1, #30976	; 0x7900
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+
+    PLLFEED         = FEEDBYTE_A;
+ 3b4:	e5c2c08c 	strb	ip, [r2, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 3b8:	e3a0c055 	mov	ip, #85	; 0x55
+ 3bc:	e5c2c08c 	strb	ip, [r2, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:38
+
+    /* restore interrupts */
+    VICIntEnable    = savedInterrupts;
+ 3c0:	e5030fef 	str	r0, [r3, #-4079]	; 0xfef
+pllstart_sixtymhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:118
+
+    while(!PLOCK);
+
+    SET_PLLC;
+    pllfeed();
+    pllstat.cclk_mhz = SIXTY_MHZ;
+ 3c4:	e5841000 	str	r1, [r4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:119
+}
+ 3c8:	e8bd8010 	pop	{r4, pc}
+ 3cc:	40000000 	.word	0x40000000
+
+000003d0 <pllstart_fourtyeightmhz>:
+pllstart_fourtyeightmhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:126
+/*
+ * pllstart_fourtyeightmhz
+ * lpc23xx rev03 p60
+ * Fcco = 480Mhz, M=20, N=1, Fin = 12Mhz
+ */
+void pllstart_fourtyeightmhz(void) {
+ 3d0:	e92d4030 	push	{r4, r5, lr}
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:127
+    pllstat.cclk_mhz = ZERO;
+ 3d4:	e59f40dc 	ldr	r4, [pc, #220]	; 4b8 <pllstart_fourtyeightmhz+0xe8>
+ 3d8:	e3a03000 	mov	r3, #0
+ 3dc:	e5843000 	str	r3, [r4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:129
+
+    pllstop();
+ 3e0:	ebffff67 	bl	184 <pllstop>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:131
+
+    mainOSC_ENABLE;
+ 3e4:	e3a0120e 	mov	r1, #-536870912	; 0xe0000000
+ 3e8:	e281197f 	add	r1, r1, #2080768	; 0x1fc000
+ 3ec:	e59131a0 	ldr	r3, [r1, #416]	; 0x1a0
+ 3f0:	e3833020 	orr	r3, r3, #32
+ 3f4:	e58131a0 	str	r3, [r1, #416]	; 0x1a0
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:132
+    while (!mainOSC_READY);
+ 3f8:	e59121a0 	ldr	r2, [r1, #416]	; 0x1a0
+ 3fc:	e3a0320e 	mov	r3, #-536870912	; 0xe0000000
+ 400:	e3120040 	tst	r2, #64	; 0x40
+ 404:	e283397f 	add	r3, r3, #2080768	; 0x1fc000
+ 408:	0afffffa 	beq	3f8 <pllstart_fourtyeightmhz+0x28>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:134
+
+    mainOSC_SELECT;
+ 40c:	e3a02001 	mov	r2, #1
+ 410:	e583210c 	str	r2, [r3, #268]	; 0x10c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:136
+
+    FCCO_FOUR_EIGHTY_MHZ;
+ 414:	e3a02013 	mov	r2, #19
+ 418:	e5832084 	str	r2, [r3, #132]	; 0x84
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:31
+ */
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+ 41c:	e3e02000 	mvn	r2, #0
+ 420:	e5121fef 	ldr	r1, [r2, #-4079]	; 0xfef
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+
+    PLLFEED         = FEEDBYTE_A;
+ 424:	e3e0c055 	mvn	ip, #85	; 0x55
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 428:	e3a00055 	mov	r0, #85	; 0x55
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:32
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+ 42c:	e5022feb 	str	r2, [r2, #-4075]	; 0xfeb
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+
+    PLLFEED         = FEEDBYTE_A;
+ 430:	e5c3c08c 	strb	ip, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 434:	e5c3008c 	strb	r0, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:38
+
+    /* restore interrupts */
+    VICIntEnable    = savedInterrupts;
+ 438:	e5021fef 	str	r1, [r2, #-4079]	; 0xfef
+pllstart_fourtyeightmhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:139
+    mainOSC_SELECT;
+
+    FCCO_FOUR_EIGHTY_MHZ;
+    pllfeed();
+
+    SET_PLLE;
+ 43c:	e5d31080 	ldrb	r1, [r3, #128]	; 0x80
+ 440:	e3811001 	orr	r1, r1, #1
+ 444:	e5c31080 	strb	r1, [r3, #128]	; 0x80
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:31
+ */
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+ 448:	e5125fef 	ldr	r5, [r2, #-4079]	; 0xfef
+pllstart_fourtyeightmhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:142
+    pllfeed();
+
+    SET_PLLE;
+    pllfeed();
+
+    CCLK_IS_FCCODIV10;
+ 44c:	e3a01009 	mov	r1, #9
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:32
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+ 450:	e5022feb 	str	r2, [r2, #-4075]	; 0xfeb
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+
+    PLLFEED         = FEEDBYTE_A;
+ 454:	e5c3c08c 	strb	ip, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 458:	e5c3008c 	strb	r0, [r3, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:38
+
+    /* restore interrupts */
+    VICIntEnable    = savedInterrupts;
+ 45c:	e5025fef 	str	r5, [r2, #-4079]	; 0xfef
+pllstart_fourtyeightmhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:142
+    pllfeed();
+
+    SET_PLLE;
+    pllfeed();
+
+    CCLK_IS_FCCODIV10;
+ 460:	e5831104 	str	r1, [r3, #260]	; 0x104
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:143
+    USB_IS_FCCODIV10;
+ 464:	e5831108 	str	r1, [r3, #264]	; 0x108
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:145
+
+    while(!PLOCK);
+ 468:	e5931088 	ldr	r1, [r3, #136]	; 0x88
+ 46c:	e3a0220e 	mov	r2, #-536870912	; 0xe0000000
+ 470:	e3110301 	tst	r1, #67108864	; 0x4000000
+ 474:	e282297f 	add	r2, r2, #2080768	; 0x1fc000
+ 478:	0afffffa 	beq	468 <pllstart_fourtyeightmhz+0x98>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:147
+
+    SET_PLLC;
+ 47c:	e5d23080 	ldrb	r3, [r2, #128]	; 0x80
+ 480:	e3833002 	orr	r3, r3, #2
+ 484:	e5c23080 	strb	r3, [r2, #128]	; 0x80
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:31
+ */
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+ 488:	e3e03000 	mvn	r3, #0
+ 48c:	e5130fef 	ldr	r0, [r3, #-4079]	; 0xfef
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+
+    PLLFEED         = FEEDBYTE_A;
+ 490:	e3e0c055 	mvn	ip, #85	; 0x55
+pllstart_fourtyeightmhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:149
+
+    while(!PLOCK);
+
+    SET_PLLC;
+    pllfeed();
+    pllstat.cclk_mhz = FOURTY_EIGHT_MHZ;
+ 494:	e3a017b7 	mov	r1, #47972352	; 0x2dc0000
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:32
+void pllfeed(void) {
+    uint32_t        savedInterrupts;
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+ 498:	e5033feb 	str	r3, [r3, #-4075]	; 0xfeb
+pllstart_fourtyeightmhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:149
+
+    while(!PLOCK);
+
+    SET_PLLC;
+    pllfeed();
+    pllstat.cclk_mhz = FOURTY_EIGHT_MHZ;
+ 49c:	e2811b1b 	add	r1, r1, #27648	; 0x6c00
+pllfeed():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:34
+
+    /* disable interrupts */
+    savedInterrupts = VICIntEnable;
+    VICIntEnClr     = (unsigned) 0xFFFFFFFF;
+
+    PLLFEED         = FEEDBYTE_A;
+ 4a0:	e5c2c08c 	strb	ip, [r2, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:35
+    PLLFEED         = FEEDBYTE_B;
+ 4a4:	e3a0c055 	mov	ip, #85	; 0x55
+ 4a8:	e5c2c08c 	strb	ip, [r2, #140]	; 0x8c
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:38
+
+    /* restore interrupts */
+    VICIntEnable    = savedInterrupts;
+ 4ac:	e5030fef 	str	r0, [r3, #-4079]	; 0xfef
+pllstart_fourtyeightmhz():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:149
+
+    while(!PLOCK);
+
+    SET_PLLC;
+    pllfeed();
+    pllstat.cclk_mhz = FOURTY_EIGHT_MHZ;
+ 4b0:	e5841000 	str	r1, [r4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-pll/lpc23xx-pll.c:150
+}
+ 4b4:	e8bd8030 	pop	{r4, r5, pc}
+ 4b8:	40000000 	.word	0x40000000
+
+000004bc <uart0_query_baud>:
+uart0_query_baud():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:19
+
+/*
+ * uart0_query_baud
+ */
+Baud uart0_query_baud(void) {
+    return(uart0stat.baudrate);
+ 4bc:	e59f3004 	ldr	r3, [pc, #4]	; 4c8 <uart0_query_baud+0xc>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:20
+}
+ 4c0:	e5930000 	ldr	r0, [r3]
+ 4c4:	e12fff1e 	bx	lr
+ 4c8:	40000004 	.word	0x40000004
+
+000004cc <uart0_query_charlength>:
+uart0_query_charlength():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:26
+
+/*
+ * uart0_query_charlength
+ */
+uint8_t uart0_query_charlength(void) {
+    return(uart0stat.charlength);
+ 4cc:	e59f3004 	ldr	r3, [pc, #4]	; 4d8 <uart0_query_charlength+0xc>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:27
+}
+ 4d0:	e5d30004 	ldrb	r0, [r3, #4]
+ 4d4:	e12fff1e 	bx	lr
+ 4d8:	40000004 	.word	0x40000004
+
+000004dc <uart0_query_stopbits>:
+uart0_query_stopbits():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:33
+
+/*
+ * uart0_query_stopbits
+ */
+uint8_t uart0_query_stopbits(void) {
+    return(uart0stat.stopbits);
+ 4dc:	e59f3004 	ldr	r3, [pc, #4]	; 4e8 <uart0_query_stopbits+0xc>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:34
+}
+ 4e0:	e5d30005 	ldrb	r0, [r3, #5]
+ 4e4:	e12fff1e 	bx	lr
+ 4e8:	40000004 	.word	0x40000004
+
+000004ec <uart0_init_9600>:
+uart0_init_9600():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:47
+    Freq     cclk;
+
+    uart0stat.baudrate = ZERO_H_B;
+
+    // Enable GPIO for TXD/RXD
+    SET_RXD0_TXD0;
+ 4ec:	e3a0220e 	mov	r2, #-536870912	; 0xe0000000
+ 4f0:	e282290b 	add	r2, r2, #180224	; 0x2c000
+ 4f4:	e5921000 	ldr	r1, [r2]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:40
+
+/*
+ * uart_0_init_9600
+ * initialize uart0
+ */
+void uart0_init_9600(void) {
+ 4f8:	e92d4070 	push	{r4, r5, r6, lr}
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:47
+    Freq     cclk;
+
+    uart0stat.baudrate = ZERO_H_B;
+
+    // Enable GPIO for TXD/RXD
+    SET_RXD0_TXD0;
+ 4fc:	e3c110f0 	bic	r1, r1, #240	; 0xf0
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:44
+ */
+void uart0_init_9600(void) {
+
+    Freq     cclk;
+
+    uart0stat.baudrate = ZERO_H_B;
+ 500:	e59f50f8 	ldr	r5, [pc, #248]	; 600 <uart0_init_9600+0x114>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:47
+
+    // Enable GPIO for TXD/RXD
+    SET_RXD0_TXD0;
+ 504:	e3811050 	orr	r1, r1, #80	; 0x50
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:44
+ */
+void uart0_init_9600(void) {
+
+    Freq     cclk;
+
+    uart0stat.baudrate = ZERO_H_B;
+ 508:	e3a06000 	mov	r6, #0
+ 50c:	e5856000 	str	r6, [r5]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:50
+
+    // Enable GPIO for TXD/RXD
+    SET_RXD0_TXD0;
+
+    // turn on power.
+    POWER_ON_UART0;
+ 510:	e3a0320e 	mov	r3, #-536870912	; 0xe0000000
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:47
+    Freq     cclk;
+
+    uart0stat.baudrate = ZERO_H_B;
+
+    // Enable GPIO for TXD/RXD
+    SET_RXD0_TXD0;
+ 514:	e5821000 	str	r1, [r2]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:50
+
+    // turn on power.
+    POWER_ON_UART0;
+ 518:	e283397f 	add	r3, r3, #2080768	; 0x1fc000
+ 51c:	e59320c4 	ldr	r2, [r3, #196]	; 0xc4
+ 520:	e3822008 	orr	r2, r2, #8
+ 524:	e58320c4 	str	r2, [r3, #196]	; 0xc4
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:53
+
+    // divide cclk by one
+    PCLKSEL0_UART0_DIV1;
+ 528:	e59321a8 	ldr	r2, [r3, #424]	; 0x1a8
+ 52c:	e3c22d11 	bic	r2, r2, #1088	; 0x440
+ 530:	e3822040 	orr	r2, r2, #64	; 0x40
+ 534:	e58321a8 	str	r2, [r3, #424]	; 0x1a8
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:56
+
+    // enable divisor latch access
+    SET_DLAB0;
+ 538:	e3a0420e 	mov	r4, #-536870912	; 0xe0000000
+ 53c:	e2844903 	add	r4, r4, #49152	; 0xc000
+ 540:	e5d4300c 	ldrb	r3, [r4, #12]
+ 544:	e3833080 	orr	r3, r3, #128	; 0x80
+ 548:	e5c4300c 	strb	r3, [r4, #12]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:58
+
+    cclk = pllquery_cclk_mhz();
+ 54c:	ebfffefd 	bl	148 <pllquery_cclk_mhz>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:60
+
+    switch(cclk) {
+ 550:	e3a037e5 	mov	r3, #60030976	; 0x3940000
+ 554:	e2433c79 	sub	r3, r3, #30976	; 0x7900
+ 558:	e1500003 	cmp	r0, r3
+ 55c:	0a000025 	beq	5f8 <uart0_init_9600+0x10c>
+ 560:	e3a03511 	mov	r3, #71303168	; 0x4400000
+ 564:	e2833aaa 	add	r3, r3, #696320	; 0xaa000
+ 568:	e2833c02 	add	r3, r3, #512	; 0x200
+ 56c:	e1500003 	cmp	r0, r3
+ 570:	0a000019 	beq	5dc <uart0_init_9600+0xf0>
+ 574:	e3a037b7 	mov	r3, #47972352	; 0x2dc0000
+ 578:	e2833b1b 	add	r3, r3, #27648	; 0x6c00
+ 57c:	e1500003 	cmp	r0, r3
+ 580:	0a000000 	beq	588 <uart0_init_9600+0x9c>
+ 584:	eafffffe 	b	584 <uart0_init_9600+0x98>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:62
+        case FOURTY_EIGHT_MHZ:
+            U0DLL = 208;
+ 588:	e3e0302f 	mvn	r3, #47	; 0x2f
+ 58c:	e5c43000 	strb	r3, [r4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:64
+            U0DLM = 0;
+            U0FDR = (2<<4) | 1; // MULVAL = 2, DIVADD = 1;
+ 590:	e2833051 	add	r3, r3, #81	; 0x51
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:63
+    cclk = pllquery_cclk_mhz();
+
+    switch(cclk) {
+        case FOURTY_EIGHT_MHZ:
+            U0DLL = 208;
+            U0DLM = 0;
+ 594:	e5c46004 	strb	r6, [r4, #4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:64
+            U0FDR = (2<<4) | 1; // MULVAL = 2, DIVADD = 1;
+ 598:	e5c43028 	strb	r3, [r4, #40]	; 0x28
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:81
+        default:
+            while(1);
+            break;
+    }
+    // enable interrupt
+    UART0_FCR_ONE_CHAR_EN;
+ 59c:	e3a0320e 	mov	r3, #-536870912	; 0xe0000000
+ 5a0:	e2833903 	add	r3, r3, #49152	; 0xc000
+ 5a4:	e3a02007 	mov	r2, #7
+ 5a8:	e5c32008 	strb	r2, [r3, #8]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:84
+
+    // set parameters
+    UART0_8N1;
+ 5ac:	e3a02003 	mov	r2, #3
+ 5b0:	e5c3200c 	strb	r2, [r3, #12]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:86
+
+    uart0stat.charlength = 8;
+ 5b4:	e2822005 	add	r2, r2, #5
+ 5b8:	e5c52004 	strb	r2, [r5, #4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:87
+    uart0stat.stopbits   = 1;
+ 5bc:	e3a02001 	mov	r2, #1
+ 5c0:	e5c52005 	strb	r2, [r5, #5]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:89
+
+    CLEAR_DLAB0;
+ 5c4:	e5d3200c 	ldrb	r2, [r3, #12]
+ 5c8:	e202207f 	and	r2, r2, #127	; 0x7f
+ 5cc:	e5c3200c 	strb	r2, [r3, #12]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:91
+
+    uart0stat.baudrate = NINETY_SIX_H_B;
+ 5d0:	e3a03d96 	mov	r3, #9600	; 0x2580
+ 5d4:	e5853000 	str	r3, [r5]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:93
+
+}
+ 5d8:	e8bd8070 	pop	{r4, r5, r6, pc}
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:72
+            U0DLL = 4;
+            U0DLM = 1;
+            U0FDR = (2<<4) | 1; // MULVAL = 2, DIVADD = 1;
+            break;
+        case SEVENTY_TWO_MHZ:
+            U0DLL = 56;
+ 5dc:	e3a03038 	mov	r3, #56	; 0x38
+ 5e0:	e5c43000 	strb	r3, [r4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:73
+            U0DLM = 1;
+ 5e4:	e3a03001 	mov	r3, #1
+ 5e8:	e5c43004 	strb	r3, [r4, #4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:74
+            U0FDR = (2<<4) | 1; // MULVAL = 2, DIVADD = 1;
+ 5ec:	e2833020 	add	r3, r3, #32
+ 5f0:	e5c43028 	strb	r3, [r4, #40]	; 0x28
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:75
+            break;
+ 5f4:	eaffffe8 	b	59c <uart0_init_9600+0xb0>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:67
+            U0DLL = 208;
+            U0DLM = 0;
+            U0FDR = (2<<4) | 1; // MULVAL = 2, DIVADD = 1;
+            break;
+        case SIXTY_MHZ:
+            U0DLL = 4;
+ 5f8:	e3a03004 	mov	r3, #4
+ 5fc:	eafffff7 	b	5e0 <uart0_init_9600+0xf4>
+ 600:	40000004 	.word	0x40000004
+
+00000604 <uart0_init_115200>:
+uart0_init_115200():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:107
+    Freq     cclk;
+
+    uart0stat.baudrate = ZERO_H_B;
+
+    // Enable GPIO for TXD/RXD
+    SET_RXD0_TXD0;
+ 604:	e3a0220e 	mov	r2, #-536870912	; 0xe0000000
+ 608:	e282290b 	add	r2, r2, #180224	; 0x2c000
+ 60c:	e5921000 	ldr	r1, [r2]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:100
+
+/*
+ * uart_0_init_115200
+ * initialize uart0
+ */
+void uart0_init_115200(void) {
+ 610:	e92d4070 	push	{r4, r5, r6, lr}
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:107
+    Freq     cclk;
+
+    uart0stat.baudrate = ZERO_H_B;
+
+    // Enable GPIO for TXD/RXD
+    SET_RXD0_TXD0;
+ 614:	e3c110f0 	bic	r1, r1, #240	; 0xf0
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:104
+ */
+void uart0_init_115200(void) {
+
+    Freq     cclk;
+
+    uart0stat.baudrate = ZERO_H_B;
+ 618:	e59f5108 	ldr	r5, [pc, #264]	; 728 <uart0_init_115200+0x124>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:107
+
+    // Enable GPIO for TXD/RXD
+    SET_RXD0_TXD0;
+ 61c:	e3811050 	orr	r1, r1, #80	; 0x50
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:104
+ */
+void uart0_init_115200(void) {
+
+    Freq     cclk;
+
+    uart0stat.baudrate = ZERO_H_B;
+ 620:	e3a06000 	mov	r6, #0
+ 624:	e5856000 	str	r6, [r5]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:110
+
+    // Enable GPIO for TXD/RXD
+    SET_RXD0_TXD0;
+
+    // turn on power.
+    POWER_ON_UART0;
+ 628:	e3a0320e 	mov	r3, #-536870912	; 0xe0000000
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:107
+    Freq     cclk;
+
+    uart0stat.baudrate = ZERO_H_B;
+
+    // Enable GPIO for TXD/RXD
+    SET_RXD0_TXD0;
+ 62c:	e5821000 	str	r1, [r2]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:110
+
+    // turn on power.
+    POWER_ON_UART0;
+ 630:	e283397f 	add	r3, r3, #2080768	; 0x1fc000
+ 634:	e59320c4 	ldr	r2, [r3, #196]	; 0xc4
+ 638:	e3822008 	orr	r2, r2, #8
+ 63c:	e58320c4 	str	r2, [r3, #196]	; 0xc4
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:113
+
+    // divide cclk by one
+    PCLKSEL0_UART0_DIV1;
+ 640:	e59321a8 	ldr	r2, [r3, #424]	; 0x1a8
+ 644:	e3c22d11 	bic	r2, r2, #1088	; 0x440
+ 648:	e3822040 	orr	r2, r2, #64	; 0x40
+ 64c:	e58321a8 	str	r2, [r3, #424]	; 0x1a8
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:116
+
+    // enable divisor latch access
+    SET_DLAB0;
+ 650:	e3a0420e 	mov	r4, #-536870912	; 0xe0000000
+ 654:	e2844903 	add	r4, r4, #49152	; 0xc000
+ 658:	e5d4300c 	ldrb	r3, [r4, #12]
+ 65c:	e3833080 	orr	r3, r3, #128	; 0x80
+ 660:	e5c4300c 	strb	r3, [r4, #12]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:118
+
+    cclk = pllquery_cclk_mhz();
+ 664:	ebfffeb7 	bl	148 <pllquery_cclk_mhz>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:120
+
+    switch(cclk) {
+ 668:	e3a037e5 	mov	r3, #60030976	; 0x3940000
+ 66c:	e2433c79 	sub	r3, r3, #30976	; 0x7900
+ 670:	e1500003 	cmp	r0, r3
+ 674:	0a000025 	beq	710 <uart0_init_115200+0x10c>
+ 678:	e3a03511 	mov	r3, #71303168	; 0x4400000
+ 67c:	e2833aaa 	add	r3, r3, #696320	; 0xaa000
+ 680:	e2833c02 	add	r3, r3, #512	; 0x200
+ 684:	e1500003 	cmp	r0, r3
+ 688:	0a00001a 	beq	6f8 <uart0_init_115200+0xf4>
+ 68c:	e3a037b7 	mov	r3, #47972352	; 0x2dc0000
+ 690:	e2833b1b 	add	r3, r3, #27648	; 0x6c00
+ 694:	e1500003 	cmp	r0, r3
+ 698:	0a000000 	beq	6a0 <uart0_init_115200+0x9c>
+ 69c:	eafffffe 	b	69c <uart0_init_115200+0x98>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:122
+        case FOURTY_EIGHT_MHZ:
+            U0DLL = 17;
+ 6a0:	e3a03011 	mov	r3, #17
+ 6a4:	e5c43000 	strb	r3, [r4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:124
+            U0DLM = 0;
+            U0FDR = (15<<4) | 8; // MULVAL = 15, DIVADD = 8;
+ 6a8:	e3e03007 	mvn	r3, #7
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:123
+    cclk = pllquery_cclk_mhz();
+
+    switch(cclk) {
+        case FOURTY_EIGHT_MHZ:
+            U0DLL = 17;
+            U0DLM = 0;
+ 6ac:	e5c46004 	strb	r6, [r4, #4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:124
+            U0FDR = (15<<4) | 8; // MULVAL = 15, DIVADD = 8;
+ 6b0:	e5c43028 	strb	r3, [r4, #40]	; 0x28
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:141
+        default:
+            while(1);
+            break;
+    }
+    // enable interrupt
+    UART0_FCR_ONE_CHAR_EN;
+ 6b4:	e3a0320e 	mov	r3, #-536870912	; 0xe0000000
+ 6b8:	e2833903 	add	r3, r3, #49152	; 0xc000
+ 6bc:	e3a02007 	mov	r2, #7
+ 6c0:	e5c32008 	strb	r2, [r3, #8]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:144
+
+    // set parameters
+    UART0_8N1;
+ 6c4:	e3a02003 	mov	r2, #3
+ 6c8:	e5c3200c 	strb	r2, [r3, #12]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:146
+
+    uart0stat.charlength = 8;
+ 6cc:	e2822005 	add	r2, r2, #5
+ 6d0:	e5c52004 	strb	r2, [r5, #4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:147
+    uart0stat.stopbits   = 1;
+ 6d4:	e3a02001 	mov	r2, #1
+ 6d8:	e5c52005 	strb	r2, [r5, #5]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:149
+
+    CLEAR_DLAB0;
+ 6dc:	e5d3100c 	ldrb	r1, [r3, #12]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:152
+
+
+    uart0stat.baudrate = ONE_FIFTEEN_TWO_H_B;
+ 6e0:	e3a02907 	mov	r2, #114688	; 0x1c000
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:149
+    UART0_8N1;
+
+    uart0stat.charlength = 8;
+    uart0stat.stopbits   = 1;
+
+    CLEAR_DLAB0;
+ 6e4:	e201107f 	and	r1, r1, #127	; 0x7f
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:152
+
+
+    uart0stat.baudrate = ONE_FIFTEEN_TWO_H_B;
+ 6e8:	e2822c02 	add	r2, r2, #512	; 0x200
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:149
+    UART0_8N1;
+
+    uart0stat.charlength = 8;
+    uart0stat.stopbits   = 1;
+
+    CLEAR_DLAB0;
+ 6ec:	e5c3100c 	strb	r1, [r3, #12]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:152
+
+
+    uart0stat.baudrate = ONE_FIFTEEN_TWO_H_B;
+ 6f0:	e5852000 	str	r2, [r5]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:154
+
+}
+ 6f4:	e8bd8070 	pop	{r4, r5, r6, pc}
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:132
+            U0DLL = 21;
+            U0DLM = 0;
+            U0FDR = (11<<4) | 6; // MULVAL = 11, DIVADD = 6;
+            break;
+        case SEVENTY_TWO_MHZ:
+            U0DLL = 26;
+ 6f8:	e3a0301a 	mov	r3, #26
+ 6fc:	e5c43000 	strb	r3, [r4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:134
+            U0DLM = 0;
+            U0FDR = (2<<4) | 1; // MULVAL = 11, DIVADD = 6;
+ 700:	e2833007 	add	r3, r3, #7
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:133
+            U0DLM = 0;
+            U0FDR = (11<<4) | 6; // MULVAL = 11, DIVADD = 6;
+            break;
+        case SEVENTY_TWO_MHZ:
+            U0DLL = 26;
+            U0DLM = 0;
+ 704:	e5c46004 	strb	r6, [r4, #4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:134
+            U0FDR = (2<<4) | 1; // MULVAL = 11, DIVADD = 6;
+ 708:	e5c43028 	strb	r3, [r4, #40]	; 0x28
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:135
+            break;
+ 70c:	eaffffe8 	b	6b4 <uart0_init_115200+0xb0>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:127
+            U0DLL = 17;
+            U0DLM = 0;
+            U0FDR = (15<<4) | 8; // MULVAL = 15, DIVADD = 8;
+            break;
+        case SIXTY_MHZ:
+            U0DLL = 21;
+ 710:	e3a03015 	mov	r3, #21
+ 714:	e5c43000 	strb	r3, [r4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:129
+            U0DLM = 0;
+            U0FDR = (11<<4) | 6; // MULVAL = 11, DIVADD = 6;
+ 718:	e3e03049 	mvn	r3, #73	; 0x49
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:128
+            U0DLM = 0;
+            U0FDR = (15<<4) | 8; // MULVAL = 15, DIVADD = 8;
+            break;
+        case SIXTY_MHZ:
+            U0DLL = 21;
+            U0DLM = 0;
+ 71c:	e5c46004 	strb	r6, [r4, #4]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:129
+            U0FDR = (11<<4) | 6; // MULVAL = 11, DIVADD = 6;
+ 720:	e5c43028 	strb	r3, [r4, #40]	; 0x28
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:130
+            break;
+ 724:	eaffffe2 	b	6b4 <uart0_init_115200+0xb0>
+ 728:	40000004 	.word	0x40000004
+
+0000072c <uart0_putchar>:
+uart0_putchar():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:159
+}
+
+/*
+ * uart0_putchar
+ */
+void uart0_putchar(int8_t ch) {
+ 72c:	e1a00c00 	lsl	r0, r0, #24
+ 730:	e1a00c40 	asr	r0, r0, #24
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:160
+    if (ch == '\n') {
+ 734:	e350000a 	cmp	r0, #10
+ 738:	0a000009 	beq	764 <uart0_putchar+0x38>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:164
+        while (!(U0THR_EMPTY));
+        U0THR = '\r';
+    }
+    while (!(U0THR_EMPTY));
+ 73c:	e3a0120e 	mov	r1, #-536870912	; 0xe0000000
+ 740:	e2811903 	add	r1, r1, #49152	; 0xc000
+ 744:	e5d12014 	ldrb	r2, [r1, #20]
+ 748:	e3a0320e 	mov	r3, #-536870912	; 0xe0000000
+ 74c:	e3120020 	tst	r2, #32
+ 750:	e2833903 	add	r3, r3, #49152	; 0xc000
+ 754:	0afffffa 	beq	744 <uart0_putchar+0x18>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:165
+    U0THR = ch;
+ 758:	e20000ff 	and	r0, r0, #255	; 0xff
+ 75c:	e5c30000 	strb	r0, [r3]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:166
+}
+ 760:	e12fff1e 	bx	lr
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:161
+/*
+ * uart0_putchar
+ */
+void uart0_putchar(int8_t ch) {
+    if (ch == '\n') {
+        while (!(U0THR_EMPTY));
+ 764:	e3a0120e 	mov	r1, #-536870912	; 0xe0000000
+ 768:	e2811903 	add	r1, r1, #49152	; 0xc000
+ 76c:	e5d12014 	ldrb	r2, [r1, #20]
+ 770:	e3a0320e 	mov	r3, #-536870912	; 0xe0000000
+ 774:	e3120020 	tst	r2, #32
+ 778:	e2833903 	add	r3, r3, #49152	; 0xc000
+ 77c:	0afffffa 	beq	76c <uart0_putchar+0x40>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:162
+        U0THR = '\r';
+ 780:	e3a0200d 	mov	r2, #13
+ 784:	e5c32000 	strb	r2, [r3]
+ 788:	eaffffeb 	b	73c <uart0_putchar+0x10>
+
+0000078c <uart0_putstring>:
+uart0_putstring():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:176
+ * -------------------------------------
+ * put a string to the serial port
+ *
+ * Assumes null termination of string.
+ */
+void uart0_putstring(const char *s) {
+ 78c:	e92d4010 	push	{r4, lr}
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:178
+
+    while(*s ) {
+ 790:	e5d03000 	ldrb	r3, [r0]
+ 794:	e3530000 	cmp	r3, #0
+ 798:	08bd8010 	popeq	{r4, pc}
+ 79c:	e1a04000 	mov	r4, r0
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:179
+        uart0_putchar(*s++); // put the char
+ 7a0:	e1a03c03 	lsl	r3, r3, #24
+ 7a4:	e1a00c43 	asr	r0, r3, #24
+ 7a8:	ebffffdf 	bl	72c <uart0_putchar>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:178
+ *
+ * Assumes null termination of string.
+ */
+void uart0_putstring(const char *s) {
+
+    while(*s ) {
+ 7ac:	e5f43001 	ldrb	r3, [r4, #1]!
+ 7b0:	e3530000 	cmp	r3, #0
+ 7b4:	1afffff9 	bne	7a0 <uart0_putstring+0x14>
+ 7b8:	e8bd8010 	pop	{r4, pc}
+
+000007bc <uart0_getchar>:
+uart0_getchar():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:189
+/*
+ * uart0_getchar
+ */
+int8_t uart0_getchar (void)  {
+
+    while (!U0RDR_READY);
+ 7bc:	e3a0120e 	mov	r1, #-536870912	; 0xe0000000
+ 7c0:	e2811903 	add	r1, r1, #49152	; 0xc000
+ 7c4:	e5d12014 	ldrb	r2, [r1, #20]
+ 7c8:	e3a0320e 	mov	r3, #-536870912	; 0xe0000000
+ 7cc:	e3120001 	tst	r2, #1
+ 7d0:	e2833903 	add	r3, r3, #49152	; 0xc000
+ 7d4:	0afffffa 	beq	7c4 <uart0_getchar+0x8>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:191
+
+    return (U0RBR);
+ 7d8:	e5d30000 	ldrb	r0, [r3]
+ 7dc:	e1a00c00 	lsl	r0, r0, #24
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:192
+}
+ 7e0:	e1a00c40 	asr	r0, r0, #24
+ 7e4:	e12fff1e 	bx	lr
+
+000007e8 <uart0_getstring>:
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:189
+/*
+ * uart0_getchar
+ */
+int8_t uart0_getchar (void)  {
+
+    while (!U0RDR_READY);
+ 7e8:	e3a0220e 	mov	r2, #-536870912	; 0xe0000000
+ 7ec:	e59f004c 	ldr	r0, [pc, #76]	; 840 <uart0_getstring+0x58>
+uart0_getstring():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:207
+char* uart0_getstring (void) {
+
+    static char uart0_linebuffer[UART_MAXBUFFER] ;
+
+    uint8_t    current = ' ';
+    uint32_t   index   = 0;
+ 7f0:	e3a01000 	mov	r1, #0
+uart0_getchar():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:189
+/*
+ * uart0_getchar
+ */
+int8_t uart0_getchar (void)  {
+
+    while (!U0RDR_READY);
+ 7f4:	e2822903 	add	r2, r2, #49152	; 0xc000
+ 7f8:	e5d23014 	ldrb	r3, [r2, #20]
+ 7fc:	e3130001 	tst	r3, #1
+ 800:	0afffffc 	beq	7f8 <uart0_getstring+0x10>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:191
+
+    return (U0RBR);
+ 804:	e5d23000 	ldrb	r3, [r2]
+ 808:	e20330ff 	and	r3, r3, #255	; 0xff
+uart0_getstring():
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:209
+    static char uart0_linebuffer[UART_MAXBUFFER] ;
+
+    uint8_t    current = ' ';
+    uint32_t   index   = 0;
+
+    while((current != '\n' && current != '\r') && index < UART_MAXBUFFER-1) {
+ 80c:	e353000d 	cmp	r3, #13
+ 810:	1353000a 	cmpne	r3, #10
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:211
+        current                 = uart0_getchar();
+        uart0_linebuffer[index] = current;
+ 814:	e7c03001 	strb	r3, [r0, r1]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:212
+        ++index;
+ 818:	e2811001 	add	r1, r1, #1
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:209
+    static char uart0_linebuffer[UART_MAXBUFFER] ;
+
+    uint8_t    current = ' ';
+    uint32_t   index   = 0;
+
+    while((current != '\n' && current != '\r') && index < UART_MAXBUFFER-1) {
+ 81c:	0a000001 	beq	828 <uart0_getstring+0x40>
+ 820:	e3510078 	cmp	r1, #120	; 0x78
+ 824:	1afffff3 	bne	7f8 <uart0_getstring+0x10>
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:214
+        current                 = uart0_getchar();
+        uart0_linebuffer[index] = current;
+        ++index;
+    }
+    uart0_linebuffer[index]     = '\0';
+ 828:	e59f0014 	ldr	r0, [pc, #20]	; 844 <uart0_getstring+0x5c>
+ 82c:	e3a03000 	mov	r3, #0
+ 830:	e0801001 	add	r1, r0, r1
+ 834:	e5c13008 	strb	r3, [r1, #8]
+/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-uart/lpc23xx-uart.c:217
+
+    return(uart0_linebuffer);
+}
+ 838:	e2800008 	add	r0, r0, #8
+ 83c:	e12fff1e 	bx	lr
+ 840:	4000000c 	.word	0x4000000c
+ 844:	40000004 	.word	0x40000004
+
+00000848 <init_stat_led>:
+init_stat_led():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:22
+
+/*
+ * init_stat_led
+ */
+void init_stat_led() {
+    FIO_ENABLE;
+ 848:	e3a0320e 	mov	r3, #-536870912	; 0xe0000000
+ 84c:	e283397f 	add	r3, r3, #2080768	; 0x1fc000
+ 850:	e59321a0 	ldr	r2, [r3, #416]	; 0x1a0
+ 854:	e3822001 	orr	r2, r2, #1
+ 858:	e58321a0 	str	r2, [r3, #416]	; 0x1a0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:23
+    STAT_LED_ENABLE;
+ 85c:	e3e03103 	mvn	r3, #-1073741824	; 0xc0000000
+ 860:	e2433a03 	sub	r3, r3, #12288	; 0x3000
+ 864:	e5132fdf 	ldr	r2, [r3, #-4063]	; 0xfdf
+ 868:	e3822702 	orr	r2, r2, #524288	; 0x80000
+ 86c:	e5032fdf 	str	r2, [r3, #-4063]	; 0xfdf
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:24
+}
+ 870:	e12fff1e 	bx	lr
+
+00000874 <stat_led_flash_slow>:
+stat_led_flash_slow():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:29
+
+/*
+ * stat_led_flash_slow
+ */
+void stat_led_flash_slow(uint32_t cycles) {
+ 874:	e92d4010 	push	{r4, lr}
+ 878:	e1a04000 	mov	r4, r0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:35
+
+    int x              = 0;
+    int interval       = 100000;
+
+    Freq cclk;
+    cclk  =  pllquery_cclk_mhz();
+ 87c:	ebfffe31 	bl	148 <pllquery_cclk_mhz>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:37
+
+    switch(cclk) {
+ 880:	e3a037b7 	mov	r3, #47972352	; 0x2dc0000
+ 884:	e2833b1b 	add	r3, r3, #27648	; 0x6c00
+ 888:	e1500003 	cmp	r0, r3
+ 88c:	0a00000e 	beq	8cc <stat_led_flash_slow+0x58>
+ 890:	9a00000b 	bls	8c4 <stat_led_flash_slow+0x50>
+ 894:	e3a037e5 	mov	r3, #60030976	; 0x3940000
+ 898:	e2433c79 	sub	r3, r3, #30976	; 0x7900
+ 89c:	e1500003 	cmp	r0, r3
+ 8a0:	0a000009 	beq	8cc <stat_led_flash_slow+0x58>
+ 8a4:	e3a03511 	mov	r3, #71303168	; 0x4400000
+ 8a8:	e2833aaa 	add	r3, r3, #696320	; 0xaa000
+ 8ac:	e2833c02 	add	r3, r3, #512	; 0x200
+ 8b0:	e1500003 	cmp	r0, r3
+ 8b4:	0a000004 	beq	8cc <stat_led_flash_slow+0x58>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:32
+ * stat_led_flash_slow
+ */
+void stat_led_flash_slow(uint32_t cycles) {
+
+    int x              = 0;
+    int interval       = 100000;
+ 8b8:	e3a02b61 	mov	r2, #99328	; 0x18400
+ 8bc:	e2822e2a 	add	r2, r2, #672	; 0x2a0
+ 8c0:	ea000003 	b	8d4 <stat_led_flash_slow+0x60>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:37
+
+    Freq cclk;
+    cclk  =  pllquery_cclk_mhz();
+
+    switch(cclk) {
+ 8c4:	e3500000 	cmp	r0, #0
+ 8c8:	1afffffa 	bne	8b8 <stat_led_flash_slow+0x44>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:45
+        case FOURTY_EIGHT_MHZ:
+            interval = 0.01 * 48000000;
+        case SIXTY_MHZ:
+            interval = 0.01 * 60000000;
+        case SEVENTY_TWO_MHZ:
+            interval = 0.01 * 72000000;
+ 8cc:	e3a02aaf 	mov	r2, #716800	; 0xaf000
+ 8d0:	e2822d32 	add	r2, r2, #3200	; 0xc80
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:48
+    }
+
+    FIO_ENABLE;
+ 8d4:	e3a0320e 	mov	r3, #-536870912	; 0xe0000000
+ 8d8:	e283397f 	add	r3, r3, #2080768	; 0x1fc000
+ 8dc:	e59311a0 	ldr	r1, [r3, #416]	; 0x1a0
+ 8e0:	e3811001 	orr	r1, r1, #1
+ 8e4:	e58311a0 	str	r1, [r3, #416]	; 0x1a0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:49
+    STAT_LED_ENABLE;
+ 8e8:	e3e01103 	mvn	r1, #-1073741824	; 0xc0000000
+ 8ec:	e2411a03 	sub	r1, r1, #12288	; 0x3000
+ 8f0:	e5113fdf 	ldr	r3, [r1, #-4063]	; 0xfdf
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:51
+
+    if(cycles > 0) {
+ 8f4:	e3540000 	cmp	r4, #0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:49
+        case SEVENTY_TWO_MHZ:
+            interval = 0.01 * 72000000;
+    }
+
+    FIO_ENABLE;
+    STAT_LED_ENABLE;
+ 8f8:	e3833702 	orr	r3, r3, #524288	; 0x80000
+ 8fc:	e5013fdf 	str	r3, [r1, #-4063]	; 0xfdf
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:58
+            if(cycles==0) break;
+            x++;
+            if (x == interval) {
+                --cycles;
+                STAT_LED_ON;
+            } else if (x >= (interval * 2)) {
+ 900:	11a00082 	lslne	r0, r2, #1
+ 904:	13a03000 	movne	r3, #0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:59
+                STAT_LED_OFF;
+ 908:	13a0c702 	movne	ip, #524288	; 0x80000
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:51
+    }
+
+    FIO_ENABLE;
+    STAT_LED_ENABLE;
+
+    if(cycles > 0) {
+ 90c:	08bd8010 	popeq	{r4, pc}
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:54
+        for(;;) {
+            if(cycles==0) break;
+            x++;
+ 910:	e2833001 	add	r3, r3, #1
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:55
+            if (x == interval) {
+ 914:	e1530002 	cmp	r3, r2
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:56
+                --cycles;
+ 918:	02444001 	subeq	r4, r4, #1
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:57
+                STAT_LED_ON;
+ 91c:	0501cfc3 	streq	ip, [r1, #-4035]	; 0xfc3
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:55
+
+    if(cycles > 0) {
+        for(;;) {
+            if(cycles==0) break;
+            x++;
+            if (x == interval) {
+ 920:	0a000002 	beq	930 <stat_led_flash_slow+0xbc>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:58
+                --cycles;
+                STAT_LED_ON;
+            } else if (x >= (interval * 2)) {
+ 924:	e1530000 	cmp	r3, r0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:59
+                STAT_LED_OFF;
+ 928:	a501cfc7 	strge	ip, [r1, #-4039]	; 0xfc7
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:60
+                x = 0;
+ 92c:	a3a03000 	movge	r3, #0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:53
+    FIO_ENABLE;
+    STAT_LED_ENABLE;
+
+    if(cycles > 0) {
+        for(;;) {
+            if(cycles==0) break;
+ 930:	e3540000 	cmp	r4, #0
+ 934:	1afffff5 	bne	910 <stat_led_flash_slow+0x9c>
+ 938:	e8bd8010 	pop	{r4, pc}
+
+0000093c <stat_led_flash>:
+stat_led_flash():
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:69
+}
+
+/*
+ * stat_led_flash
+ */
+void stat_led_flash(uint32_t cycles) {
+ 93c:	e92d4010 	push	{r4, lr}
+ 940:	e1a04000 	mov	r4, r0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:75
+
+    int x              = 0;
+    int interval       = 1000000;
+
+    Freq cclk;
+    cclk  =  pllquery_cclk_mhz();
+ 944:	ebfffdff 	bl	148 <pllquery_cclk_mhz>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:77
+
+    switch(cclk) {
+ 948:	e3a037b7 	mov	r3, #47972352	; 0x2dc0000
+ 94c:	e2833b1b 	add	r3, r3, #27648	; 0x6c00
+ 950:	e1500003 	cmp	r0, r3
+ 954:	0a00000e 	beq	994 <stat_led_flash+0x58>
+ 958:	9a00000b 	bls	98c <stat_led_flash+0x50>
+ 95c:	e3a037e5 	mov	r3, #60030976	; 0x3940000
+ 960:	e2433c79 	sub	r3, r3, #30976	; 0x7900
+ 964:	e1500003 	cmp	r0, r3
+ 968:	0a000009 	beq	994 <stat_led_flash+0x58>
+ 96c:	e3a03511 	mov	r3, #71303168	; 0x4400000
+ 970:	e2833aaa 	add	r3, r3, #696320	; 0xaa000
+ 974:	e2833c02 	add	r3, r3, #512	; 0x200
+ 978:	e1500003 	cmp	r0, r3
+ 97c:	0a000004 	beq	994 <stat_led_flash+0x58>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:72
+ * stat_led_flash
+ */
+void stat_led_flash(uint32_t cycles) {
+
+    int x              = 0;
+    int interval       = 1000000;
+ 980:	e3a0293d 	mov	r2, #999424	; 0xf4000
+ 984:	e2822d09 	add	r2, r2, #576	; 0x240
+ 988:	ea000003 	b	99c <stat_led_flash+0x60>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:77
+
+    Freq cclk;
+    cclk  =  pllquery_cclk_mhz();
+
+    switch(cclk) {
+ 98c:	e3500000 	cmp	r0, #0
+ 990:	1afffffa 	bne	980 <stat_led_flash+0x44>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:85
+        case FOURTY_EIGHT_MHZ:
+            interval = 0.001 * 48000000;
+        case SIXTY_MHZ:
+            interval = 0.001 * 60000000;
+        case SEVENTY_TWO_MHZ:
+            interval = 0.001 * 72000000;
+ 994:	e3a02b46 	mov	r2, #71680	; 0x11800
+ 998:	e2822d05 	add	r2, r2, #320	; 0x140
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:88
+    }
+
+    FIO_ENABLE;
+ 99c:	e3a0320e 	mov	r3, #-536870912	; 0xe0000000
+ 9a0:	e283397f 	add	r3, r3, #2080768	; 0x1fc000
+ 9a4:	e59311a0 	ldr	r1, [r3, #416]	; 0x1a0
+ 9a8:	e3811001 	orr	r1, r1, #1
+ 9ac:	e58311a0 	str	r1, [r3, #416]	; 0x1a0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:89
+    STAT_LED_ENABLE;
+ 9b0:	e3e01103 	mvn	r1, #-1073741824	; 0xc0000000
+ 9b4:	e2411a03 	sub	r1, r1, #12288	; 0x3000
+ 9b8:	e5113fdf 	ldr	r3, [r1, #-4063]	; 0xfdf
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:91
+
+    if(cycles > 0) {
+ 9bc:	e3540000 	cmp	r4, #0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:89
+        case SEVENTY_TWO_MHZ:
+            interval = 0.001 * 72000000;
+    }
+
+    FIO_ENABLE;
+    STAT_LED_ENABLE;
+ 9c0:	e3833702 	orr	r3, r3, #524288	; 0x80000
+ 9c4:	e5013fdf 	str	r3, [r1, #-4063]	; 0xfdf
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:98
+            if(cycles==0) break;
+            x++;
+            if (x == interval) {
+                --cycles;
+                STAT_LED_ON;
+            } else if (x >= (interval * 2)) {
+ 9c8:	11a00082 	lslne	r0, r2, #1
+ 9cc:	13a03000 	movne	r3, #0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:99
+                STAT_LED_OFF;
+ 9d0:	13a0c702 	movne	ip, #524288	; 0x80000
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:91
+    }
+
+    FIO_ENABLE;
+    STAT_LED_ENABLE;
+
+    if(cycles > 0) {
+ 9d4:	08bd8010 	popeq	{r4, pc}
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:94
+        for(;;) {
+            if(cycles==0) break;
+            x++;
+ 9d8:	e2833001 	add	r3, r3, #1
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:95
+            if (x == interval) {
+ 9dc:	e1530002 	cmp	r3, r2
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:96
+                --cycles;
+ 9e0:	02444001 	subeq	r4, r4, #1
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:97
+                STAT_LED_ON;
+ 9e4:	0501cfc3 	streq	ip, [r1, #-4035]	; 0xfc3
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:95
+
+    if(cycles > 0) {
+        for(;;) {
+            if(cycles==0) break;
+            x++;
+            if (x == interval) {
+ 9e8:	0a000002 	beq	9f8 <stat_led_flash+0xbc>
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:98
+                --cycles;
+                STAT_LED_ON;
+            } else if (x >= (interval * 2)) {
+ 9ec:	e1530000 	cmp	r3, r0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:99
+                STAT_LED_OFF;
+ 9f0:	a501cfc7 	strge	ip, [r1, #-4039]	; 0xfc7
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:100
+                x = 0;
+ 9f4:	a3a03000 	movge	r3, #0
+/home/kwilson/Projects/psaseclipse/olimex2378/olimex2378-util/olimex2378_util.c:93
+    FIO_ENABLE;
+    STAT_LED_ENABLE;
+
+    if(cycles > 0) {
+        for(;;) {
+            if(cycles==0) break;
+ 9f8:	e3540000 	cmp	r4, #0
+ 9fc:	1afffff5 	bne	9d8 <stat_led_flash+0x9c>
+ a00:	e8bd8010 	pop	{r4, pc}
+ a04:	2a2a2a0a 	.word	0x2a2a2a0a
+ a08:	72617453 	.word	0x72617453
+ a0c:	676e6974 	.word	0x676e6974
+ a10:	696c6f20 	.word	0x696c6f20
+ a14:	2078656d 	.word	0x2078656d
+ a18:	6e696c62 	.word	0x6e696c62
+ a1c:	74206d6b 	.word	0x74206d6b
+ a20:	2a747365 	.word	0x2a747365
+ a24:	0a0a2a2a 	.word	0x0a0a2a2a
+ a28:	2a0a0a00 	.word	0x2a0a0a00
+ a2c:	6f442a2a 	.word	0x6f442a2a
+ a30:	2a2a656e 	.word	0x2a2a656e
+ a34:	000a0a2a 	.word	0x000a0a2a

@@ -168,42 +168,43 @@ ARM GAS  boot.s 			page 1
 
 
 DEFINED SYMBOLS
-              boot.s:7      .text:0000000000000000 $a
-              boot.s:42     .text:0000000000000000 start
-              boot.s:112    .text:000000000000009c endless_loop
-              boot.s:23     *ABS*:0000000000000004 UND_STACK_SIZE
-              boot.s:24     *ABS*:0000000000000004 ABT_STACK_SIZE
-              boot.s:25     *ABS*:0000000000000004 FIQ_STACK_SIZE
-              boot.s:26     *ABS*:0000000000000100 IRQ_STACK_SIZE
-              boot.s:27     *ABS*:0000000000000100 SVC_STACK_SIZE
-              boot.s:30     *ABS*:0000000000000010 MODE_USR
-              boot.s:31     *ABS*:0000000000000011 MODE_FIQ
-              boot.s:32     *ABS*:0000000000000012 MODE_IRQ
-              boot.s:33     *ABS*:0000000000000013 MODE_SVC
-              boot.s:34     *ABS*:0000000000000017 MODE_ABT
-              boot.s:35     *ABS*:000000000000001b MODE_UND
-              boot.s:36     *ABS*:000000000000001f MODE_SYS
-              boot.s:38     *ABS*:0000000000000080 I_BIT
-              boot.s:39     *ABS*:0000000000000040 F_BIT
-              boot.s:43     .text:0000000000000000 _start
-              boot.s:44     .text:0000000000000000 _mainCRTStartup
-              boot.s:89     .text:000000000000006c .end_clear_loop
-              boot.s:84     .text:0000000000000060 .clear_loop
-              boot.s:105    .text:0000000000000090 .end_set_loop
-              boot.s:99     .text:0000000000000080 .set_loop
-              boot.s:119    .text:00000000000000a0 $d
-              boot.s:136    .startup:0000000000000000 $a
-              boot.s:148    .startup:0000000000000020 _undf
-              boot.s:149    .startup:0000000000000024 _swi
-              boot.s:150    .startup:0000000000000028 _pabt
-              boot.s:151    .startup:000000000000002c _dabt
-              boot.s:152    .startup:0000000000000030 _fiq
-              boot.s:148    .startup:0000000000000020 $d
-              boot.s:154    .startup:0000000000000034 __undf
-              boot.s:155    .startup:0000000000000038 __pabt
-              boot.s:156    .startup:000000000000003c __dabt
-              boot.s:157    .startup:0000000000000040 __fiq
-              boot.s:154    .startup:0000000000000034 $a
+              boot.s:10     .text:00000000 $a
+              boot.s:42     .text:00000000 start
+              boot.s:112    .text:0000009c endless_loop
+              boot.s:23     *ABS*:00000004 UND_STACK_SIZE
+              boot.s:24     *ABS*:00000004 ABT_STACK_SIZE
+              boot.s:25     *ABS*:00000004 FIQ_STACK_SIZE
+              boot.s:26     *ABS*:00000100 IRQ_STACK_SIZE
+              boot.s:27     *ABS*:00000100 SVC_STACK_SIZE
+              boot.s:30     *ABS*:00000010 MODE_USR
+              boot.s:31     *ABS*:00000011 MODE_FIQ
+              boot.s:32     *ABS*:00000012 MODE_IRQ
+              boot.s:33     *ABS*:00000013 MODE_SVC
+              boot.s:34     *ABS*:00000017 MODE_ABT
+              boot.s:35     *ABS*:0000001b MODE_UND
+              boot.s:36     *ABS*:0000001f MODE_SYS
+              boot.s:38     *ABS*:00000080 I_BIT
+              boot.s:39     *ABS*:00000040 F_BIT
+              boot.s:43     .text:00000000 _start
+              boot.s:44     .text:00000000 _mainCRTStartup
+              boot.s:89     .text:0000006c .end_clear_loop
+              boot.s:84     .text:00000060 .clear_loop
+              boot.s:105    .text:00000090 .end_set_loop
+              boot.s:99     .text:00000080 .set_loop
+              boot.s:119    .text:000000a0 $d
+              boot.s:137    .startup:00000000 $a
+              boot.s:148    .startup:00000020 _undf
+              boot.s:149    .startup:00000024 _swi
+              boot.s:150    .startup:00000028 _pabt
+              boot.s:151    .startup:0000002c _dabt
+              boot.s:152    .startup:00000030 _fiq
+              boot.s:148    .startup:00000020 $d
+              boot.s:154    .startup:00000034 __undf
+              boot.s:155    .startup:00000038 __pabt
+              boot.s:156    .startup:0000003c __dabt
+              boot.s:157    .startup:00000040 __fiq
+              boot.s:154    .startup:00000034 $a
+                   .debug_aranges:0000000c $d
 
 UNDEFINED SYMBOLS
 main

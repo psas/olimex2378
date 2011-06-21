@@ -31,8 +31,6 @@ arm7_9 dcc_downloads enable
 sleep 100
 poll
 
-
-
 # Print out the first 100 bytes of memory
 mdh 0x0 100
 flash probe 0
@@ -42,8 +40,9 @@ flash erase_check 0
 sleep 100
 mdh 0x0 100
 #
-flash write_image ./can_a_bus.hex
-flash write_image ./can_a_bus.hex
+#lpc23xx-uart-test
+flash write_image ./blinkm-test.hex
+flash write_image ./blinkm-test.hex
 
 #
 mdh 0x0 100
