@@ -74,7 +74,7 @@ $(NAME).hex: $(NAME).out
 $(NAME).bin: $(NAME).out
 	@echo "========= bin file for $< =================="
 	$(CP) $(CPFLAGS) $< $@
-	$(OD) $(ODFLAGS) $< > $*.dump
+	$(OD) $(ODFLAGS) $< > $(NAME).dump
 
 clean:
 	$(RM) $(EXLIBS) $(PROGS) $(AOBJS) $(COBJS) $(NAME).*dump \

@@ -46,8 +46,8 @@ void xact_callback(i2c_master_xact_t* caller, i2c_master_xact_t* i2c_s) {
  */
 void blinkm_task() {
 
-    uint32_t i;
-    uint32_t on;
+ //   uint32_t i;
+//    uint32_t on;
 
     xact_s.i2c_tx_buffer[0] =  i2c_create_write_address(BLINKM_ADDR);
     xact_s.i2c_tx_buffer[1] =  'o';
@@ -75,7 +75,6 @@ void blinkm_task() {
     uart0_putstring(util_uitoa(VICIntEnable,2));
     uart0_putstring("\n");
 
-
     uart0_putstring("VICVectAddr9 is:\t0b");
     uart0_putstring(util_uitoa(VICVectAddr9,2));
     uart0_putstring("\n");
@@ -84,30 +83,39 @@ void blinkm_task() {
     uart0_putstring(util_uitoa(VICVectAddr8,2));
     uart0_putstring("\n");
 
-    uart0_putstring("past start xaction write .\n");
+    uart0_putstring("past start xaction write.\n\n");
 
+    xact_s.i2c_tx_buffer[0] =  i2c_create_write_address(BLINKM_ADDR);
+    xact_s.i2c_tx_buffer[1] =  'o';
+    xact_s.i2c_tx_buffer[2] =  'n';
+    xact_s.i2c_tx_buffer[3] =  0xbd;
+    xact_s.i2c_tx_buffer[4] =  0x10;
+    xact_s.i2c_tx_buffer[5] =  0x03;
+    xact_s.write_length     =  0x06;
+    xact_s.read_length      =  0x0;
 
-    //VICSoftInt = (1<<VIC_I2C0_BIT);
+    start_i2c0_master_xact(&xact_s, &xact_callback);
 
+    uart0_putstring("\n past second start xaction write .\n");
 
-    STAT_LED_OFF;
-    i = 0;
-    on = 0;
-    // poll
-    while(xact_s.xact_active == 1) {
-        i++;
-        if(i % BLINKM_POLL_WAITTICKS == 0) {
-         //   uart0_putstring("waiting....\n");
-            if(on==0) {
-                STAT_LED_ON;
-                on = 1;
-            } else {
-                on = 0;
-                STAT_LED_OFF;
-            }
-            i = 0;
-        }
-    }
+//    STAT_LED_OFF;
+//    i = 0;
+//    on = 0;
+//    // poll
+//    while(xact_s.xact_active == 1) {
+//        i++;
+//        if(i % BLINKM_POLL_WAITTICKS == 0) {
+//         //   uart0_putstring("waiting....\n");
+//            if(on==0) {
+//                STAT_LED_ON;
+//                on = 1;
+//            } else {
+//                on = 0;
+//                STAT_LED_OFF;
+//            }
+//            i = 0;
+//        }
+//    }
 
     if(xact_s.xact_success == 1) {
         uart0_putstring("i2c write xaction success.\n");
@@ -115,36 +123,36 @@ void blinkm_task() {
         uart0_putstring("i2c write xaction fail.\n");
     }
 
-    uart0_putstring("i2c Read Color Task...\n");
-
-    // xact_s.I2C_TX_buffer[1] =  'Z';
-    //
-    xact_s.i2c_tx_buffer[0] =  i2c_create_write_address(BLINKM_ADDR);
-    xact_s.i2c_tx_buffer[1] =  'g';
-    xact_s.write_length     =  0x02;
-    xact_s.i2c_tx_buffer[2] =  i2c_create_read_address(BLINKM_ADDR);
-    xact_s.read_length      =  0x03;
-    start_i2c0_master_xact(&xact_s, &xact_callback);
-
-    // poll
-    while(xact_s.xact_active == 1) {
-        util_waitticks(BLINKM_POLL_WAITTICKS);
-    }
-    if(xact_s.xact_success == 1) {
-        uart0_putstring("i2c read xaction success.\n");
-    } else {
-        uart0_putstring("i2c read xaction fail.\n");
-    }
-
-    uart0_putstring("Read data 0 is 0x");
-    uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[0],16));
-    uart0_putstring("\n");
-    uart0_putstring("Read data 0 is 0x");
-    uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[0],16));
-    uart0_putstring("\n");
-    uart0_putstring("Read data 0 is 0x");
-    uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[0],16));
-    uart0_putstring("\n");
+//    uart0_putstring("i2c Read Color Task...\n");
+//
+//    // xact_s.I2C_TX_buffer[1] =  'Z';
+//    //
+//    xact_s.i2c_tx_buffer[0] =  i2c_create_write_address(BLINKM_ADDR);
+//    xact_s.i2c_tx_buffer[1] =  'g';
+//    xact_s.write_length     =  0x02;
+//    xact_s.i2c_tx_buffer[2] =  i2c_create_read_address(BLINKM_ADDR);
+//    xact_s.read_length      =  0x03;
+//    start_i2c0_master_xact(&xact_s, &xact_callback);
+//
+//    // poll
+//    while(xact_s.xact_active == 1) {
+//        util_waitticks(BLINKM_POLL_WAITTICKS);
+//    }
+//    if(xact_s.xact_success == 1) {
+//        uart0_putstring("i2c read xaction success.\n");
+//    } else {
+//        uart0_putstring("i2c read xaction fail.\n");
+//    }
+//
+//    uart0_putstring("Read data 0 is 0x");
+//    uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[0],16));
+//    uart0_putstring("\n");
+//    uart0_putstring("Read data 0 is 0x");
+//    uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[0],16));
+//    uart0_putstring("\n");
+//    uart0_putstring("Read data 0 is 0x");
+//    uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[0],16));
+//    uart0_putstring("\n");
 }
 
 
