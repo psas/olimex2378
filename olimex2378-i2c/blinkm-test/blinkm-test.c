@@ -26,6 +26,7 @@ i2c_master_xact_t       xact_s;
  */
 void xact_callback(i2c_master_xact_t* caller, i2c_master_xact_t* i2c_s) {
     uint16_t i;
+    uart0_putstring("In callback\n");
     for(i=0; i<I2C_MAX_BUFFER; ++i) {
         caller->i2c_tx_buffer[i] = i2c_s->i2c_tx_buffer[i];
         caller->i2c_rd_buffer[i] = i2c_s->i2c_rd_buffer[i];
@@ -69,7 +70,25 @@ void blinkm_task() {
     uart0_putstring("I2C0STAT is:\t0b");
     uart0_putstring(util_uitoa(I2C0STAT,2));
     uart0_putstring("\n");
+
+    uart0_putstring("VICIntEnable is:\t0b");
+    uart0_putstring(util_uitoa(VICIntEnable,2));
+    uart0_putstring("\n");
+
+
+    uart0_putstring("VICVectAddr9 is:\t0b");
+    uart0_putstring(util_uitoa(VICVectAddr9,2));
+    uart0_putstring("\n");
+
+    uart0_putstring("VICVectAddr8 is:\t0b");
+    uart0_putstring(util_uitoa(VICVectAddr8,2));
+    uart0_putstring("\n");
+
     uart0_putstring("past start xaction write .\n");
+
+
+    //VICSoftInt = (1<<VIC_I2C0_BIT);
+
 
     STAT_LED_OFF;
     i = 0;
