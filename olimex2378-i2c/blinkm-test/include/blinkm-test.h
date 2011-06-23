@@ -16,5 +16,7 @@
 
 extern i2c_master_xact_t       xact_s;
 
+void xact_callback(i2c_master_xact_t* caller, i2c_master_xact_t* i2c_s) ;
+
 #endif
 
