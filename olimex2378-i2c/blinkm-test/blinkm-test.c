@@ -1,6 +1,7 @@
 
 /*
  * blinkm-test.c
+ * testing i2c interface using a blinkm tricolor i2c led.
  */
 
 #include <limits.h>
@@ -19,7 +20,6 @@
 
 i2c_master_xact_t       xact_s;
 
-
 /*
  * xact_callback
  * callback function for i2c
@@ -32,16 +32,11 @@ void xact_callback(i2c_master_xact_t* caller, i2c_master_xact_t* i2c_s) {
     caller->write_length          = i2c_s->write_length;
     caller->read_length           = i2c_s->read_length;
     caller->xact_active           = i2c_s->xact_active;
- 
-    uart0_putstring("In callback\n");
+
     for(i=0; i<I2C_MAX_BUFFER; ++i) {
         caller->i2c_tx_buffer[i] = i2c_s->i2c_tx_buffer[i];
         caller->i2c_rd_buffer[i] = i2c_s->i2c_rd_buffer[i];
     }
-
-   uart0_putstring("xact_success is: ");
-    uart0_putstring(util_uitoa(caller->xact_success, 10));
-    uart0_putchar('\n');
     /* maybe trigger an interrupt here */
 }
 
@@ -51,17 +46,42 @@ void xact_callback(i2c_master_xact_t* caller, i2c_master_xact_t* i2c_s) {
  */
 void blinkm_task() {
 
-    xact_s.i2c_tx_buffer[0] =  i2c_create_write_address(BLINKM_ADDR);
-    xact_s.i2c_tx_buffer[1] =  'o';
-    xact_s.i2c_tx_buffer[2] =  'n';
-    xact_s.i2c_tx_buffer[3] =  0xbd;
-    xact_s.i2c_tx_buffer[4] =  0x10;
-    xact_s.i2c_tx_buffer[5] =  0x03;
-    xact_s.write_length     =  0x06;
-    xact_s.read_length      =  0x0;
+    uint32_t i, on;
+
+    uart0_putstring("i2c Write Color Task...\n");
+    xact_s.i2c_tx_buffer[0]  =  i2c_create_write_address(BLINKM_ADDR);
+    xact_s.i2c_tx_buffer[1]  =  'o';
+    xact_s.i2c_tx_buffer[2]  =  'f';
+    xact_s.i2c_tx_buffer[3]  =   5;
+    xact_s.i2c_tx_buffer[4]  =  'c';
+    xact_s.i2c_tx_buffer[5]  =  0x50;
+    xact_s.i2c_tx_buffer[6]  =  0x10;
+    xact_s.i2c_tx_buffer[7]  =  0x03;
+    xact_s.write_length      =  0x08;
+    xact_s.read_length       =  0x0;
+    xact_s.xact_active       =  0x1;
+    xact_s.xact_success      =  0x0;
+
     start_i2c0_master_xact(&xact_s, &xact_callback);
 
-    uart0_putstring("past start xaction write.\n\n");
+    // poll
+    STAT_LED_OFF;
+    i  = 0;
+    on = 0;
+
+    while(is_binsem_locked(&i2c0_binsem_g)== 1) {
+        i++;
+        if(i % BLINKM_POLL_WAITTICKS == 0) {
+            if(on==0) {
+                STAT_LED_ON;
+                on = 1;
+            } else {
+                on = 0;
+                STAT_LED_OFF;
+            }
+            i = 0;
+        }
+    }
 
     if(xact_s.xact_success == 1) {
         uart0_putstring("i2c write xaction success.\n");
@@ -71,8 +91,6 @@ void blinkm_task() {
 
     uart0_putstring("i2c Read Color Task...\n");
 
-    // xact_s.I2C_TX_buffer[1] =  'Z';
-    //
     xact_s.i2c_tx_buffer[0] =  i2c_create_write_address(BLINKM_ADDR);
     xact_s.i2c_tx_buffer[1] =  'g';
     xact_s.write_length     =  0x02;
@@ -80,9 +98,25 @@ void blinkm_task() {
     xact_s.read_length      =  0x02;
     start_i2c0_master_xact(&xact_s, &xact_callback);
 
-//    uart0_putstring("... ");
-//    asm volatile ("nop\n");
- 
+    // poll
+    STAT_LED_OFF;
+    i  = 0;
+    on = 0;
+
+    while(is_binsem_locked(&i2c0_binsem_g)== 1) {
+        i++;
+        if(i % BLINKM_POLL_WAITTICKS == 0) {
+            if(on==0) {
+                STAT_LED_ON;
+                on = 1;
+            } else {
+                on = 0;
+                STAT_LED_OFF;
+            }
+            i = 0;
+        }
+    }
+
     if(xact_s.xact_success == 1) {
         uart0_putstring("i2c read xaction success.\n");
     } else {
@@ -91,12 +125,15 @@ void blinkm_task() {
 
     uart0_putstring("Read data 0 is 0x");
     uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[0],16));
+    if(xact_s.i2c_rd_buffer[0] != 0x50) uart0_putstring("Error, wrong value, should be 0x50"); 
     uart0_putstring("\n");
     uart0_putstring("Read data 1 is 0x");
     uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[1],16));
+    if(xact_s.i2c_rd_buffer[1] != 0x10) uart0_putstring("Error, wrong value, should be 0x10"); 
     uart0_putstring("\n");
     uart0_putstring("Read data 2 is 0x");
     uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[2],16));
+    if(xact_s.i2c_rd_buffer[2] != 0x3) uart0_putstring("Error, wrong value, should be 0x3"); 
     uart0_putstring("\n");
 }
 
@@ -118,10 +155,6 @@ int main (void) {
     uart0_putstring("\n***Starting olimex blinkm test***\n\n");
 
     i2c_init(I2C0);
-
-    uart0_putstring("cpsr is:\t0b");
-    uart0_putstring(util_uitoa(__get_cpsr(),2));
-    uart0_putstring("\n");
 
     stat_led_flash(cycles); // initial visual check
 
