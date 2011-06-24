@@ -95,7 +95,7 @@ void blinkm_task() {
     xact_s.i2c_tx_buffer[1] =  'g';
     xact_s.write_length     =  0x02;
     xact_s.i2c_tx_buffer[2] =  i2c_create_read_address(BLINKM_ADDR);
-    xact_s.read_length      =  0x02;
+    xact_s.read_length      =  0x03;
     start_i2c0_master_xact(&xact_s, &xact_callback);
 
     // poll

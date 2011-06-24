@@ -17,6 +17,7 @@ INCLUDE         := -I.\
                    -I$(LPCLIBDIR)/lpc23xx-pll/include\
                    -I$(LIBDIR)/olimex2378-util/include
 
+DEBUG           := -DDEBUG_I2C
 include $(LIBDIR)/include/common-test-make.mk
 
 
