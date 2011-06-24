@@ -53,6 +53,7 @@ void stat_led_flash_slow(uint32_t cycles) {
             if(cycles==0) break;
             x++;
             if (x == interval) {
+               //  uart0_putstring(".\n");
                 --cycles;
                 STAT_LED_ON;
             } else if (x >= (interval * 2)) {
