@@ -46,15 +46,18 @@
 
 
 #include <string.h>                     // memcpy
+#include <stdio.h>                     // EOF
 
 #include "lpc23xx-types.h"
 #include "lpc23xx-debug.h"
+
+#include "lpc23xx-pll.h"
+#include "lpc23xx-uart.h"
 #include "lpc23xx-vic.h"
 
 #include "lpc23xx.h"
 
 
-#include "armVIC.h"
 #include "usbapi.h"
 
 #include "serial_fifo.h"
@@ -82,20 +85,20 @@
 
 // data structure for GET_LINE_CODING / SET_LINE_CODING class requests
 typedef struct {
-        U32             dwDTERate;
-        U8              bCharFormat;
-        U8              bParityType;
-        U8              bDataBits;
+        uint32_t             dwDTERate;
+        uint8_t              bCharFormat;
+        uint8_t              bParityType;
+        uint8_t              bDataBits;
 } TLineCoding;
 
 static TLineCoding LineCoding = {115200, 0, 0, 8};
-static U8 abBulkBuf[64];
-static U8 abClassReqData[8];
+static uint8_t abBulkBuf[64];
+static uint8_t abClassReqData[8];
 static volatile BOOL fBulkInBusy;
 static volatile BOOL fChainDone;
 
-static U8 txdata[VCOM_FIFO_SIZE];
-static U8 rxdata[VCOM_FIFO_SIZE];
+static uint8_t txdata[VCOM_FIFO_SIZE];
+static uint8_t rxdata[VCOM_FIFO_SIZE];
 
 static fifo_t txfifo;
 static fifo_t rxfifo;
@@ -103,7 +106,7 @@ static fifo_t rxfifo;
 // forward declaration of interrupt handler
 static void USBIntHandler(void) __attribute__ ((interrupt("IRQ")));
 
-static const U8 abDescriptors[] = {
+static const uint8_t abDescriptors[] = {
 
 // device descriptor
         0x12,
@@ -222,7 +225,7 @@ static const U8 abDescriptors[] = {
         @param [in] bEP
         @param [in] bEPStatus
  */
-static void BulkOut(U8 bEP, U8 bEPStatus)
+static void BulkOut(uint8_t bEP, uint8_t bEPStatus)
 {
         int i, iLen;
 
@@ -250,7 +253,7 @@ static void BulkOut(U8 bEP, U8 bEPStatus)
         @param [in] bEP
         @param [in] bEPStatus
  */
-static void SendNextBulkIn(U8 bEP, BOOL fFirstPacket)
+static void SendNextBulkIn(uint8_t bEP, BOOL fFirstPacket)
 {
         int iLen;
 
@@ -291,7 +294,7 @@ static void SendNextBulkIn(U8 bEP, BOOL fFirstPacket)
         @param [in] bEP
         @param [in] bEPStatus
  */
-static void BulkIn(U8 bEP, U8 bEPStatus)
+static void BulkIn(uint8_t bEP, uint8_t bEPStatus)
 {
         SendNextBulkIn(bEP, FALSE);
 }
@@ -304,14 +307,14 @@ static void BulkIn(U8 bEP, U8 bEPStatus)
         @param [out] piLen
         @param [out] ppbData
  */
-static BOOL HandleClassRequest(TSetupPacket *pSetup, int *piLen, U8 **ppbData)
+static BOOL HandleClassRequest(TSetupPacket *pSetup, int *piLen, uint8_t **ppbData)
 {
         switch (pSetup->bRequest) {
 
         // set line coding
         case SET_LINE_CODING:
 DBG("SET_LINE_CODING\n");
-                memcpy((U8 *)&LineCoding, *ppbData, 7);
+                memcpy((uint8_t *)&LineCoding, *ppbData, 7);
                 *piLen = 7;
 DBG("dwDTERate=%u, bCharFormat=%u, bParityType=%u, bDataBits=%u\n",
         LineCoding.dwDTERate,
@@ -323,7 +326,7 @@ DBG("dwDTERate=%u, bCharFormat=%u, bParityType=%u, bDataBits=%u\n",
         // get line coding
         case GET_LINE_CODING:
 DBG("GET_LINE_CODING\n");
-                *ppbData = (U8 *)&LineCoding;
+                *ppbData = (uint8_t *)&LineCoding;
                 *piLen = 7;
                 break;
 
@@ -371,7 +374,7 @@ int VCOM_putchar(int c)
  */
 int VCOM_getchar(void)
 {
-        U8 c;
+        uint8_t c;
         
         return fifo_get(&rxfifo, &c) ? c : EOF;
 }
@@ -385,7 +388,7 @@ int VCOM_getchar(void)
 static void USBIntHandler(void)
 {
         USBHwISR();
-        VICVectAddr = 0x00;    // dummy write to VIC to signal end of ISR       
+        VICAddress = 0x00;    // dummy write to VIC to signal end of ISR       
 }
 
 /**
@@ -399,8 +402,7 @@ static void USBIntHandler(void)
         (as required by the windows usbser.sys driver).
 
  */
-static void USBFrameHandler(U16 wFrame)
-{
+static void USBFrameHandler(uint16_t wFrame) {
         if (!fBulkInBusy && (fifo_avail(&txfifo) != 0)) {
                 // send first packet
                 SendNextBulkIn(BULK_IN_EP, TRUE);
@@ -413,7 +415,7 @@ static void USBFrameHandler(U16 wFrame)
         
         Resets state machine when a USB reset is received.
  */
-static void USBDevIntHandler(U8 bDevStatus)
+static void USBDevIntHandler(uint8_t bDevStatus)
 {
         if ((bDevStatus & DEV_STATUS_RESET) != 0) {
                 fBulkInBusy = FALSE;
@@ -467,10 +469,10 @@ int main(void)
         DBG("Starting USB communication\n");
 
 #ifdef LPC214x
-    (*(&VICVectCntl0+INT_VECT_NUM)) = 0x20 | 22; // choose highest priority ISR slot        
+    (*(&VICVectPriority0+INT_VECT_NUM)) = 0x20 | 22; // choose highest priority ISR slot        
     (*(&VICVectAddr0+INT_VECT_NUM)) = (int)USBIntHandler;
 #else
-    VICVectCntl22 = 0x01;
+    VICVectPriority22 = 0x01;
     VICVectAddr22 = (int)USBIntHandler;
 #endif
 
@@ -478,7 +480,7 @@ int main(void)
         VICIntSelect &= ~(1<<22);               // select IRQ for USB
         VICIntEnable |= (1<<22);
 
-        vic_enableIRQ()
+        vic_enableIRQ();
 
         // connect to bus
         USBHwConnect(TRUE);
