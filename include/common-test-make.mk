@@ -43,6 +43,8 @@ EXLIBS          = $(LPCLIBDIR)/liblpc23xx.a $(LIBDIR)/libolimex2378.a
 
 PROGS           = $(NAME).out
 
+.NOTPARALLEL: %.a
+
 .PHONY: clean
 
 .SUFFIXES : .c .cpp .s

@@ -20,7 +20,7 @@ INCLUDE         := -I.\
                    -I$(LPCLIBDIR)/lpc23xx-usb/include\
                    -I$(LIBDIR)/olimex2378-util/include
 
-DEBUG           :=
+DEBUG           := -DDEBUG 
 include $(LIBDIR)/include/common-test-make.mk
 
 

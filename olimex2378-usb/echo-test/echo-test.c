@@ -95,12 +95,12 @@ typedef struct {
         uint8_t              bDataBits;
 } TLineCoding;
 
-//static TLineCoding LineCoding = {115200, 0, 0, 8};
-//static uint8_t abBulkBuf[64];
-//static uint8_t abClassReqData[8];
+static TLineCoding LineCoding = {115200, 0, 0, 8};
+static uint8_t abBulkBuf[64];
+static uint8_t abClassReqData[8];
 static volatile BOOL fBulkInBusy;
 static volatile BOOL fChainDone;
-//
+
 static uint8_t txdata[VCOM_FIFO_SIZE];
 static uint8_t rxdata[VCOM_FIFO_SIZE];
 
@@ -108,7 +108,7 @@ static fifo_t txfifo;
 static fifo_t rxfifo;
 
 // forward declaration of interrupt handler
-//static void USBIntHandler(void) __attribute__ ((interrupt("IRQ")));
+static void USBIntHandler(void) __attribute__ ((interrupt("IRQ")));
 
 static const uint8_t abDescriptors[] = {
 
@@ -229,67 +229,67 @@ static const uint8_t abDescriptors[] = {
         @param [in] bEP
         @param [in] bEPStatus
  */
-//static void BulkOut(uint8_t bEP, uint8_t bEPStatus)
-//{
-//        int i, iLen;
-//
-//        if (fifo_free(&rxfifo) < MAX_PACKET_SIZE) {
-//                // may not fit into fifo
-//                return;
-//        }
-//
-//        // get data from USB into intermediate buffer
-//        iLen = USBHwEPRead(bEP, abBulkBuf, sizeof(abBulkBuf));
-//        for (i = 0; i < iLen; i++) {
-//                // put into FIFO
-//                if (!fifo_put(&rxfifo, abBulkBuf[i])) {
-//                        // overflow... :(
-//                        ASSERT(FALSE);
-//                        break;
-//                }
-//        }
-//}
-//
-//
+static void BulkOut(uint8_t bEP, uint8_t bEPStatus)
+{
+        int i, iLen;
+
+        if (fifo_free(&rxfifo) < MAX_PACKET_SIZE) {
+                // may not fit into fifo
+                return;
+        }
+
+        // get data from USB into intermediate buffer
+        iLen = USBHwEPRead(bEP, abBulkBuf, sizeof(abBulkBuf));
+        for (i = 0; i < iLen; i++) {
+                // put into FIFO
+                if (!fifo_put(&rxfifo, abBulkBuf[i])) {
+                        // overflow... :(
+                        ASSERT(FALSE);
+                        break;
+                }
+        }
+}
+
+
 /**
         Sends the next packet in chain of packets to the host
 
         @param [in] bEP
         @param [in] bEPStatus
  */
-//static void SendNextBulkIn(uint8_t bEP, BOOL fFirstPacket)
-//{
-//        int iLen;
-//
-//        // this transfer is done
-//        fBulkInBusy = FALSE;
-//
-//        // first packet?
-//        if (fFirstPacket) {
-//                fChainDone = FALSE;
-//        }
-//
-//        // last packet?
-//        if (fChainDone) {
-//                return;
-//        }
-//
-//        // get up to MAX_PACKET_SIZE bytes from transmit FIFO into intermediate buffer
-//        for (iLen = 0; iLen < MAX_PACKET_SIZE; iLen++) {
-//                if (!fifo_get(&txfifo, &abBulkBuf[iLen])) {
-//                        break;
-//                }
-//        }
-//
-//        // send over USB
-//        USBHwEPWrite(bEP, abBulkBuf, iLen);
-//        fBulkInBusy = TRUE;
-//
-//        // was this a short packet?
-//        if (iLen < MAX_PACKET_SIZE) {
-//                fChainDone = TRUE;
-//        }
-//}
+static void SendNextBulkIn(uint8_t bEP, BOOL fFirstPacket)
+{
+        int iLen;
+
+        // this transfer is done
+        fBulkInBusy = FALSE;
+
+        // first packet?
+        if (fFirstPacket) {
+                fChainDone = FALSE;
+        }
+
+        // last packet?
+        if (fChainDone) {
+                return;
+        }
+
+        // get up to MAX_PACKET_SIZE bytes from transmit FIFO into intermediate buffer
+        for (iLen = 0; iLen < MAX_PACKET_SIZE; iLen++) {
+                if (!fifo_get(&txfifo, &abBulkBuf[iLen])) {
+                        break;
+                }
+        }
+
+        // send over USB
+        USBHwEPWrite(bEP, abBulkBuf, iLen);
+        fBulkInBusy = TRUE;
+
+        // was this a short packet?
+        if (iLen < MAX_PACKET_SIZE) {
+                fChainDone = TRUE;
+        }
+}
 
 
 /**
@@ -298,11 +298,11 @@ static const uint8_t abDescriptors[] = {
         @param [in] bEP
         @param [in] bEPStatus
  */
-//static void BulkIn(uint8_t bEP, uint8_t bEPStatus)
-//{
-//        SendNextBulkIn(bEP, FALSE);
-//}
-//
+static void BulkIn(uint8_t bEP, uint8_t bEPStatus)
+{
+        SendNextBulkIn(bEP, FALSE);
+}
+
 
 /**
         Local function to handle the USB-CDC class requests
@@ -311,41 +311,41 @@ static const uint8_t abDescriptors[] = {
         @param [out] piLen
         @param [out] ppbData
  */
-//static BOOL HandleClassRequest(TSetupPacket *pSetup, int *piLen, uint8_t **ppbData)
-//{
-//        switch (pSetup->bRequest) {
-//
-//        // set line coding
-//        case SET_LINE_CODING:
-//DBG("SET_LINE_CODING\n");
-//                memcpy((uint8_t *)&LineCoding, *ppbData, 7);
-//                *piLen = 7;
-//DBG("dwDTERate=%u, bCharFormat=%u, bParityType=%u, bDataBits=%u\n",
-//        LineCoding.dwDTERate,
-//        LineCoding.bCharFormat,
-//        LineCoding.bParityType,
-//        LineCoding.bDataBits);
-//                break;
-//
-//        // get line coding
-//        case GET_LINE_CODING:
-//DBG("GET_LINE_CODING\n");
-//                *ppbData = (uint8_t *)&LineCoding;
-//                *piLen = 7;
-//                break;
-//
-//        // set control line state
-//        case SET_CONTROL_LINE_STATE:
-//                // bit0 = DTR, bit = RTS
-//DBG("SET_CONTROL_LINE_STATE %X\n", pSetup->wValue);
-//                break;
-//
-//        default:
-//                return FALSE;
-//        }
-//        return TRUE;
-//}
-//
+static BOOL HandleClassRequest(TSetupPacket *pSetup, int *piLen, uint8_t **ppbData)
+{
+        switch (pSetup->bRequest) {
+
+        // set line coding
+        case SET_LINE_CODING:
+DBG(UART0,"SET_LINE_CODING\n");
+                memcpy((uint8_t *)&LineCoding, *ppbData, 7);
+                *piLen = 7;
+DBG(UART0,"dwDTERate=%u, bCharFormat=%u, bParityType=%u, bDataBits=%u\n",
+        LineCoding.dwDTERate,
+        LineCoding.bCharFormat,
+        LineCoding.bParityType,
+        LineCoding.bDataBits);
+                break;
+
+        // get line coding
+        case GET_LINE_CODING:
+DBG(UART0,"GET_LINE_CODING\n");
+                *ppbData = (uint8_t *)&LineCoding;
+                *piLen = 7;
+                break;
+
+        // set control line state
+        case SET_CONTROL_LINE_STATE:
+                // bit0 = DTR, bit = RTS
+DBG(UART0,"SET_CONTROL_LINE_STATE %X\n", pSetup->wValue);
+                break;
+
+        default:
+                return FALSE;
+        }
+        return TRUE;
+}
+
 
 /**
         Initialises the VCOM port.
@@ -389,12 +389,12 @@ int VCOM_getchar(void)
         
         Simply calls the USB ISR, then signals end of interrupt to VIC
  */
-//static void USBIntHandler(void)
-//{
-//        USBHwISR();
-//        VICAddress = 0x00;    // dummy write to VIC to signal end of ISR       
-//}
-//
+static void USBIntHandler(void)
+{
+        USBHwISR();
+        VICAddress = 0x00;    // dummy write to VIC to signal end of ISR       
+}
+
 /**
         USB frame interrupt handler
         
@@ -406,12 +406,12 @@ int VCOM_getchar(void)
         (as required by the windows usbser.sys driver).
 
  */
-//static void USBFrameHandler(uint16_t wFrame) {
-//        if (!fBulkInBusy && (fifo_avail(&txfifo) != 0)) {
-//                // send first packet
-//                SendNextBulkIn(BULK_IN_EP, TRUE);
-//        }
-//}
+static void USBFrameHandler(uint16_t wFrame) {
+        if (!fBulkInBusy && (fifo_avail(&txfifo) != 0)) {
+                // send first packet
+                SendNextBulkIn(BULK_IN_EP, TRUE);
+        }
+}
 
 
 /**
@@ -419,94 +419,88 @@ int VCOM_getchar(void)
         
         Resets state machine when a USB reset is received.
  */
-//static void USBDevIntHandler(uint8_t bDevStatus)
-//{
-//        if ((bDevStatus & DEV_STATUS_RESET) != 0) {
-//                fBulkInBusy = FALSE;
-//        }
-//}
-//
+static void USBDevIntHandler(uint8_t bDevStatus)
+{
+        if ((bDevStatus & DEV_STATUS_RESET) != 0) {
+                fBulkInBusy = FALSE;
+        }
+}
+
 void usb_task() {
+        char c;
 
         printf_lpc(UART0,"In usb_task\n");
-//        DBG("Initialising USB stack\n");
+//        DBG(UART0,"Initialising USB stack\n");
 
- //       USBInit();
-//
-//        // register descriptors
-//        USBRegisterDescriptors(abDescriptors);
-//
-//        // register class request handler
-//        USBRegisterRequestHandler(REQTYPE_TYPE_CLASS, HandleClassRequest, abClassReqData);
-//
-//        // register endpoint handlers
-//        USBHwRegisterEPIntHandler(INT_IN_EP, NULL);
-//        USBHwRegisterEPIntHandler(BULK_IN_EP, BulkIn);
-//        USBHwRegisterEPIntHandler(BULK_OUT_EP, BulkOut);
-//        
-//        // register frame handler
-//        USBHwRegisterFrameHandler(USBFrameHandler);
-//        
-//        // register device event handler
-//        USBHwRegisterDevIntHandler(USBDevIntHandler);
-//
-//        // initialise VCOM
-//        VCOM_init();
-//
-//        DBG("Starting USB communication\n");
-//
-//#ifdef LPC214x
-//    (*(&VICVectPriority0+INT_VECT_NUM)) = 0x20 | 22; // choose highest priority ISR slot        
-//    (*(&VICVectAddr0+INT_VECT_NUM)) = (int)USBIntHandler;
-//#else
-//    VICVectPriority22 = 0x01;
-//    VICVectAddr22 = (int)USBIntHandler;
-//#endif
-//
-//        // set up USB interrupt
-//        VICIntSelect &= ~(1<<22);               // select IRQ for USB
-//        VICIntEnable |= (1<<22);
-//
-//        vic_enableIRQ();
-//
-//        // connect to bus
-//        USBHwConnect(TRUE);
-//
-//        // echo any character received (do USB stuff in interrupt)
-//        while (1) {
-//                c = VCOM_getchar();
-//                if (c != EOF) {
-//                        // show on console
-//                        if ((c == 9) || (c == 10) || (c == 13) || ((c >= 32) && (c <= 126))) {
-//                                DBG("%c", c);
-//                        }
-//                        else {
-//                                DBG(".");
-//                        }
-//                        VCOM_putchar(c);
-//                }
-//        }
-//
+        USBInit();
 
+        // register descriptors
+        USBRegisterDescriptors(abDescriptors);
+
+        // register class request handler
+        USBRegisterRequestHandler(REQTYPE_TYPE_CLASS, HandleClassRequest, abClassReqData);
+
+        // register endpoint handlers
+        USBHwRegisterEPIntHandler(INT_IN_EP, NULL);
+        USBHwRegisterEPIntHandler(BULK_IN_EP, BulkIn);
+        USBHwRegisterEPIntHandler(BULK_OUT_EP, BulkOut);
+        
+        // register frame handler
+        USBHwRegisterFrameHandler(USBFrameHandler);
+        
+        // register device event handler
+        USBHwRegisterDevIntHandler(USBDevIntHandler);
+
+        // initialise VCOM
+        VCOM_init();
+
+        DBG(UART0,"Starting USB communication\n");
+
+        VICVectPriority22 = 0x01;
+        VICVectAddr22     = (int)USBIntHandler;
+
+        // set up USB interrupt
+        VICIntSelect &= ~(1<<22);               // select IRQ for USB
+        VICIntEnable |= (1<<22);
+
+        vic_enableIRQ();
+
+        // connect to bus
+        USBHwConnect(TRUE);
+
+        printf_lpc(UART0,"Starting loop\n");
+        // echo any character received (do USB stuff in interrupt)
+        while (1) {
+                c = VCOM_getchar();
+                if (c != EOF) {
+                        // show on console
+                        if ((c == 9) || (c == 10) || (c == 13) || ((c >= 32) && (c <= 126))) {
+                                DBG(UART0,"%c", c);
+                        }
+                        else {
+                                DBG(UART0,".");
+                        }
+                        VCOM_putchar(c);
+                }
+        }
 }
 
 /*
  * main
  */
 int main() {
-    // turn on clock
+
     pllstart_seventytwomhz() ;
     uart0_init_115200() ;
-
     mam_enable();
 
     printf_lpc(UART0,"\n***Starting olimex blinkm test***\n\n");
 
-    stat_led_flash(10); // initial visual check
+    stat_led_flash(3); // initial visual check
 
     usb_task();
 
-    stat_led_flash_slow(2);
+    stat_led_flash(3);
     printf_lpc(UART0,"\n\n***Done***\n\n");
     return 0;
 }

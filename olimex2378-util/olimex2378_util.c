@@ -39,13 +39,13 @@ void stat_led_flash_slow(uint32_t cycles) {
             interval = 100000;
             break;
         case FOURTY_EIGHT_MHZ:
-            interval = 0.01 * 48000000;
+            interval = 0.1 * 48000000;
             break;
         case SIXTY_MHZ:
-            interval = 0.01 * 60000000;
+            interval = 0.1 * 60000000;
             break;
         case SEVENTY_TWO_MHZ:
-            interval = 0.01 * 72000000;
+            interval = 0.1 * 72000000;
             break;
         default:
             interval = 100000;
@@ -87,13 +87,13 @@ void stat_led_flash(uint32_t cycles) {
             interval = 100000;
             break;
         case FOURTY_EIGHT_MHZ:
-            interval = 0.001 * 48000000;
+            interval = 0.01 * 48000000;
             break;
         case SIXTY_MHZ:
-            interval = 0.001 * 60000000;
+            interval = 0.01 * 60000000;
             break;
         case SEVENTY_TWO_MHZ:
-            interval = 0.001 * 72000000;
+            interval = 0.01 * 72000000;
             break;
         default:
             interval = 100000;

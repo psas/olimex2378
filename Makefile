@@ -36,7 +36,8 @@ EXLIBS          = ./liblpc23xx/liblpc23xx.a
 LIBS            = $(NAME).a
 
 TESTS           = ./olimex2378-util/led-test/led-test.hex\
-		  ./olimex2378-i2c/blinkm-test/blinkm-test.hex
+		  ./olimex2378-i2c/blinkm-test/blinkm-test.hex\
+		  ./olimex2378-usb/echo-test/echo-test.hex
 
 ASRCS           := $(wildcard olimex2378-util/*.s)
 
