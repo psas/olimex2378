@@ -16,6 +16,7 @@ INCLUDE         := -I.\
                    -I$(LPCLIBDIR)/lpc23xx-util/include\
                    -I$(LPCLIBDIR)/lpc23xx-pll/include\
                    -I$(LPCLIBDIR)/lpc23xx-vic/include\
+                   -I$(LPCLIBDIR)/lpc23xx-mam/include\
                    -I$(LPCLIBDIR)/lpc23xx-usb/include\
                    -I$(LIBDIR)/olimex2378-util/include
 
