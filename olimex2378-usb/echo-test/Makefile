@@ -20,7 +20,8 @@ INCLUDE         := -I.\
                    -I$(LPCLIBDIR)/lpc23xx-usb/include\
                    -I$(LIBDIR)/olimex2378-util/include
 
-DEBUG           := -DDEBUG 
+USB_PORT        ?= -DLPC2378_PORTB
+DEBUG           ?= -DDEBUG_USB
 include $(LIBDIR)/include/common-test-make.mk
 
 

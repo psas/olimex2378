@@ -1,0 +1,25 @@
+# screen configuration file
+# don't display the copyright page
+startup_message off
+
+# how far to scroll back
+defscrollback 15000
+
+# visable bell
+vbell_msg "beep"
+
+#caption string "%?%F%{= Bk}%? %C%A %D %d-%m-%Y %{= kB} %t%= %?%F%{= Bk}%:%{= wk}%? %n "
+
+hardstatus alwayslastline
+
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+
+# ctrl-a conflicts with beg of line.
+# now is ctrl-o
+escape ^Oo
+
+#chdir '/home/kwilson/Projects/psaseclipse/olimex2378/liblpc23xx/lpc23xx-i2c'
+screen -t myocd          0       
+screen -t ocdflash       1       
+screen /dev/ttyUSB0 115200 2
+

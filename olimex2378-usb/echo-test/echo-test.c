@@ -433,7 +433,7 @@ void usb_task() {
 //        DBG(UART0,"Initialising USB stack\n");
 
         USBInit();
-
+        DBG(UART0,"past init\n");
         // register descriptors
         USBRegisterDescriptors(abDescriptors);
 
@@ -444,12 +444,14 @@ void usb_task() {
         USBHwRegisterEPIntHandler(INT_IN_EP, NULL);
         USBHwRegisterEPIntHandler(BULK_IN_EP, BulkIn);
         USBHwRegisterEPIntHandler(BULK_OUT_EP, BulkOut);
-        
+        DBG(UART0,"past register EP Handlers\n");
+
         // register frame handler
         USBHwRegisterFrameHandler(USBFrameHandler);
         
         // register device event handler
         USBHwRegisterDevIntHandler(USBDevIntHandler);
+        DBG(UART0,"past register Dev Int Handlers\n");
 
         // initialise VCOM
         VCOM_init();
@@ -459,14 +461,15 @@ void usb_task() {
         VICVectPriority22 = 0x01;
         VICVectAddr22     = (int)USBIntHandler;
 
-        // set up USB interrupt
+        // set up USB interrupt  BREAKS WHEN THESE ARE SET! WHY?
+        // check cpsr values...
         VICIntSelect &= ~(1<<22);               // select IRQ for USB
         VICIntEnable |= (1<<22);
 
-        vic_enableIRQ();
+        //vic_enableIRQ();
 
         // connect to bus
-        USBHwConnect(TRUE);
+       // USBHwConnect(TRUE);
 
         printf_lpc(UART0,"Starting loop\n");
         // echo any character received (do USB stuff in interrupt)
@@ -478,7 +481,9 @@ void usb_task() {
                                 DBG(UART0,"%c", c);
                         }
                         else {
-                                DBG(UART0,".");
+
+                        	stat_led_flash_fast(2);
+                           //     DBG(UART0,".");
                         }
                         VCOM_putchar(c);
                 }

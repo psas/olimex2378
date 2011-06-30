@@ -18,6 +18,8 @@ TYPE            ?= lpc23xx
 
 TARGET          ?=
 
+USB_PORT        := -DLPC2378_PORTB
+
 DEBUG           ?=
 #DEBUG           = -DDEBUG
  
@@ -47,7 +49,8 @@ COBJS           = $(CSRCS:.c=.o)
 
 AOBJS           = $(ASRCS:.s=.o)
                   
-CFLAGS          = $(INCLUDE) $(DEBUG) -g -c -Wall -Werror -mfloat-abi=softfp -fno-common -O2 -mcpu=arm7tdmi-s
+#CFLAGS          = $(INCLUDE) $(DEBUG) $(USB_PORT) -g -c -Wall -Werror -mfloat-abi=softfp -fno-common -O2 -mcpu=arm7tdmi-s
+CFLAGS          = $(INCLUDE) $(DEBUG) $(USB_PORT) -g -c -Wall -mfloat-abi=softfp -fno-common -O2 -mcpu=arm7tdmi-s
 
 ARCHIVEFLAGS    = rvs
 
@@ -71,7 +74,7 @@ $(COBJS): $(HS)
 
 $(EXLIBS): 
 	@echo "========= Recursive make: $(@D)    ========================"
-	$(MAKE) TARGET=$(TARGET) -s -C $(@D) $(@F)
+	$(MAKE) USB_PORT=$(USB_PORT) DEBUG=$(DEBUG) -s -C $(@D) $(@F)
 
 $(LIBS): $(AOBJS) $(COBJS) $(EXLIBS)
 	@echo "========= Making Library $@ ========================"
