@@ -428,6 +428,7 @@ static void USBDevIntHandler(uint8_t bDevStatus)
 
 void usb_task() {
         char c;
+        uint32_t cpsrval;
 
         printf_lpc(UART0,"In usb_task\n");
 //        DBG(UART0,"Initialising USB stack\n");
@@ -458,16 +459,29 @@ void usb_task() {
 
         DBG(UART0,"Starting USB communication\n");
 
+        cpsrval = vic_disableIRQ();
+        cpsrval = vic_disableFIQ();
+      //  util_cpsrstat(cpsrval);
+
         VICVectPriority22 = 0x01;
         VICVectAddr22     = (int)USBIntHandler;
 
+        DBG(UART0,"Registered handlers\n");
+
+      //  cpsrval = __get_cpsr();
+     //   util_cpsrstat(cpsrval);
         // set up USB interrupt  BREAKS WHEN THESE ARE SET! WHY?
         // check cpsr values...
         VICIntSelect &= ~(1<<22);               // select IRQ for USB
         VICIntEnable |= (1<<22);
 
-        //vic_enableIRQ();
+        DBG(UART0,"Int select on USB\n");
+        cpsrval = __get_cpsr();
+                util_cpsrstat(cpsrval);
 
+        vic_enableIRQ();
+        cpsrval = __get_cpsr();
+        util_cpsrstat(cpsrval);
         // connect to bus
        // USBHwConnect(TRUE);
 
