@@ -11,8 +11,6 @@
 #include "lpc23xx-pll.h"
 #include "lpc23xx-uart.h"
 
-#include "led-test.h"
-
 #include "olimex2378-util.h"
 
 /*

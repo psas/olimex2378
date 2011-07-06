@@ -25,13 +25,14 @@ DEBUG           ?=
  
 INCLUDE         := -I$(LPCLIBDIR)/include\
 		   -I$(LPCLIBDIR)/lpc23xx-pll/include\
+		   -I$(LPCLIBDIR)/lpc23xx-mam/include\
+		   -I$(LPCLIBDIR)/lpc23xx-vic/include\
+		   -I$(LPCLIBDIR)/lpc23xx-util/include\
 		   -I$(LPCLIBDIR)/lpc23xx-uart/include\
-	           -I./olimex2378-util/include\
-	           -I./olimex2378-util/led-test/include
-
+                   -I./olimex2378-util/include
+	
 HS              :=  $(wildcard ./include/*.h)\
                     $(wildcard ./olimex2378-util/include/*.h)
-                    $(wildcard ./olimex2378-util/test/include/*.h)
 
 EXLIBS          = ./liblpc23xx/liblpc23xx.a
 
@@ -40,21 +41,24 @@ LIBS            = $(NAME).a
 TESTS           = ./olimex2378-util/led-test/led-test.hex\
 		  ./olimex2378-i2c/blinkm-test/blinkm-test.hex\
 		  ./olimex2378-usb/echo-test/echo-test.hex
+		  
+TESTSRCS        = $(wildcard olimex2378-*/*test/*c)
+TESTOBJS        = $(TESTSRCS:.c=.o)
 
-ASRCS           := $(wildcard olimex2378-util/*.s)
+ASRCS           := $(wildcard olimex2378-*/*.s)
 
-CSRCS           := $(wildcard olimex2378-util/*.c)
+CSRCS           := $(wildcard olimex2378-*/*.c)
 
 COBJS           = $(CSRCS:.c=.o)
 
 AOBJS           = $(ASRCS:.s=.o)
                   
-#CFLAGS          = $(INCLUDE) $(DEBUG) $(USB_PORT) -g -c -Wall -Werror -mfloat-abi=softfp -fno-common -O2 -mcpu=arm7tdmi-s
-CFLAGS          = $(INCLUDE) $(DEBUG) $(USB_PORT) -g -c -Wall -mfloat-abi=softfp -fno-common -O2 -mcpu=arm7tdmi-s
+#CFLAGS          = $(INCLUDE) $(DEBUG) $(USB_PORT) -ggdb -c -Wall -Werror -mfloat-abi=softfp -fno-common -O2 -mcpu=arm7tdmi-s
+CFLAGS          = $(INCLUDE) $(DEBUG) $(USB_PORT) -ggdb -c -Wall -mfloat-abi=softfp -fno-common -O0 -mcpu=arm7tdmi-s
 
 ARCHIVEFLAGS    = rvs
 
-ASFLAGS         = -g -ahls -mfloat-abi=softfp $(INCLUDE) 
+ASFLAGS         = -ggdb -ahls -mfloat-abi=softfp $(INCLUDE) 
  
 .PHONY: clean allclean rebuild
 
@@ -68,7 +72,10 @@ ASFLAGS         = -g -ahls -mfloat-abi=softfp $(INCLUDE)
 	@echo "======== COMPILING $@ ========================"
 	$(AS) $(ASFLAGS) -o $@ $< > $*.lst
         
-all: $(LIBS) $(EXLIBS) $(TESTS) Makefile
+
+all: $(LIBS) $(EXLIBS) Makefile
+
+tests: $(TESTS) 
 
 $(COBJS): $(HS)
 
@@ -80,7 +87,7 @@ $(LIBS): $(AOBJS) $(COBJS) $(EXLIBS)
 	@echo "========= Making Library $@ ========================"
 	$(AR) $(ARCHIVEFLAGS) $@ $(AOBJS) $(COBJS)
 
-$(TESTS): $(LIBS)
+$(TESTS): $(LIBS) $(ASRCS) $(CSRCS) $(TESTSRCS)
 	@echo "========= Recursive make: $(@D) ========================"
 	$(MAKE) -s -C $(@D) $(@F)
 

@@ -1,51 +1,6 @@
-/*
-        LPCUSB, an USB device driver for LPC microcontrollers   
-        Copyright (C) 2006 Bertrik Sikken (bertrik@sikken.nl)
-
-        Redistribution and use in source and binary forms, with or without
-        modification, are permitted provided that the following conditions are met:
-
-        1. Redistributions of source code must retain the above copyright
-           notice, this list of conditions and the following disclaimer.
-        2. Redistributions in binary form must reproduce the above copyright
-           notice, this list of conditions and the following disclaimer in the
-           documentation and/or other materials provided with the distribution.
-        3. The name of the author may not be used to endorse or promote products
-           derived from this software without specific prior written permission.
-
-        THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-        IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-        OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-        IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, 
-        INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-        NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-        DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-        THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-        (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-        THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-
-/*
-        Minimal implementation of a USB serial port, using the CDC class.
-        This example application simply echoes everything it receives right back
-        to the host.
-
-        Windows:
-        Extract the usbser.sys file from .cab file in C:\WINDOWS\Driver Cache\i386
-        and store it somewhere (C:\temp is a good place) along with the usbser.inf
-        file. Then plug in the LPC214x and direct windows to the usbser driver.
-        Windows then creates an extra COMx port that you can open in a terminal
-        program, like hyperterminal.
-
-        Linux:
-        The device should be recognised automatically by the cdc_acm driver,
-        which creates a /dev/ttyACMx device file that acts just like a regular
-        serial port.
-
-*/
 
 
-#include <string.h>                     // memcpy
+#include <string.h>                    // memcpy
 #include <stdio.h>                     // EOF
 
 #include "lpc23xx-types.h"
@@ -64,6 +19,8 @@
 
 
 #include "usbapi.h"
+#include "usbhw_lpc.h"
+#include "usbstruct.h"
 
 #include "serial_fifo.h"
 
@@ -425,69 +382,132 @@ static void USBDevIntHandler(uint8_t bDevStatus)
                 fBulkInBusy = FALSE;
         }
 }
+static void W4DevInt(uint32_t dwIntr)
+{
+    // wait for specific interrupt
+    while ((USBDevIntSt & dwIntr) != dwIntr);
+    // clear the interrupt bits
+    USBDevIntClr = dwIntr;
+}
+void usb_readdeverror(){
+	// write command code
+	USBDevIntClr = DEV_STAT;
+	// clear CDFULL/CCEMTY
+	USBDevIntClr = CDFULL | CCEMTY;
+	// write command code
+	USBCmdCode = 0x00000500 | (0xFF << 16);
+	W4DevInt(CCEMTY);
+	// get data
+	USBCmdCode = 0x00000200 | (0xFF << 16);
+	W4DevInt(CDFULL);
+
+	printf_lpc(UART0,"Error(FF) USBCmdData:\t0x%x\n",USBCmdData);
+}
+
+void usb_readdevstatus(){
+	// write command code
+	USBDevIntClr = DEV_STAT;
+	// clear CDFULL/CCEMTY
+	USBDevIntClr = CDFULL | CCEMTY;
+	// write command code
+	USBCmdCode = 0x00000500 | (0xFE << 16);
+	W4DevInt(CCEMTY);
+	// get data
+	USBCmdCode = 0x00000200 | (0xFE << 16);
+	W4DevInt(CDFULL);
+
+	printf_lpc(UART0,"Status(FE) USBCmdData:\t0x%x\n",USBCmdData);
+}
+
+
+
+void usb_init (void) {
+	/* clock is configured in lpc23xx-pll.c/.h */
+	PCONP |= 0x80000000;                    /* USB PCLK -> enable USB Per.  */
+#ifdef LPC2378_PORTB
+	USBClkCtrl = (1 << 1) | (1 << 3) | (1 << 4); /* Enable the clocks */
+	while (!(USBClkSt & ((1 << 1) | (1 << 3) | (1 << 4))));
+
+	USBPortSelect = 0x3; /* Set LPC to use USB Port B pins */
+
+	USBClkCtrl = (USBClkCtrl & ~(1<<3)); /* p 359 of user manual */
+#else
+	USBClkCtrl = (1 << 1) | (1 << 4); /* Enable the clocks */
+	while (!(USBClkSt & ((1 << 1) | (1 << 4))));
+#endif
+
+	/* LPC23xx user manual v3 p 321 */
+#ifdef LPC2378_PORTB
+	PINSEL1  = (PINSEL1 & ~(3 << 30))   | (1 << 30);   // USB_D+2
+	PINSEL3  = (PINSEL3 & ~(3 << 28))   | (2 << 28);   // V_bus
+	PINMODE3 = (PINMODE3 & ~(3 << 28))  | (2 << 28);   // disable pullup on V_bus p359 user manual
+			/*
+			 * Due to a bug in the LPC23xx chips, the connection functionality must be
+			 * simulated using GPIO. This is only true for rev '-'
+			 * NXP ES_LPC2378 Errata sheet Rev. 10 20 April 2011
+			 */
+	PINSEL0 = (PINSEL0 & ~((3 << 26) | (3 << 28))) | (1 << 26) | (0b10 << 28); // USB_UP_LED2, USB_CONNECT_LED2
+	//printf_lpc(UART0,"pinsel0: 0x%x\n",PINSEL0);
+#else
+
+	PINSEL1 &= ~0x3C000000;                 /* P0.29 USB1_D+, P0.30 USB1_D- */
+	PINSEL1 |=  0x14000000;                 /* PINSEL1 26.27, 28.29         */
+
+	PINSEL3 &= ~0x30000030;                 /* P1.18 GoodLink, P1.30 VBus   */
+	PINSEL3 |=  0x20000010;                 /* PINSEL3 4.5, 28.29           */
+	PINSEL4 &= ~0x000C0000;
+	FIO2DIR |= (1 << 9);
+	FIO2CLR  = (1 << 9);
+
+#endif
+
+
+
+ // OTG_CLK_CTRL = 0x12;	                  /* Dev clock, AHB clock enable  */
+ // while ((OTG_CLK_STAT & 0x12) != 0x12);
+
+  VICVectAddr22 = (unsigned long)USBDevIntHandler; /* USB Interrupt -> Vector 22   */
+  VICVectPriority22 = 0x01;
+  VICIntEnable = 1 << 22;                 /* Enable USB Interrupt         */
+
+  USBHwConnect(TRUE);
+
+}
 
 void usb_task() {
         char c;
-        uint32_t cpsrval;
 
-        printf_lpc(UART0,"In usb_task\n");
-//        DBG(UART0,"Initialising USB stack\n");
+        usb_init();
 
-        USBInit();
-        DBG(UART0,"past init\n");
         // register descriptors
-        USBRegisterDescriptors(abDescriptors);
+    /*    USBRegisterDescriptors(abDescriptors);
 
-        // register class request handler
+     // register class request handler
         USBRegisterRequestHandler(REQTYPE_TYPE_CLASS, HandleClassRequest, abClassReqData);
 
         // register endpoint handlers
         USBHwRegisterEPIntHandler(INT_IN_EP, NULL);
         USBHwRegisterEPIntHandler(BULK_IN_EP, BulkIn);
         USBHwRegisterEPIntHandler(BULK_OUT_EP, BulkOut);
-        DBG(UART0,"past register EP Handlers\n");
 
         // register frame handler
         USBHwRegisterFrameHandler(USBFrameHandler);
-        
+
         // register device event handler
         USBHwRegisterDevIntHandler(USBDevIntHandler);
-        DBG(UART0,"past register Dev Int Handlers\n");
-
+*/
         // initialise VCOM
         VCOM_init();
 
-        DBG(UART0,"Starting USB communication\n");
-
-        cpsrval = vic_disableIRQ();
-        cpsrval = vic_disableFIQ();
-      //  util_cpsrstat(cpsrval);
-
-        VICVectPriority22 = 0x01;
-        VICVectAddr22     = (int)USBIntHandler;
-
-        DBG(UART0,"Registered handlers\n");
-
-      //  cpsrval = __get_cpsr();
-     //   util_cpsrstat(cpsrval);
-        // set up USB interrupt  BREAKS WHEN THESE ARE SET! WHY?
-        // check cpsr values...
-        VICIntSelect &= ~(1<<22);               // select IRQ for USB
-        VICIntEnable |= (1<<22);
-
-        DBG(UART0,"Int select on USB\n");
-        cpsrval = __get_cpsr();
-                util_cpsrstat(cpsrval);
+        USBHwConnect(TRUE);
 
         vic_enableIRQ();
-        cpsrval = __get_cpsr();
-        util_cpsrstat(cpsrval);
-        // connect to bus
-       // USBHwConnect(TRUE);
 
         printf_lpc(UART0,"Starting loop\n");
         // echo any character received (do USB stuff in interrupt)
         while (1) {
+        	usb_readdevstatus();
+        	 usb_readdeverror();
                 c = VCOM_getchar();
                 if (c != EOF) {
                         // show on console
@@ -504,16 +524,18 @@ void usb_task() {
         }
 }
 
+
 /*
  * main
  */
 int main() {
 
-    pllstart_seventytwomhz() ;
+//    pllstart_seventytwomhz() ;
+    pllstart_fourtyeightmhz() ;
     uart0_init_115200() ;
     mam_enable();
-
-    printf_lpc(UART0,"\n***Starting olimex blinkm test***\n\n");
+    SCS |= 1;
+    printf_lpc(UART0,"\n***Starting olimex usb-echo test***\n\n");
 
     stat_led_flash(3); // initial visual check
 
