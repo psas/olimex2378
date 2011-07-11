@@ -22,5 +22,6 @@
 void init_stat_led() ;
 void stat_led_flash_slow(uint32_t cycles) ;
 void stat_led_flash(uint32_t cycles) ;
+void stat_led_flash_fast(uint32_t cycles) ;
 
 #endif

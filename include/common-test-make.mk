@@ -18,12 +18,14 @@ OD              := $(CROSS)/bin/arm-elf-objdump
 
 TYPE            ?= lpc23xx
 
+USB_PORT        ?=
 DEBUG           ?=
 #DEBUG           = -DDEBUG
                   
-CFLAGS          ?= $(INCLUDE) $(DEBUG) -g -c -Wall -Werror -fno-common -O2 -mfloat-abi=softfp -mcpu=arm7tdmi-s
+#CFLAGS          ?= $(INCLUDE) $(DEBUG) $(USB_PORT) -ggdb -c -Wall -Werror -fno-common -O2 -mfloat-abi=softfp -mcpu=arm7tdmi-s
+CFLAGS          ?= $(INCLUDE) $(DEBUG) $(USB_PORT) -ggdb -c -Wall -fno-common -O0 -mfloat-abi=softfp -mcpu=arm7tdmi-s
 
-ASFLAGS         ?= -g -ahls -mfloat-abi=softfp $(INCLUDE)
+ASFLAGS         ?= -ggdb -ahls -mfloat-abi=softfp $(INCLUDE)
 
 LDFLAGS         ?= -T $(TYPE).ld -nostartfiles -Map $(NAME).map
 
@@ -43,6 +45,8 @@ EXLIBS          = $(LPCLIBDIR)/liblpc23xx.a $(LIBDIR)/libolimex2378.a
 
 PROGS           = $(NAME).out
 
+.NOTPARALLEL: %.a
+
 .PHONY: clean
 
 .SUFFIXES : .c .cpp .s
@@ -61,7 +65,7 @@ $(COBJS): include/*.h
 
 $(EXLIBS):
 	@echo "========= Recursive make: $(@D)    ========================"
-	$(MAKE) -s -C $(@D) DEBUG=$(DEBUG) $(@F)
+	$(MAKE) -s -C $(@D) DEBUG=$(DEBUG) USB_PORT=$(USB_PORT) $(@F)
 
 $(PROGS): $(AOBJS) $(COBJS) $(EXLIBS)
 	@echo "========= LINKING $@ ========================"
