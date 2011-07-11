@@ -14,6 +14,7 @@
 #include "lpc23xx-i2c.h"
 #include "lpc23xx-uart.h"
 #include "lpc23xx-util.h"
+#include "printf-lpc.h"
 
 #include "olimex2378-util.h"
 #include "bq3060-test.h"
@@ -70,97 +71,19 @@ void poll_wait() {
 void bq3060_task() {
 
     uint32_t i;
+    uint16_t device_type;
 
     /**************************************/
     i2c_init_state( &xact_s) ;
 
-    uart0_putstring("Say hello to device...\n");
+    uart0_putstring("Read Device Type...\n");
 
     xact_s.i2c_tx_buffer[0] =  i2c_create_write_address(BQ3060_ADDR);
     xact_s.i2c_tx_buffer[1] =  0x0;
-    xact_s.i2c_tx_buffer[2] =  0x0;
-    xact_s.i2c_tx_buffer[3] =  0xe;
-    xact_s.write_length     =  0x4;
-    xact_s.read_length      =  0x0;
-    xact_s.xact_active      =  0x1;
-    xact_s.xact_success     =  0x0;
-
-    start_i2c0_master_xact(&xact_s, &xact_callback);
-
-    poll_wait();
-
-    if(xact_s.xact_success == 1) {
-        uart0_putstring("eeprom i2c write byte xaction success.\n");
-    } else {
-        uart0_putstring("eeprom i2c write byte  xaction fail.\n");
-    }
-
-    /**************************************/
-    i2c_init_state( &xact_s) ;
-    uart0_putstring("does device says hello back?...\n");
-    xact_s.i2c_tx_buffer[0] =  i2c_create_write_address(BQ3060_ADDR);
-    xact_s.i2c_tx_buffer[1] =  0x0;
-    xact_s.i2c_tx_buffer[2] =  0x0;
-    xact_s.write_length     =  0x3;
-    xact_s.i2c_tx_buffer[3] =  i2c_create_read_address(BQ3060_ADDR);
-    xact_s.read_length      =  0x1;
-    xact_s.xact_active      =  0x1;
-    xact_s.xact_success     =  0x0;
-
-    start_i2c0_master_xact(&xact_s, &xact_callback);
-
-    poll_wait();
-
-    if(xact_s.xact_success == 1) {
-        uart0_putstring("eeprom i2c read byte xaction success.\n");
-    } else {
-        uart0_putstring("eeprom i2c read byte xaction fail.\n");
-    }
-
-    uart0_putstring("Read data 0 is 0x");
-    uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[0],16));
-    if(xact_s.i2c_rd_buffer[0] != 0xe) uart0_putstring("Error, wrong value, should be 0xe"); 
-    uart0_putstring("\n");
-
-    /**************************************/
-
-    i2c_init_state( &xact_s) ;
-    uart0_putstring("i2c write bytes task...\n");
-
-    xact_s.i2c_tx_buffer[0] =  i2c_create_write_address(BQ3060_ADDR);
-    xact_s.i2c_tx_buffer[1] =  0x0;
-    xact_s.i2c_tx_buffer[2] =  0x0;
-    xact_s.i2c_tx_buffer[3] =  0x0b;
-    xact_s.i2c_tx_buffer[4] =  0x0c;
-    xact_s.i2c_tx_buffer[5] =  0x0d;
-    xact_s.i2c_tx_buffer[6] =  0x1e;
-    xact_s.i2c_tx_buffer[7] =  0x0f;
-    xact_s.write_length     =  0x8;
-    xact_s.read_length      =  0x0;
-    xact_s.xact_active      =  0x1;
-    xact_s.xact_success     =  0x0;
-
-    start_i2c0_master_xact(&xact_s, &xact_callback);
-
-    poll_wait();
-
-    if(xact_s.xact_success == 1) {
-        uart0_putstring("eeprom i2c write bytes xaction success.\n");
-    } else {
-        uart0_putstring("eeprom i2c write bytes xaction fail.\n");
-    }
-
-
-    /**************************************/
-    i2c_init_state( &xact_s) ;
-    uart0_putstring("i2c read bytes task...\n");
-
-    xact_s.i2c_tx_buffer[0] =  i2c_create_write_address(BQ3060_ADDR);
-    xact_s.i2c_tx_buffer[1] =  0x0;
-    xact_s.i2c_tx_buffer[2] =  0x0;
+    xact_s.i2c_tx_buffer[2] =  0x1;
     xact_s.i2c_tx_buffer[3] =  i2c_create_read_address(BQ3060_ADDR);
     xact_s.write_length     =  0x3;
-    xact_s.read_length      =  0x5;
+    xact_s.read_length      =  0x2;
     xact_s.xact_active      =  0x1;
     xact_s.xact_success     =  0x0;
 
@@ -169,26 +92,19 @@ void bq3060_task() {
     poll_wait();
 
     if(xact_s.xact_success == 1) {
-        uart0_putstring("eeprom i2c write bytes xaction success.\n");
+        uart0_putstring("bq3060 i2c read device type xaction success.\n");
     } else {
-        uart0_putstring("eeprom i2c write bytes xaction fail.\n");
+        uart0_putstring("eeprom i2c read device type xaction fail.\n");
     }
 
-    uint8_t check_buff[5] = {0xb,0xc,0xd,0x1e,0xf};
-
-    for(i=0; i<5; ++i) {
-        uart0_putstring(util_uitoa(i,10));
-        uart0_putstring(": Read data is 0x");
-        uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[i],16));
-        uart0_putchar('\n');
-        if(check_buff[i] != xact_s.i2c_rd_buffer[i]) {
-            uart0_putstring("Wrong value in read bytes-> 0x");
-            uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[i],16));
-            uart0_putstring("\n...Should be-> 0x");
-            uart0_putstring(util_uitoa(check_buff[i],16));
-        }
-        uart0_putchar('\n');
+    device_type = 0;
+    for (i=0; i<xact_s.read_length; ++i) {
+        device_type = device_type | (xact_s.i2c_rd_buffer[i] << 8*i);
     }
+
+    printf_lpc(UART0,"Device type is: 0x%x\n",device_type);
+    if(device_type != 0x0900) printf_lpc(UART0,"Error, wrong value, should be 0x0900\n"); 
+
 }
 
 
