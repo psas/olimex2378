@@ -13,6 +13,7 @@
 #include "lpc23xx-binsem.h"
 #include "lpc23xx-i2c.h"
 #include "lpc23xx-uart.h"
+#include "lpc23xx-vic.h"
 #include "lpc23xx-util.h"
 #include "printf-lpc.h"
 
@@ -48,7 +49,7 @@ void poll_wait() {
     i  = 0;
     on = 0;
 
-    while(is_binsem_locked(&i2c0_binsem_g)== 1) {
+    while(is_binsem_locked(&i2c1_binsem_g)== 1) {
         i++;
         if(i % BQ3060_POLL_WAITTICKS == 0) {
             if(on==0) {
@@ -65,8 +66,7 @@ void poll_wait() {
 
 
 /*
- * eeprom_task
- * 
+ * bq3060_task
  */
 void bq3060_task() {
 
@@ -87,7 +87,7 @@ void bq3060_task() {
     xact_s.xact_active      =  0x1;
     xact_s.xact_success     =  0x0;
 
-    start_i2c0_master_xact(&xact_s, &xact_callback);
+    start_i2c1_master_xact(&xact_s, &xact_callback);
 
     poll_wait();
 
@@ -110,7 +110,7 @@ void bq3060_task() {
 
 int main (void) {
 
-    int32_t cycles = 10;
+    int32_t cycles = 3;
 
     pllstart_seventytwomhz() ;
     //pllstart_sixtymhz() ;
@@ -122,15 +122,18 @@ int main (void) {
 
     uart0_init_115200() ;
 
+    vic_enableIRQ();
+    vic_enableFIQ();
+
     uart0_putstring("\n***Starting olimex2378 bq3060 test***\n\n");
 
-    i2c_init(I2C0);
+    i2c_init(I2C1);
 
-    stat_led_flash(cycles); // initial visual check
+    stat_led_flash_fast(cycles); // initial visual check
 
-//    bq3060_task() ;
+    bq3060_task() ;
 
-    stat_led_flash_slow(4);
+    stat_led_flash_fast(4);
 
     uart0_putstring("\n\n***Done***\n\n");
 
