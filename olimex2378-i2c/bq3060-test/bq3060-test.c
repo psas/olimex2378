@@ -12,6 +12,7 @@
 #include "lpc23xx-pll.h"
 #include "lpc23xx-binsem.h"
 #include "lpc23xx-i2c.h"
+#include "lpc23xx-mam.h"
 #include "lpc23xx-uart.h"
 #include "lpc23xx-vic.h"
 #include "lpc23xx-util.h"
@@ -78,11 +79,11 @@ void bq3060_task() {
 
     uart0_putstring("Read Device Type...\n");
 
-    xact_s.i2c_tx_buffer[0] =  i2c_create_write_address(BQ3060_ADDR);
+    xact_s.i2c_tx_buffer[0] =  i2c_create_read_address(BQ3060_ADDR);
     xact_s.i2c_tx_buffer[1] =  0x0;
     xact_s.i2c_tx_buffer[2] =  0x1;
-    xact_s.i2c_tx_buffer[3] =  i2c_create_read_address(BQ3060_ADDR);
-    xact_s.write_length     =  0x3;
+//    xact_s.i2c_tx_buffer[3] =  i2c_create_read_address(BQ3060_ADDR);
+    xact_s.write_length     =  0x0;
     xact_s.read_length      =  0x2;
     xact_s.xact_active      =  0x1;
     xact_s.xact_success     =  0x0;
@@ -110,15 +111,14 @@ void bq3060_task() {
 
 int main (void) {
 
-    int32_t cycles = 3;
+    int32_t cycles = 1;
 
-    pllstart_seventytwomhz() ;
+   // pllstart_seventytwomhz() ;
     //pllstart_sixtymhz() ;
-    //pllstart_fourtyeightmhz() ;
+    pllstart_fourtyeightmhz() ;
 
-    MAMCR  = 0x0;
-    MAMTIM = 0x4;
-    MAMCR  = 0x2;
+    //mam_enable();
+    //mam_disable();
 
     uart0_init_115200() ;
 
@@ -133,7 +133,7 @@ int main (void) {
 
     bq3060_task() ;
 
-    stat_led_flash_fast(4);
+//    stat_led_flash_fast(4);
 
     uart0_putstring("\n\n***Done***\n\n");
 

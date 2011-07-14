@@ -265,7 +265,7 @@ int main (void) {
 
     stat_led_flash_fast(cycles); // initial visual check
 
-    blinkm_task_i2c0() ;
+    blinkm_task_i2c1() ;
 
    // stat_led_flash_slow(2);
 
