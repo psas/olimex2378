@@ -245,9 +245,9 @@ int main (void) {
 
     int32_t cycles = 3;
 
-    //pllstart_seventytwomhz() ;
+    pllstart_seventytwomhz() ;
     //   pllstart_sixtymhz() ;
-       pllstart_fourtyeightmhz() ;
+//       pllstart_fourtyeightmhz() ;
 
     MAMCR  = 0x0;
     MAMTIM = 0x4;
@@ -265,6 +265,7 @@ int main (void) {
 
     stat_led_flash_fast(cycles); // initial visual check
 
+    blinkm_task_i2c0() ;
     blinkm_task_i2c1() ;
 
    // stat_led_flash_slow(2);
