@@ -82,7 +82,7 @@ $(NAME).bin: $(NAME).out
 	@$(OD) $(ODFLAGS) $< > $(NAME).dump
 
 clean:
-	$(RM) $(EXLIBS) $(PROGS) $(AOBJS) $(COBJS) $(NAME).*dump \
+	@$(RM) $(EXLIBS) $(PROGS) $(AOBJS) $(COBJS) $(NAME).*dump \
 	*.map *.hex *.bin *.lst *~ ./include/*~ a.out 
 
 allclean: clean

@@ -15,11 +15,13 @@
 #include "lpc23xx-uart.h"
 #include "lpc23xx-util.h"
 #include "lpc23xx-vic.h"
+#include "printf-lpc.h"
 
 #include "olimex2378-util.h"
 #include "blinkm-test.h"
 
-i2c_master_xact_t       xact_s;
+i2c_master_xact_t       xact0_s;
+i2c_master_xact_t       xact1_s;
 
 /*
  * xact_callback
@@ -50,20 +52,20 @@ void blinkm_task_i2c0() {
     uint32_t i, on;
 
     uart0_putstring("i2c0 Write Color Task...\n");
-    xact_s.i2c_tx_buffer[0]  =  i2c_create_write_address(BLINKM_ADDR);
-    xact_s.i2c_tx_buffer[1]  =  'o';
-    xact_s.i2c_tx_buffer[2]  =  'f';
-    xact_s.i2c_tx_buffer[3]  =   5;
-    xact_s.i2c_tx_buffer[4]  =  'c';
-    xact_s.i2c_tx_buffer[5]  =  0x50;
-    xact_s.i2c_tx_buffer[6]  =  0x10;
-    xact_s.i2c_tx_buffer[7]  =  0x03;
-    xact_s.write_length      =  0x08;
-    xact_s.read_length       =  0x0;
-    xact_s.xact_active       =  0x1;
-    xact_s.xact_success      =  0x0;
+    xact0_s.i2c_tx_buffer[0]  =  i2c_create_write_address(BLINKM_ADDR);
+    xact0_s.i2c_tx_buffer[1]  =  'o';
+    xact0_s.i2c_tx_buffer[2]  =  'f';
+    xact0_s.i2c_tx_buffer[3]  =   5;
+    xact0_s.i2c_tx_buffer[4]  =  'c';
+    xact0_s.i2c_tx_buffer[5]  =  0x50;
+    xact0_s.i2c_tx_buffer[6]  =  0x10;
+    xact0_s.i2c_tx_buffer[7]  =  0x03;
+    xact0_s.write_length      =  0x08;
+    xact0_s.read_length       =  0x0;
+    xact0_s.xact_active       =  0x1;
+    xact0_s.xact_success      =  0x0;
 
-    start_i2c0_master_xact(&xact_s, &xact_callback);
+    start_i2c0_master_xact(&xact0_s, &xact_callback);
 
     // poll
     STAT_LED_OFF;
@@ -84,7 +86,7 @@ void blinkm_task_i2c0() {
         }
     }
 
-    if(xact_s.xact_success == 1) {
+    if(xact0_s.xact_success == 1) {
         uart0_putstring("i2c0 write xaction success.\n");
     } else {
         uart0_putstring("i2c0 write xaction fail.\n");
@@ -92,14 +94,14 @@ void blinkm_task_i2c0() {
 
     uart0_putstring("i2c0 Read Color Task...\n");
 
-    xact_s.i2c_tx_buffer[0] =  i2c_create_write_address(BLINKM_ADDR);
-    xact_s.i2c_tx_buffer[1] =  'g';
-    xact_s.write_length     =  0x02;
-    xact_s.i2c_tx_buffer[2] =  i2c_create_read_address(BLINKM_ADDR);
-    xact_s.read_length      =  0x03;
-    xact_s.xact_active      =  0x1;
-    xact_s.xact_success     =  0x0;
-    start_i2c0_master_xact(&xact_s, &xact_callback);
+    xact0_s.i2c_tx_buffer[0] =  i2c_create_write_address(BLINKM_ADDR);
+    xact0_s.i2c_tx_buffer[1] =  'g';
+    xact0_s.write_length     =  0x02;
+    xact0_s.i2c_tx_buffer[2] =  i2c_create_read_address(BLINKM_ADDR);
+    xact0_s.read_length      =  0x03;
+    xact0_s.xact_active      =  0x1;
+    xact0_s.xact_success     =  0x0;
+    start_i2c0_master_xact(&xact0_s, &xact_callback);
 
     // poll
     STAT_LED_OFF;
@@ -120,23 +122,23 @@ void blinkm_task_i2c0() {
         }
     }
 
-    if(xact_s.xact_success == 1) {
-        uart0_putstring("i2c read xaction success.\n");
+    if(xact0_s.xact_success == 1) {
+        uart0_putstring("i2c0 read xaction success.\n");
     } else {
-        uart0_putstring("i2c read xaction fail.\n");
+        uart0_putstring("i2c0 read xaction fail.\n");
     }
 
     uart0_putstring("Read data 0 is 0x");
-    uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[0],16));
-    if(xact_s.i2c_rd_buffer[0] != 0x50) uart0_putstring("Error, wrong value, should be 0x50"); 
+    uart0_putstring(util_uitoa(xact0_s.i2c_rd_buffer[0],16));
+    if(xact0_s.i2c_rd_buffer[0] != 0x50) uart0_putstring("Error, wrong value, should be 0x50"); 
     uart0_putstring("\n");
     uart0_putstring("Read data 1 is 0x");
-    uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[1],16));
-    if(xact_s.i2c_rd_buffer[1] != 0x10) uart0_putstring("Error, wrong value, should be 0x10"); 
+    uart0_putstring(util_uitoa(xact0_s.i2c_rd_buffer[1],16));
+    if(xact0_s.i2c_rd_buffer[1] != 0x10) uart0_putstring("Error, wrong value, should be 0x10"); 
     uart0_putstring("\n");
     uart0_putstring("Read data 2 is 0x");
-    uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[2],16));
-    if(xact_s.i2c_rd_buffer[2] != 0x3) uart0_putstring("Error, wrong value, should be 0x3"); 
+    uart0_putstring(util_uitoa(xact0_s.i2c_rd_buffer[2],16));
+    if(xact0_s.i2c_rd_buffer[2] != 0x3) uart0_putstring("Error, wrong value, should be 0x3"); 
     uart0_putstring("\n");
 }
 
@@ -150,20 +152,20 @@ void blinkm_task_i2c1() {
     uint32_t i, on;
 
     uart0_putstring("i2c1 Write Color Task...\n");
-    xact_s.i2c_tx_buffer[0]  =  i2c_create_write_address(BLINKM_ADDR);
-    xact_s.i2c_tx_buffer[1]  =  'o';
-    xact_s.i2c_tx_buffer[2]  =  'f';
-    xact_s.i2c_tx_buffer[3]  =   5;
-    xact_s.i2c_tx_buffer[4]  =  'c';
-    xact_s.i2c_tx_buffer[5]  =  0x50;
-    xact_s.i2c_tx_buffer[6]  =  0x10;
-    xact_s.i2c_tx_buffer[7]  =  0x03;
-    xact_s.write_length      =  0x08;
-    xact_s.read_length       =  0x0;
-    xact_s.xact_active       =  0x1;
-    xact_s.xact_success      =  0x0;
+    xact1_s.i2c_tx_buffer[0]  =  i2c_create_write_address(BLINKM_ADDR);
+    xact1_s.i2c_tx_buffer[1]  =  'o';
+    xact1_s.i2c_tx_buffer[2]  =  'f';
+    xact1_s.i2c_tx_buffer[3]  =   5;
+    xact1_s.i2c_tx_buffer[4]  =  'c';
+    xact1_s.i2c_tx_buffer[5]  =  0x50;
+    xact1_s.i2c_tx_buffer[6]  =  0x10;
+    xact1_s.i2c_tx_buffer[7]  =  0x03;
+    xact1_s.write_length      =  0x08;
+    xact1_s.read_length       =  0x0;
+    xact1_s.xact_active       =  0x1;
+    xact1_s.xact_success      =  0x0;
 
-    start_i2c1_master_xact(&xact_s, &xact_callback);
+    start_i2c1_master_xact(&xact1_s, &xact_callback);
 
     // poll
     STAT_LED_OFF;
@@ -184,7 +186,7 @@ void blinkm_task_i2c1() {
         }
     }
 
-    if(xact_s.xact_success == 1) {
+    if(xact1_s.xact_success == 1) {
         uart0_putstring("i2c1 write xaction success.\n");
     } else {
         uart0_putstring("i2c1 write xaction fail.\n");
@@ -192,14 +194,14 @@ void blinkm_task_i2c1() {
 
     uart0_putstring("i2c1 Read Color Task...\n");
 
-    xact_s.i2c_tx_buffer[0] =  i2c_create_write_address(BLINKM_ADDR);
-    xact_s.i2c_tx_buffer[1] =  'g';
-    xact_s.write_length     =  0x02;
-    xact_s.i2c_tx_buffer[2] =  i2c_create_read_address(BLINKM_ADDR);
-    xact_s.read_length      =  0x03;
-    xact_s.xact_active      =  0x1;
-    xact_s.xact_success     =  0x0;
-    start_i2c1_master_xact(&xact_s, &xact_callback);
+    xact1_s.i2c_tx_buffer[0] =  i2c_create_write_address(BLINKM_ADDR);
+    xact1_s.i2c_tx_buffer[1] =  'g';
+    xact1_s.write_length     =  0x02;
+    xact1_s.i2c_tx_buffer[2] =  i2c_create_read_address(BLINKM_ADDR);
+    xact1_s.read_length      =  0x03;
+    xact1_s.xact_active      =  0x1;
+    xact1_s.xact_success     =  0x0;
+    start_i2c1_master_xact(&xact1_s, &xact_callback);
 
     // poll
     STAT_LED_OFF;
@@ -220,23 +222,23 @@ void blinkm_task_i2c1() {
         }
     }
 
-    if(xact_s.xact_success == 1) {
+    if(xact1_s.xact_success == 1) {
         uart0_putstring("i2c1 read xaction success.\n");
     } else {
         uart0_putstring("i2c1 read xaction fail.\n");
     }
 
     uart0_putstring("Read data 0 is 0x");
-    uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[0],16));
-    if(xact_s.i2c_rd_buffer[0] != 0x50) uart0_putstring("Error, wrong value, should be 0x50"); 
+    uart0_putstring(util_uitoa(xact1_s.i2c_rd_buffer[0],16));
+    if(xact1_s.i2c_rd_buffer[0] != 0x50) uart0_putstring("Error, wrong value, should be 0x50"); 
     uart0_putstring("\n");
     uart0_putstring("Read data 1 is 0x");
-    uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[1],16));
-    if(xact_s.i2c_rd_buffer[1] != 0x10) uart0_putstring("Error, wrong value, should be 0x10"); 
+    uart0_putstring(util_uitoa(xact1_s.i2c_rd_buffer[1],16));
+    if(xact1_s.i2c_rd_buffer[1] != 0x10) uart0_putstring("Error, wrong value, should be 0x10"); 
     uart0_putstring("\n");
     uart0_putstring("Read data 2 is 0x");
-    uart0_putstring(util_uitoa(xact_s.i2c_rd_buffer[2],16));
-    if(xact_s.i2c_rd_buffer[2] != 0x3) uart0_putstring("Error, wrong value, should be 0x3"); 
+    uart0_putstring(util_uitoa(xact1_s.i2c_rd_buffer[2],16));
+    if(xact1_s.i2c_rd_buffer[2] != 0x3) uart0_putstring("Error, wrong value, should be 0x3"); 
     uart0_putstring("\n");
 }
 
