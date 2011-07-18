@@ -66,11 +66,11 @@ ASFLAGS         = -ggdb -ahls -mfloat-abi=softfp $(INCLUDE)
 
 .c.o :
 	@echo "======== COMPILING $@ ========================"
-	$(CC) $(CFLAGS) -o $(<:.c=.o) -c $<
+	@$(CC) $(CFLAGS) -o $(<:.c=.o) -c $<
 
 .s.o :
 	@echo "======== COMPILING $@ ========================"
-	$(AS) $(ASFLAGS) -o $@ $< > $*.lst
+	@$(AS) $(ASFLAGS) -o $@ $< > $*.lst
         
 
 all: $(LIBS) $(EXLIBS) Makefile
@@ -81,7 +81,7 @@ $(COBJS): $(HS)
 
 $(EXLIBS): 
 	@echo "========= Recursive make: $(@D)    ========================"
-	$(MAKE) USB_PORT=$(USB_PORT) DEBUG=$(DEBUG) -s -C $(@D) $(@F)
+	@$(MAKE) USB_PORT=$(USB_PORT) DEBUG=$(DEBUG) -s -C $(@D) $(@F)
 
 $(LIBS): $(AOBJS) $(COBJS) $(EXLIBS)
 	@echo "========= Making Library $@ ========================"
@@ -92,14 +92,14 @@ $(TESTS): $(LIBS) $(ASRCS) $(CSRCS) $(TESTSRCS)
 	$(MAKE) -s -C $(@D) $(@F)
 
 clean:
-	$(RM)  $(LIBS) $(AOBJS) $(COBJS) $(COBJS) \
+	@$(RM)  $(LIBS) $(AOBJS) $(COBJS) $(COBJS) \
 	*.map *.hex *.bin *.lst *~ ./include/*~ a.out 
 	$(MAKE) -s -C olimex2378-util/led-test clean
 	$(MAKE) -s -C olimex2378-i2c/blinkm-test clean
 
 allclean: clean
-	$(MAKE) -s -C liblpc23xx clean
+	@$(MAKE) -s -C liblpc23xx clean
 	
 rebuild: allclean
-	$(MAKE)
+	@$(MAKE)
 

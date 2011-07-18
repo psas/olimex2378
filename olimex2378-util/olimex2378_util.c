@@ -10,6 +10,7 @@
 
 #include "lpc23xx-pll.h"
 #include "lpc23xx-uart.h"
+#include "lpc23xx-util.h"
 
 #include "olimex2378-util.h"
 

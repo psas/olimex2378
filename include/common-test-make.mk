@@ -53,11 +53,11 @@ PROGS           = $(NAME).out
 
 .c.o :
 	@echo "======== COMPILING $@ ========================"
-	$(CC) $(CFLAGS) -c $<
+	@$(CC) $(CFLAGS) -c $<
 
 .s.o :
 	@echo "======== COMPILING $@ ========================"
-	$(AS) $(ASFLAGS) -o $@ $< > $*.lst
+	@$(AS) $(ASFLAGS) -o $@ $< > $*.lst
         
 all:  $(PROGS) $(EXLIBS) $(NAME).bin $(NAME).hex
 
@@ -65,20 +65,21 @@ $(COBJS): include/*.h
 
 $(EXLIBS):
 	@echo "========= Recursive make: $(@D)    ========================"
-	$(MAKE) -s -C $(@D) DEBUG=$(DEBUG) USB_PORT=$(USB_PORT) $(@F)
+	@$(MAKE) -s -C $(@D) DEBUG=$(DEBUG) USB_PORT=$(USB_PORT) $(@F)
 
 $(PROGS): $(AOBJS) $(COBJS) $(EXLIBS)
 	@echo "========= LINKING $@ ========================"
-	$(LD) $(LDFLAGS) -o $@ $(AOBJS) $(COBJS) $(EXLIBS) -L$(CROSS)/arm-elf/lib -lc -L$(CROSS)/lib/gcc/arm-elf/$(GCC_VERSION) -lgcc
+	@$(LD) $(LDFLAGS) -o $@ $(AOBJS) $(COBJS) $(EXLIBS) -L$(CROSS)/arm-elf/lib -lc -L$(CROSS)/lib/gcc/arm-elf/$(GCC_VERSION) -lgcc
 
 $(NAME).hex: $(NAME).out
-	@echo "========= hex file for $< =================="
-	$(CP) $(HEXFLAGS) $< $@
+	@echo "========= .hex file for $< =================="
+	@$(CP) $(HEXFLAGS) $< $@
 
 $(NAME).bin: $(NAME).out
-	@echo "========= bin file for $< =================="
-	$(CP) $(CPFLAGS) $< $@
-	$(OD) $(ODFLAGS) $< > $(NAME).dump
+	@echo "========= .bin file for $< =================="
+	@$(CP) $(CPFLAGS) $< $@
+	@echo "========= .dump file for $< =================="
+	@$(OD) $(ODFLAGS) $< > $(NAME).dump
 
 clean:
 	$(RM) $(EXLIBS) $(PROGS) $(AOBJS) $(COBJS) $(NAME).*dump \
