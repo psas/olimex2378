@@ -3,7 +3,7 @@
 # Makefile for eeprom-test
 #
 
-NAME            := eeprom-test
+NAME            := twodevice-test
 LPCLIBDIR       := ../../liblpc23xx
 LIBDIR          := ../..
 
@@ -18,7 +18,7 @@ INCLUDE         := -I.\
                    -I$(LPCLIBDIR)/lpc23xx-vic/include\
                    -I$(LIBDIR)/olimex2378-util/include
 
-DEBUG           := -DDEBUG_I2C
+#DEBUG           := -DDEBUG_I2C
 include $(LIBDIR)/include/common-test-make.mk
 
 

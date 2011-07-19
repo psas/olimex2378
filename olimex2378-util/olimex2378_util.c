@@ -136,10 +136,10 @@ void stat_led_flash_fast(uint32_t cycles) {
             interval = 0.005 * 48000000;
             break;
         case SIXTY_MHZ:
-            interval = 0.005 * 60000000;
+            interval = 0.003 * 60000000;
             break;
         case SEVENTY_TWO_MHZ:
-            interval = 0.005 * 72000000;
+            interval = 0.001 * 72000000;
             break;
         default:
             interval = 100000;

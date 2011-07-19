@@ -251,10 +251,6 @@ int main (void) {
     //   pllstart_sixtymhz() ;
 //       pllstart_fourtyeightmhz() ;
 
-    MAMCR  = 0x0;
-    MAMTIM = 0x4;
-    MAMCR  = 0x2;
-
     uart0_init_115200() ;
 
     vic_enableIRQ();
@@ -268,7 +264,7 @@ int main (void) {
     stat_led_flash_fast(cycles); // initial visual check
 
     blinkm_task_i2c0() ;
-    blinkm_task_i2c1() ;
+    //blinkm_task_i2c1() ;
 
    // stat_led_flash_slow(2);
 
