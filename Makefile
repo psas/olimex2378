@@ -18,7 +18,7 @@ TYPE            ?= lpc23xx
 
 TARGET          ?=
 
-USB_PORT        := -DLPC2378_PORTB
+LPC2378_PORT    := -DLPC2378_PORTB
 
 DEBUG           ?=
 #DEBUG           = -DDEBUG
@@ -53,8 +53,8 @@ COBJS           = $(CSRCS:.c=.o)
 
 AOBJS           = $(ASRCS:.s=.o)
                   
-#CFLAGS          = $(INCLUDE) $(DEBUG) $(USB_PORT) -ggdb -c -Wall -Werror -mfloat-abi=softfp -fno-common -O2 -mcpu=arm7tdmi-s
-CFLAGS          = $(INCLUDE) $(DEBUG) $(USB_PORT) -ggdb -c -Wall -mfloat-abi=softfp -fno-common -O0 -mcpu=arm7tdmi-s
+#CFLAGS          = $(INCLUDE) $(DEBUG) $(LPC2378_PORT) -ggdb -c -Wall -Werror -mfloat-abi=softfp -fno-common -O2 -mcpu=arm7tdmi-s
+CFLAGS          = $(INCLUDE) $(DEBUG) $(LPC2378_PORT) -ggdb -c -Wall -mfloat-abi=softfp -fno-common -O0 -mcpu=arm7tdmi-s
 
 ARCHIVEFLAGS    = rvs
 
@@ -81,7 +81,7 @@ $(COBJS): $(HS)
 
 $(EXLIBS): 
 	@echo "========= Recursive make: $(@D)    ========================"
-	@$(MAKE) USB_PORT=$(USB_PORT) DEBUG=$(DEBUG) -s -C $(@D) $(@F)
+	@$(MAKE) LPC2378_PORT=$(LPC2378_PORT) DEBUG=$(DEBUG) -s -C $(@D) $(@F)
 
 $(LIBS): $(AOBJS) $(COBJS) $(EXLIBS)
 	@echo "========= Making Library $@ ========================"

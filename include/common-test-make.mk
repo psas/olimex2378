@@ -87,9 +87,8 @@ clean:
 
 allclean: clean
 	$(MAKE)  -s -C $(LIBDIR) allclean
+	$(MAKE)  -s -C $(LPCLIBDIR) allclean
 
 rebuild: allclean
-	$(MAKE)  -s -C $(LPCLIBDIR) rebuild
-	$(MAKE)  -s -C $(LIBDIR) rebuild
 	$(MAKE)
 
