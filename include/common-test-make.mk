@@ -23,7 +23,7 @@ DEBUG           ?=
 #DEBUG           = -DDEBUG
                   
 #CFLAGS          ?= $(INCLUDE) $(DEBUG) $(LPC2378_PORT) -ggdb -c -Wall -Werror -fno-common -O2 -mfloat-abi=softfp -mcpu=arm7tdmi-s
-CFLAGS          ?= $(INCLUDE) $(DEBUG) $(USB_PORT) -ggdb -c -Wall -fno-common -O0 -mfloat-abi=softfp -mcpu=arm7tdmi-s
+CFLAGS          ?= $(INCLUDE) $(DEBUG) $(LPC2378_PORT) -ggdb -c -Wall -fno-common -O0 -mfloat-abi=softfp -mcpu=arm7tdmi-s
 
 ASFLAGS         ?= -ggdb -ahls -mfloat-abi=softfp $(INCLUDE)
 
@@ -65,7 +65,7 @@ $(COBJS): include/*.h
 
 $(EXLIBS):
 	@echo "========= Recursive make: $(@D)    ========================"
-	@$(MAKE) -s -C $(@D) DEBUG=$(DEBUG) USB_PORT=$(USB_PORT) $(@F)
+	@$(MAKE) -s -C $(@D) DEBUG=$(DEBUG) LPC2378_PORT=$(LPC2378_PORT) $(@F)
 
 $(PROGS): $(AOBJS) $(COBJS) $(EXLIBS)
 	@echo "========= LINKING $@ ========================"
