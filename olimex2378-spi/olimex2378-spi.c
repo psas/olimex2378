@@ -1,6 +1,6 @@
 
 /*
- * olimex2378-i2c.c
+ * olimex2378-spi.c
  */
 
 #include <stdint.h>
