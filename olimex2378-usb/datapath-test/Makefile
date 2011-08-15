@@ -20,8 +20,8 @@ INCLUDE         := -I.\
                    -I$(LPCLIBDIR)/lpc23xx-vic/include\
                    -I$(LIBDIR)/olimex2378-util/include
 
-CSRCS            = serial-fifo.c
-#DEBUG           := -DDEBUG_USB
+#CSRCS            = serial-fifo.c
+DEBUG           := -DDEBUG_USB
 include $(LIBDIR)/include/common-test-make.mk
 
 

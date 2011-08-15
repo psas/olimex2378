@@ -45,6 +45,12 @@
 #define GET_LINE_CODING         0x21
 #define SET_CONTROL_LINE_STATE  0x22
 
+typedef enum {GO=0, STOP, RESET} runstate_t;
+
+struct {
+   runstate_t state;
+} runstate_g;
+
 // data structure for GET_LINE_CODING / SET_LINE_CODING class requests
 typedef struct {
     uint32_t            dwDTERate;
@@ -315,8 +321,6 @@ void VCOM_init(void)
     fBulkInBusy = FALSE;
     fChainDone = TRUE;
 }
-
-
 /**
   Writes one character to VCOM port
 
@@ -339,6 +343,21 @@ int VCOM_getchar(void)
     uint8_t c;
 
     return fifo_get(&rxfifo, &c) ? c : EOF;
+}
+
+
+/*
+ * VCOM_putstring
+ */
+void VCOM_putstring(const char* s) {
+		char ret=0;
+
+		if (s!=NULL) {
+			ret = VCOM_putchar(*s++);
+			while(*s && (ret != EOF)) {
+				VCOM_putchar(*s++);
+			}
+		}
 }
 
 
@@ -386,6 +405,73 @@ static void USBDevIntHandler(uint8_t bDevStatus)
 }
 
 
+/*
+ * stream_task
+ */
+static void stream_task() {
+
+	int c;
+	runstate_g.state = RESET;
+
+	// do USB stuff in interrupt
+	while (1) {
+		DBG(UART0, "State is: %u\n", (uint32_t) runstate_g.state);
+	util_wait_msecs(800);
+		switch(runstate_g.state) {
+		case GO:
+			// get and print sample
+			break;
+		case STOP:
+			// stop getting samples
+			break;
+		case RESET:
+			// reset index and continue getting samples, next state is GO
+			runstate_g.state = GO;
+			break;
+		default:
+			DBG(UART0, "stream_task(): INVALID STATE\n");
+			break;
+		}
+		c = VCOM_getchar();
+		if (c != EOF) {
+			// show on console
+			if (c == 'g' ) {
+				VCOM_putstring("\r\nGo.\r\n");
+				runstate_g.state = GO;
+				DBG(UART0,"Go detected\n");
+			} else if (c == 's' ) {
+				VCOM_putstring("\r\nStop.\r\n");
+				runstate_g.state = STOP;
+				DBG(UART0,"Stop detected\n");
+			} else if (c == 'm' ) {
+				VCOM_putstring("\r\nChoices (s)-Stop (g)-Go (m)-menu (r)-reset\r\n");
+				DBG(UART0,"Menu detected\n");
+			} else if (c == 'r' ) {
+				VCOM_putstring("\r\nReset.\r\n");
+				runstate_g.state = RESET;
+				DBG(UART0,"Reset detected\n");
+			} else if ((c == 9) || (c == 10) || (c == 13) || ((c >= 32) && (c <= 126))) {
+				VCOM_putstring("\r\nNot a valid choice.\r\n");
+				VCOM_putstring("\r\nChoices (s)-Stop (g)-Go (m)-menu (r)-reset\r\n");
+				DBG(UART0,"%c", c);
+				//        		VCOM_putchar('\n');
+				//        		VCOM_putchar('\r');
+				//
+				//        		VCOM_putchar(' ');
+				//        		VCOM_putchar(c);
+				//        		VCOM_putchar('\n');
+				//        		VCOM_putchar('\r');
+			}
+			else {
+				DBG(UART0,".");
+
+			}
+
+		}
+	}
+
+}
+
 
 /*************************************************************************
   main
@@ -393,7 +479,6 @@ static void USBDevIntHandler(uint8_t bDevStatus)
  **************************************************************************/
 int main(void)
 {
-    int c;
 
     FIO_ENABLE;
     pllstart_seventytwomhz() ;
@@ -439,20 +524,7 @@ int main(void)
     // connect to bus
     USBHwConnect(TRUE);
 
-    // echo any character received (do USB stuff in interrupt)
-    while (1) {
-        c = VCOM_getchar();
-        if (c != EOF) {
-            // show on console
-            if ((c == 9) || (c == 10) || (c == 13) || ((c >= 32) && (c <= 126))) {
-                DBG(UART0,"%c", c);
-            }
-            else {
-                DBG(UART0,".");
-            }
-            VCOM_putchar(c);
-        }
-    }
+    stream_task();
 
     return 0;
 }
