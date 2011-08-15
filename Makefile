@@ -41,7 +41,7 @@ LIBS            = $(NAME).a
 
 TESTS           = ./olimex2378-util/led-test/led-test.hex\
 		  ./olimex2378-i2c/blinkm-test/blinkm-test.hex\
-		  ./olimex2378-usb/echo-test/echo-test.hex
+		  ./olimex2378-usb/serial-test/serial-test.hex
 		  
 TESTSRCS        = $(wildcard olimex2378-*/*test/*c)
 TESTOBJS        = $(TESTSRCS:.c=.o)
@@ -57,7 +57,7 @@ AOBJS           = $(ASRCS:.s=.o)
 #CFLAGS          = $(INCLUDE) $(DEBUG) $(LPC2378_PORT) -ggdb -c -Wall -Werror -mfloat-abi=softfp -fno-common -O2 -mcpu=arm7tdmi-s
 CFLAGS          = $(INCLUDE) $(DEBUG) $(LPC2378_PORT) -ggdb -c -Wall -mfloat-abi=softfp -fno-common -O0 -mcpu=arm7tdmi-s
 
-ARCHIVEFLAGS    = rvs
+ARCHIVEFLAGS    = rs
 
 ASFLAGS         = -ggdb -ahls -mfloat-abi=softfp $(INCLUDE) 
  
@@ -66,11 +66,11 @@ ASFLAGS         = -ggdb -ahls -mfloat-abi=softfp $(INCLUDE)
 .SUFFIXES : .c .cpp .s
 
 .c.o :
-	@echo "======== COMPILING $@ ========================"
+	@echo "---------- COMPILING $@ "
 	@$(CC) $(CFLAGS) -o $(<:.c=.o) -c $<
 
 .s.o :
-	@echo "======== COMPILING $@ ========================"
+	@echo "---------- COMPILING $@ "
 	@$(AS) $(ASFLAGS) -o $@ $< > $*.lst
         
 
@@ -81,15 +81,15 @@ tests: $(TESTS)
 $(COBJS): $(HS)
 
 $(EXLIBS): 
-	@echo "========= Recursive make: $(@D)    ========================"
+	@echo "\n------- Recursive make: $(@D) ------------------------"
 	@$(MAKE) LPC2378_PORT=$(LPC2378_PORT) DEBUG=$(DEBUG) -s -C $(@D) $(@F)
 
 $(LIBS): $(AOBJS) $(COBJS) $(EXLIBS)
-	@echo "========= Making Library $@ ========================"
-	$(AR) $(ARCHIVEFLAGS) $@ $(AOBJS) $(COBJS)
+	@echo "\n--------- Making Library $@ ------------------------"
+	@$(AR) $(ARCHIVEFLAGS) $@ $(AOBJS) $(COBJS)
 
 $(TESTS): $(LIBS) $(ASRCS) $(CSRCS) $(TESTSRCS)
-	@echo "========= Recursive make: $(@D) ========================"
+	@echo "\n--------- Recursive make: $(@D) ------------------------"
 	$(MAKE) -s -C $(@D) $(@F)
 
 clean:

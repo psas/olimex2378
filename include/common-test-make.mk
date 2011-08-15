@@ -52,11 +52,11 @@ PROGS           = $(NAME).out
 .SUFFIXES : .c .cpp .s
 
 .c.o :
-	@echo "======== COMPILING $@ ========================"
+	@echo "---------- COMPILING $@ "
 	@$(CC) $(CFLAGS) -c $<
 
 .s.o :
-	@echo "======== COMPILING $@ ========================"
+	@echo "---------- COMPILING $@ "
 	@$(AS) $(ASFLAGS) -o $@ $< > $*.lst
         
 all:  $(PROGS) $(EXLIBS) $(NAME).bin $(NAME).hex
@@ -64,21 +64,21 @@ all:  $(PROGS) $(EXLIBS) $(NAME).bin $(NAME).hex
 $(COBJS): include/*.h
 
 $(EXLIBS):
-	@echo "========= Recursive make: $(@D)    ========================"
+	@echo "\n------- Recursive make: $(@D) ---------------- "
 	@$(MAKE) -s -C $(@D) DEBUG=$(DEBUG) LPC2378_PORT=$(LPC2378_PORT) $(@F)
 
 $(PROGS): $(AOBJS) $(COBJS) $(EXLIBS)
-	@echo "========= LINKING $@ ========================"
+	@echo "------------- LINKING $@ ---------------- "
 	@$(LD) $(LDFLAGS) -o $@ $(AOBJS) $(COBJS) $(EXLIBS) -L$(CROSS)/arm-elf/lib -lc -L$(CROSS)/lib/gcc/arm-elf/$(GCC_VERSION) -lgcc
 
 $(NAME).hex: $(NAME).out
-	@echo "========= .hex file for $< =================="
+	@echo "--------------- .hex file for $< ------------------"
 	@$(CP) $(HEXFLAGS) $< $@
 
 $(NAME).bin: $(NAME).out
-	@echo "========= .bin file for $< =================="
+	@echo "--------------- .bin file for $< ------------------"
 	@$(CP) $(CPFLAGS) $< $@
-	@echo "========= .dump file for $< =================="
+	@echo "--------------- .dump file for $< ------------------"
 	@$(OD) $(ODFLAGS) $< > $(NAME).dump
 
 clean:
