@@ -26,7 +26,7 @@ CPPFLAGS	= $(INCLUDE) -c $(DEBUG) -Wall -Wextra -g  -ansi -pedantic -O3
 
 ###### SOURCES  #################
 
-CSRCS		 = $(NAME).c parse-args.c helpers.c
+CSRCS		 = $(NAME).c serial-port.c parse-args.c helpers.c
 CPPSRCS		 =
 
 COBJS            = $(CSRCS:.c=.o)
@@ -58,26 +58,23 @@ endif
 
 .cpp.o:
 	@echo "-------------- COMPILING $@ "
-	$(CPP) $(CPPFLAGS) -c $<
+	@$(CPP) $(CPPFLAGS) -c $<
 .c.o :
 	@echo "-------------- COMPILING $@ "
-	$(CC) $(CFLAGS) -c $<
+	@$(CC) $(CFLAGS) -c $<
 
 .s.o :
 	@echo "-------------- COMPILING $@ "
-	${AS} ${ASFLAGS} -o $@ $< > $*.lst
+	@${AS} ${ASFLAGS} -o $@ $< > $*.lst
 
 all:  $(EXES) Makefile
-
-rebuild: allclean 
-	$(MAKE)
 
 $(COBJS): include/$(NAME).h
 $(CPPOBJS): include/*.hpp
 
 $(EXLIBS):
 	@echo "------------ Recursive make: $(@D) ------------------------"
-	$(MAKE) -s -C $(@D) $(@F)
+	@$(MAKE) -s -C $(@D) $(@F)
 	
 $(LIBS): $(LIBSRCS) $(LIBOBJS) $(EXLIBS)
 	@echo "-------------- Making library: $@ -----------------------"
@@ -85,13 +82,16 @@ $(LIBS): $(LIBSRCS) $(LIBOBJS) $(EXLIBS)
 
 $(EXES): $(COBJS)
 	@echo "---------------- LINKING $@ --------------"
-	$(LD) -o $@ $(COBJS) 
+	@$(LD) -o $@ $(COBJS) 
 clean:
-	$(RM) $(EXES) $(COBJS) $(CPPOBJS) \
+	@$(RM) $(EXES) $(COBJS) $(CPPOBJS) \
 	lib$(NAME).a *.report\
         *.lst *~ ./include/*~ a.out 
 
 allclean: clean
-	$(MAKE) -s $(NAME) clean
+	@$(MAKE) -s $(NAME) clean
+
+rebuild: allclean 
+	@$(MAKE) -s
 
 

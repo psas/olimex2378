@@ -12,7 +12,8 @@
 
 void pf_command_line(int   argc,
             char*          argv[],
-            char*          logfile) {
+            char*          logfile,
+            char*          portname) {
 
     int i=0;
 
@@ -34,6 +35,16 @@ void pf_command_line(int   argc,
                 exit(EXIT_FAILURE);
             }
             ++i;
+        }  else if(strcmp ( argv[i],"--portname") == 0) {
+            if(i< argc-1) {
+                strncpy(portname,argv[i+1],NAME_SIZE-1);
+                logfile[NAME_SIZE-1] = '\0';
+            } else {
+                error("No port name.");
+                printHelp( argv[0]);
+                exit(EXIT_FAILURE);
+            }
+            ++i;
        } else {
             if(i!=0){
                 error("Unrecognized option:"); 
@@ -50,13 +61,15 @@ void pf_command_line(int   argc,
  */
 void printHelp(const char* progname) {
 
-    printf("\n%s is a program to read data from the usb port driven by a GFE sensor node.\n\
+    printf("\n%s is a program to read data from the usb port driven by a client GFE sensor node.\n\
             \n\
             Usage:\n\
-                --logfile string\n\
+            \t [--logfile string]\n\
+            \t [--portname string]\n\
             \t [-h|--help]\n\
             \n\
             --logfile          the file with run statistics and messages. \n\n\
+            --portname         name of the serial port to open. (default /dev/ttyACM0)\n\n\
             -h | --help        help message.\n\n\
             \n\n"\
             ,progname);
