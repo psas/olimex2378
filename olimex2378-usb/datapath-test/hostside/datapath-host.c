@@ -21,16 +21,18 @@ void datapath_task(const char* portname, const char* logfile) {
 
     struct termios      orig_tios;
 
-
     printf("Starting datapath test.\n\n");
     printf("Opening serial port.\n");
 
-    fd = init_port(portname, 115200, &orig_tios) ;
+    fd = init_port_raw(portname, 115200, &orig_tios) ;
     if(fd < 0) {
         fprintf(stderr, "Failed to open %s\n", portname);
         exit(EXIT_FAILURE);
     }
 
+    printf("g is: %i\n", 'g');
+
+    write(fd, 'g', 1);
 
     printf("Closing serial port.\n");
     closed = close_port(fd, &orig_tios);

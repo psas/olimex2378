@@ -9,12 +9,20 @@
  *   Some code borrowed from Jamey Sharp's
  *   PSAS serial program
  *
- * init_port: Initialize the serial port.
+ * init_port_raw: Initialize the serial port.
  * Accepts a string for the filename to open and initialize.
  * Accepts a long int for baud rate.
  * Returns a filehandle for the initialized serial port, or -1 on failure.
  *
+ * close_port: close a port and restore to original settings
+ * Accepts a file descriptor from init_port
+ * Accepts a pointer to a struct termios
+ * Returns a value related to result of closing the fd. 0 is success.
+ *
  * Modifications:
+ *   K. Wilson Tue 16 August 2011
+ *      o Added pointer for capturing original termios settings in init_port
+ *      o Added close_port
  *   G.N. LeBrasseur  22-Mar-2005
  *      o Set/clear RTS appropriately
  *    o Re-specify several port configuration details
@@ -38,7 +46,7 @@
  * return:
  *      file descriptor
  */
-int init_port(const char *pathname, long int speed, struct termios* orig_tios) {
+int init_port_raw(const char *pathname, long int speed, struct termios* orig_tios) {
 
     int                 port;
 
