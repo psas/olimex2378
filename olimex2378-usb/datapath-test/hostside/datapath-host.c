@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <termios.h>    // terminal
+#include <unistd.h>     // read, write, close
 
 #include "serial-port.h"
 #include "parse-args.h"
@@ -20,6 +21,7 @@ void datapath_task(const char* portname, const char* logfile) {
     int                 fd, closed; 
 
     struct termios      orig_tios;
+    char                stop;
 
     printf("Starting datapath test.\n\n");
     printf("Opening serial port.\n");
@@ -32,7 +34,8 @@ void datapath_task(const char* portname, const char* logfile) {
 
     printf("g is: %i\n", 'g');
 
-    write(fd, 'g', 1);
+    stop = 'g';
+    write(fd, &stop, 1);
 
     printf("Closing serial port.\n");
     closed = close_port(fd, &orig_tios);
