@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <syslog.h>
 #include <termios.h>    // terminal
 #include <unistd.h>     // read, write, close
 
@@ -14,14 +15,60 @@
 #include "parse-args.h"
 #include "datapath-host.h"
 
+
+/*
+ * init_stdin
+ */
+int init_stdin(struct termios* orig_stdin_tios) {
+
+    struct termios      tios;
+
+    // Get tios 
+    if (tcgetattr(0, &tios)){
+        printf("init_stdin: Error getting current terminal settings\n");
+        return (-1);
+    } else {
+        tcgetattr(0, orig_stdin_tios);
+    }
+
+    tios.c_lflag        &= ~ICANON;
+    tios.c_lflag        |= ECHO;
+
+    tios.c_cc[VMIN]     = VMIN_VALUE;
+    tios.c_cc[VTIME]    = VTIME_VALUE;
+
+    if (tcsetattr(0, TCSAFLUSH, &tios)){
+        printf("init_stdin: Error applying terminal settings\n");
+        return (-1);
+    }
+
+    return(0);
+}
+
+/*
+ * reset_stdin
+ */
+int reset_stdin(struct termios* orig_stdin_tios) {
+
+    if(tcsetattr(0, TCSAFLUSH, orig_stdin_tios)) {
+            syslog(LOG_CRIT, "reset_stdin: failed to reset attributes on stdin.\n");
+            return(-1);
+    };
+
+    return(0);
+}
+
+
 /*
  * datapath_task
  */
 void datapath_task(const char* portname, const char* logfile) {
     int                 fd, closed; 
+    int                 bytes_stdin; 
+    char                value_stdin; 
 
     struct termios      orig_tios;
-    char                stop;
+    struct termios      orig_stdin_tios;
 
     printf("Starting datapath test.\n\n");
     printf("Opening serial port.\n");
@@ -32,10 +79,28 @@ void datapath_task(const char* portname, const char* logfile) {
         exit(EXIT_FAILURE);
     }
 
-    printf("g is: %i\n", 'g');
+    // read value from stdin
+    if(init_stdin(&orig_stdin_tios) != 0) {
+        fprintf(stderr, "datapath_task: Failed to init stdin.\n");
+        exit(EXIT_FAILURE);
+    };
 
-    stop = 'g';
-    write(fd, &stop, 1);
+    while(1) {
+        bytes_stdin = read(0, &value_stdin, 1);
+        if(bytes_stdin < 0) {
+            fprintf(stderr, "datapath_task: stdin read error.\n");
+        } else if (bytes_stdin > 0) {
+            printf("\nYou typed: %c\n", value_stdin);
+        } else {}
+
+        if(value_stdin == 'q') {
+            printf("You typed quit.\n");
+            break;
+        }
+
+        write(fd, &value_stdin, 1);
+
+    }
 
     printf("Closing serial port.\n");
     closed = close_port(fd, &orig_tios);
@@ -43,6 +108,9 @@ void datapath_task(const char* portname, const char* logfile) {
         fprintf(stderr, "Unable to close fd: %i\n", fd);
         exit(EXIT_FAILURE);
     }
+
+    printf("Reset stdin.\n");
+    reset_stdin(&orig_stdin_tios);
 
 }
 

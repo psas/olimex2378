@@ -9,4 +9,8 @@
 #define _DATAPATH_HOST_H
 
 
+#define         VMIN_VALUE      0
+#define         VTIME_VALUE     50
+
+
 #endif

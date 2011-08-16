@@ -152,13 +152,17 @@ int init_port_raw(const char *pathname, long int speed, struct termios* orig_tio
  *       : -1 on EBADF
  *       : -2 on EINTR
  *       : -3 on EIO
+ *       : -4 on Failure to reset attributes
  * Ref: linux,  man 2 close
  */
 int close_port(int fd, struct termios* orig_tios) {
     int check   = 0;
     int success = 0;
 
-    tcsetattr(fd, TCSAFLUSH, orig_tios);
+    if(tcsetattr(fd, TCSAFLUSH, orig_tios)) {
+            syslog(LOG_CRIT, "close_port: failed to reset attributes on %i\n", fd);
+            return(-4);
+    };
 
     check = close(fd);
     switch(check) {
