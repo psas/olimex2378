@@ -85,6 +85,9 @@ void datapath_task(const char* portname, const char* logfile) {
         exit(EXIT_FAILURE);
     };
 
+    // Tue 16 August 2011 14:56:44 (PDT)
+    // next, read structured binary data from lpc, and decode.
+
     while(1) {
         bytes_stdin = read(0, &value_stdin, 1);
         if(bytes_stdin < 0) {
