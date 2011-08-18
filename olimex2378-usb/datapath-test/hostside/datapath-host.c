@@ -105,6 +105,7 @@ int reset_stdin(struct termios* orig_stdin_tios) {
  */
 void datapath_task(const char* portname, const char* logfile) {
 
+    FILE*               log;
     int                 check; 
 
     int                 fd, closed; 
@@ -118,6 +119,11 @@ void datapath_task(const char* portname, const char* logfile) {
 
     struct termios      orig_tios;
     struct termios      orig_stdin_tios;
+
+    log = fopen(logfile, "w");
+    if(log == NULL) {
+        printf("logfile: %s open in write mode failure\n", logfile);
+    }
 
     printf("Starting datapath test.\n\n");
     printf("Opening serial port.\n");
@@ -168,12 +174,13 @@ void datapath_task(const char* portname, const char* logfile) {
         }
 
 //        printf("Read from serial...\n");
-        bytes_serial = read(fd, &value_serial, 1);
+        bytes_serial = read(fd, &value_serial, 4);
         if(bytes_serial < 0) {
 ////            fprintf(stderr, "datapath_task: serial read error. %d\n", bytes_serial);
         } else if (bytes_serial > 0) {
             //printf("\nReceived: %u bytes: 0x%x\n", bytes_serial, value_serial);
-            printf("\n%x\n", value_serial);
+            printf("%x\n", value_serial);
+            fprintf(log, "%x %u\n", value_serial, value_serial);
         } else {}
     }
 
@@ -183,6 +190,8 @@ void datapath_task(const char* portname, const char* logfile) {
         fprintf(stderr, "Unable to close fd: %i\n", fd);
         exit(EXIT_FAILURE);
     }
+
+    fclose(log);
 
     printf("Reset stdin.\n");
     reset_stdin(&orig_stdin_tios);
@@ -205,6 +214,8 @@ int main(int argc, char* argv[]) {
     datapath_task(portname, logfile);
 
     printf("\n** %s Done. **\n\n", argv[0]);
+
+
     return(0);
 
 }
