@@ -78,7 +78,9 @@ int init_port_raw(const char *pathname, long int speed, struct termios* orig_tio
     }
 
     // Open the port.
-    if((port = open(pathname, O_RDWR | O_NOCTTY )) < 0) {    // Don't use O_NDELAY because we want to block on reads
+   // if((port = open(pathname, O_RDWR | O_NOCTTY )) < 0) {    // Don't use O_NDELAY because we want to block on reads
+
+    if((port = open(pathname, O_RDWR | O_NOCTTY | O_NDELAY )) < 0) {    // Don't use O_NDELAY because we want to block on reads
         syslog(LOG_CRIT, "init_port: failed to open serial port %s", pathname);
         return(-1);
     }
@@ -185,4 +187,30 @@ int close_port(int fd, struct termios* orig_tios) {
     return(success);
 }
 
+/*
+ * flush_port
+ */
+int flush_port(int fd) {
+	int check   = 0;
+	int success = 0;
 
+	check = tcflush(fd, TCIOFLUSH);
+	switch(check) {
+	case EBADF:
+		syslog(LOG_CRIT, "flush_port: Not a valid file descriptor port: %i\n", fd);
+		success = -1;
+		break;
+	case EINVAL:
+		syslog(LOG_CRIT, "flush_port: The queue_selector argument is not a supported value..\n");
+		success = -2;
+		break;
+	case ENOTTY:
+		syslog(LOG_CRIT, "flush_port: The file associated with fildes is not a terminal\n");
+		success = -3;
+		break;
+	default:
+		success =  0;
+		break;
+	}
+	return(success);
+}

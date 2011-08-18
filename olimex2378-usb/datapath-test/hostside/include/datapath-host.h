@@ -10,7 +10,7 @@
 
 
 #define         VMIN_VALUE      0
-#define         VTIME_VALUE     50
+#define         VTIME_VALUE     0
 
 
 #endif

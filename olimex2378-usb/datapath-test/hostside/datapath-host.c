@@ -6,14 +6,55 @@
 
 
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <syslog.h>
 #include <termios.h>    // terminal
 #include <unistd.h>     // read, write, close
+#include <errno.h>
 
 #include "serial-port.h"
 #include "parse-args.h"
 #include "datapath-host.h"
+
+/*
+ * dp_read
+ * do a bunch of error checking on read
+ */
+uint32_t dp_read(int32_t fd, int32_t* value, uint32_t numbytes) {
+
+        uint32_t bytes_read = 0;
+
+        value               = 0x0;
+
+        bytes_read = read(fd, value, numbytes);
+        switch(bytes_read) {
+            case EAGAIN:
+//                syslog(LOG_CRIT, "dp_read: Non-blocking I/O has been selected using O_NONBLOCK and no data was immediately available for reading.\n");
+                break;
+            case EBADF:
+                syslog(LOG_CRIT, "dp_read: fd is not a valid file descriptor or is not open for reading.\n");
+                break;
+            case EFAULT:
+                syslog(LOG_CRIT, "dp_read: buf is outside your accessible address space.\n");
+                break;
+            case EINTR:
+                syslog(LOG_CRIT, "dp_read: The call was interrupted by a signal before any data was read.\n");
+                break;
+             case EINVAL:
+                syslog(LOG_CRIT, "dp_read: fd is attached to an object which is unsuitable for reading; or the file was opened with the O_DIRECT flag, and either the address specified in buf, the value specified in count, or the current file offset is not suitably aligned.\n");
+                break;
+             case EIO:
+                syslog(LOG_CRIT, "dp_read: I/O error. This will happen for example when the process is in a background process group, tries to read from its controlling tty, and either it is ignoring or blocking SIGTTIN or its process group is orphaned. It may also occur when there is a low-level I/O error while reading from a disk or tape.\n");
+                break;
+              case EISDIR:
+                syslog(LOG_CRIT, "dp_read: fd refers to a directory.\n");
+                break;
+            default:
+                break;
+        }
+        return(bytes_read);
+} 
 
 
 /*
@@ -63,9 +104,17 @@ int reset_stdin(struct termios* orig_stdin_tios) {
  * datapath_task
  */
 void datapath_task(const char* portname, const char* logfile) {
+
+    int                 check; 
+
     int                 fd, closed; 
-    int                 bytes_stdin; 
-    char                value_stdin; 
+
+    int                 write_serial = 0; 
+    int                 bytes_serial = 0; 
+    int                 value_serial = 0; 
+
+    int                 bytes_stdin = 0; 
+    int                 value_stdin = 0; 
 
     struct termios      orig_tios;
     struct termios      orig_stdin_tios;
@@ -85,15 +134,32 @@ void datapath_task(const char* portname, const char* logfile) {
         exit(EXIT_FAILURE);
     };
 
-    // Tue 16 August 2011 14:56:44 (PDT)
-    // next, read structured binary data from lpc, and decode.
 
+    check = flush_port(fd);
+    if (check != 0 ) {
+        fprintf(stderr,"flush port failed.\n");
+        exit(EXIT_FAILURE);
+    }
     while(1) {
         bytes_stdin = read(0, &value_stdin, 1);
         if(bytes_stdin < 0) {
-            fprintf(stderr, "datapath_task: stdin read error.\n");
+        //    fprintf(stderr, "datapath_task: stdin read error. %i\n", bytes_stdin);
         } else if (bytes_stdin > 0) {
-            printf("\nYou typed: %c\n", value_stdin);
+            if(value_stdin == 'f') {
+                check = flush_port(fd);
+                if (check != 0 ) {
+                    fprintf(stderr,"flush port failed.\n");
+                    exit(EXIT_FAILURE);
+                }
+                printf("\nFlush buffer.\n");
+                continue;
+            } else {
+                printf("\nYou typed: %c\n", value_stdin);
+                write_serial = write(fd, &value_stdin, 1);
+                if(write_serial != 1) {
+                    fprintf(stderr, "Write serial %i\n", write_serial);
+                }
+            }
         } else {}
 
         if(value_stdin == 'q') {
@@ -101,8 +167,14 @@ void datapath_task(const char* portname, const char* logfile) {
             break;
         }
 
-        write(fd, &value_stdin, 1);
-
+//        printf("Read from serial...\n");
+        bytes_serial = read(fd, &value_serial, 1);
+        if(bytes_serial < 0) {
+////            fprintf(stderr, "datapath_task: serial read error. %d\n", bytes_serial);
+        } else if (bytes_serial > 0) {
+            //printf("\nReceived: %u bytes: 0x%x\n", bytes_serial, value_serial);
+            printf("\n%x\n", value_serial);
+        } else {}
     }
 
     printf("Closing serial port.\n");

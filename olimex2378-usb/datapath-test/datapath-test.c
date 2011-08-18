@@ -409,24 +409,29 @@ static void USBDevIntHandler(uint8_t bDevStatus)
  * stream_task
  */
 static void stream_task() {
+	int c       = 0;
+	int index   = 0;
+	int success = 0;
 
-	int c;
 	runstate_g.state = RESET;
 
 	// do USB stuff in interrupt
 	while (1) {
-		DBG(UART0, "State is: %u\n", (uint32_t) runstate_g.state);
-	util_wait_msecs(800);
+//		DBG(UART0, "State is: %u\n", (uint32_t) runstate_g.state);
+	//util_wait_msecs(800);
 		switch(runstate_g.state) {
 		case GO:
 			// get and print sample
+			VCOM_putchar(++index);
+			DBG(UART0, "%d GO\n", index);
 			break;
 		case STOP:
 			// stop getting samples
 			break;
 		case RESET:
 			// reset index and continue getting samples, next state is GO
-			runstate_g.state = GO;
+			index            = 0;
+			runstate_g.state = STOP;
 			break;
 		default:
 			DBG(UART0, "stream_task(): INVALID STATE\n");
@@ -436,23 +441,25 @@ static void stream_task() {
 		if (c != EOF) {
 			// show on console
 			if (c == 'g' ) {
-				VCOM_putstring("\r\nGo.\r\n");
 				runstate_g.state = GO;
 				DBG(UART0,"Go detected\n");
 			} else if (c == 's' ) {
-				VCOM_putstring("\r\nStop.\r\n");
 				runstate_g.state = STOP;
 				DBG(UART0,"Stop detected\n");
 			} else if (c == 'm' ) {
-				VCOM_putstring("\r\nChoices (s)-Stop (g)-Go (m)-menu (r)-reset\r\n");
 				DBG(UART0,"Menu detected\n");
 			} else if (c == 'r' ) {
-				VCOM_putstring("\r\nReset.\r\n");
 				runstate_g.state = RESET;
 				DBG(UART0,"Reset detected\n");
 			} else if ((c == 9) || (c == 10) || (c == 13) || ((c >= 32) && (c <= 126))) {
-				VCOM_putstring("\r\nNot a valid choice.\r\n");
-				VCOM_putstring("\r\nChoices (s)-Stop (g)-Go (m)-menu (r)-reset\r\n");
+
+//				VCOM_putstring("\r\nNot a valid choice.\r\n");
+//				VCOM_putstring("\r\nChoices (s)-Stop (g)-Go (m)-menu (r)-reset\r\n");
+				success = VCOM_putchar(c);
+				if(success == EOF){
+					DBG(UART0, "success is: %d\n", success);
+					runstate_g.state = RESET;
+				}
 				DBG(UART0,"%c", c);
 				//        		VCOM_putchar('\n');
 				//        		VCOM_putchar('\r');
