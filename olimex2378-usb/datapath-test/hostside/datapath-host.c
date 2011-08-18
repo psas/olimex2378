@@ -160,6 +160,7 @@ void datapath_task(const char* portname, const char* logfile) {
                 printf("\nFlush buffer.\n");
                 continue;
             } else {
+                printf("\nOptions: (s)-stop, (r)-reset, (g)-go, (f)-flush host buffer, (q)-quit\n");
                 printf("\nYou typed: %c\n", value_stdin);
                 write_serial = write(fd, &value_stdin, 1);
                 if(write_serial != 1) {

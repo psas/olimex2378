@@ -88,10 +88,8 @@ clean:
 	lib$(NAME).a *.report\
         *.lst *~ ./include/*~ a.out 
 
-allclean: clean
+rebuild: rebuild 
 	@$(MAKE) -s $(NAME) clean
-
-rebuild: allclean 
 	@$(MAKE) -s
 
 
