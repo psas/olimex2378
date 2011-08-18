@@ -321,6 +321,7 @@ void VCOM_init(void)
     fBulkInBusy = FALSE;
     fChainDone = TRUE;
 }
+
 /**
   Writes one character to VCOM port
 
@@ -332,6 +333,26 @@ int VCOM_putchar(int c)
     return fifo_put(&txfifo, c) ? c : EOF;
 }
 
+/*
+ * VCOM_putword
+ * Writes one word to VCOM port
+ */
+int VCOM_putword(int c) {
+    int r = 0;
+    r = fifo_put(&txfifo,  c &  0xff              );
+    if(r != EOF) {
+        r = fifo_put(&txfifo, ((c & (0xff << 8)) >> 8));
+        if( r != EOF) {
+            r = fifo_put(&txfifo, ((c & (0xff << 16))  >> 16 ));
+            if( r != EOF) {
+                r = fifo_put(&txfifo, ((c & (0xff << 24))  >> 24));
+                if( r != EOF) { } 
+                else DBG(UART0, "fifo_put fail\n"); 
+            } else DBG(UART0, "fifo_put fail\n"); 
+        } else  DBG(UART0, "fifo_put fail\n");
+    } else  DBG(UART0, "fifo_put fail\n");
+    return(0);
+}
 
 /**
   Reads one character from VCOM port
@@ -355,7 +376,7 @@ void VCOM_putstring(const char* s) {
 		if (s!=NULL) {
 			ret = VCOM_putchar(*s++);
 			while(*s && (ret != EOF)) {
-				VCOM_putchar(*s++);
+				ret = VCOM_putchar(*s++);
 			}
 		}
 }
@@ -422,7 +443,7 @@ static void stream_task() {
 		switch(runstate_g.state) {
 		case GO:
 			// get and print sample
-			VCOM_putchar(++index);
+			VCOM_putword(++index);
 			DBG(UART0, "%d GO\n", index);
 			break;
 		case STOP:
