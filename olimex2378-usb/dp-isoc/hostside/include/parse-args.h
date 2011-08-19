@@ -7,7 +7,6 @@ void printHelp(const char* progname);
 
 void pf_command_line(int   argc,
             char*          argv[],
-            int*           quiet,
             char*          logfile,
             char*          portname) ;
 

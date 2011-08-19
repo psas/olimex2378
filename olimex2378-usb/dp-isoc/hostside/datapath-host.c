@@ -12,7 +12,6 @@
 #include <termios.h>    // terminal
 #include <unistd.h>     // read, write, close
 #include <errno.h>
-#include <time.h>
 
 #include "serial-port.h"
 #include "parse-args.h"
@@ -104,16 +103,9 @@ int reset_stdin(struct termios* orig_stdin_tios) {
 /*
  * datapath_task
  */
-void datapath_task(const char* portname, const char* logfile, int quiet) {
+void datapath_task(const char* portname, const char* logfile) {
 
     FILE*               log;
-
-
-    time_t                begin, end;
-    double                totalsecs;
-    double                avgrate;
-
-    int                 bytecount = 0;
     int                 check; 
 
     int                 fd, closed; 
@@ -171,16 +163,6 @@ void datapath_task(const char* portname, const char* logfile, int quiet) {
                 printf("\nOptions: (s)-stop, (r)-reset, (g)-go, (f)-flush host buffer, (q)-quit\n");
                 printf("\nYou typed: %c\n", value_stdin);
                 write_serial = write(fd, &value_stdin, 1);
-                if(value_stdin == 'g') {
-                    time(&begin);
-                    bytecount = 0;
-                }else if(value_stdin == 's') {
-                    time(&end);
-                    totalsecs = difftime (end, begin);
-                    avgrate   = bytecount/totalsecs;
-                    printf("Average rate:\t%5.2f bytes/sec.\t%5.2f bits/sec.\n", avgrate, avgrate*8);
-                }
- 
                 if(write_serial != 1) {
                     fprintf(stderr, "Write serial %i\n", write_serial);
                 }
@@ -198,11 +180,8 @@ void datapath_task(const char* portname, const char* logfile, int quiet) {
 ////            fprintf(stderr, "datapath_task: serial read error. %d\n", bytes_serial);
         } else if (bytes_serial > 0) {
             //printf("\nReceived: %u bytes: 0x%x\n", bytes_serial, value_serial);
-            bytecount += bytes_serial;
-            if(quiet == 0) {
-                printf("%x\n", value_serial);
-                fprintf(log, "%x %u\n", value_serial, value_serial);
-            }
+            printf("%x\n", value_serial);
+            fprintf(log, "%x %u\n", value_serial, value_serial);
         } else {}
     }
 
@@ -222,38 +201,18 @@ void datapath_task(const char* portname, const char* logfile, int quiet) {
 
 int main(int argc, char* argv[]) {
 
-    FILE*               log;
-
-    int                 quiet = 0;
-
     char                portname[NAME_SIZE] = "/dev/ttyACM0";
 
     char                logfile[NAME_SIZE]  = "./datapath-host.log";
 
     pf_command_line( argc,
                      argv,
-                     &quiet,
                      logfile,
                      portname);
 
+    printf("\nSettings: %s --logfile %s --portname %s \n", argv[0], logfile, portname);
 
-    log = fopen(logfile, "w");
-    if(log == NULL) {
-        printf("logfile: %s open in write mode failure\n", logfile);
-    }
-
-
-    if(quiet != 0) {
-        printf("\nSettings: %s --quiet --logfile %s --portname %s \n", argv[0], logfile, portname);
-        fprintf(log,"\nSettings: %s --quiet --logfile %s --portname %s \n\n", argv[0], logfile, portname);
-    } else {
-        printf("\nSettings: %s --logfile %s --portname %s \n", argv[0], logfile, portname);
-        fprintf(log,"\nSettings: %s --logfile %s --portname %s \n\n", argv[0], logfile, portname);
-    }
-
-    fclose(log);
-
-    datapath_task(portname, logfile, quiet);
+    datapath_task(portname, logfile);
 
     printf("\n** %s Done. **\n\n", argv[0]);
 
