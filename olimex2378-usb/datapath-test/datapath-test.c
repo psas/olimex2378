@@ -340,13 +340,13 @@ int VCOM_putchar(int c)
 int VCOM_putword(int c) {
     int r = 0;
     r = fifo_put(&txfifo,  c &  0xff              );
-    if(r != EOF) {
+    if(r) {
         r = fifo_put(&txfifo, ((c & (0xff << 8)) >> 8));
-        if( r != EOF) {
+        if( r ) {
             r = fifo_put(&txfifo, ((c & (0xff << 16))  >> 16 ));
-            if( r != EOF) {
+            if( r ) {
                 r = fifo_put(&txfifo, ((c & (0xff << 24))  >> 24));
-                if( r != EOF) { } 
+                if( r ) { } 
                 else DBG(UART0, "fifo_put fail\n"); 
             } else DBG(UART0, "fifo_put fail\n"); 
         } else  DBG(UART0, "fifo_put fail\n");
@@ -364,21 +364,6 @@ int VCOM_getchar(void)
     uint8_t c;
 
     return fifo_get(&rxfifo, &c) ? c : EOF;
-}
-
-
-/*
- * VCOM_putstring
- */
-void VCOM_putstring(const char* s) {
-		char ret=0;
-
-		if (s!=NULL) {
-			ret = VCOM_putchar(*s++);
-			while(*s && (ret != EOF)) {
-				ret = VCOM_putchar(*s++);
-			}
-		}
 }
 
 
@@ -474,21 +459,12 @@ static void stream_task() {
 				DBG(UART0,"Reset detected\n");
 			} else if ((c == 9) || (c == 10) || (c == 13) || ((c >= 32) && (c <= 126))) {
 
-//				VCOM_putstring("\r\nNot a valid choice.\r\n");
-//				VCOM_putstring("\r\nChoices (s)-Stop (g)-Go (m)-menu (r)-reset\r\n");
 				success = VCOM_putchar(c);
 				if(success == EOF){
 					DBG(UART0, "success is: %d\n", success);
 					runstate_g.state = RESET;
 				}
 				DBG(UART0,"%c", c);
-				//        		VCOM_putchar('\n');
-				//        		VCOM_putchar('\r');
-				//
-				//        		VCOM_putchar(' ');
-				//        		VCOM_putchar(c);
-				//        		VCOM_putchar('\n');
-				//        		VCOM_putchar('\r');
 			}
 			else {
 				DBG(UART0,".");
