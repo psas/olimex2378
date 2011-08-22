@@ -45,10 +45,10 @@
 #define GET_LINE_CODING         0x21
 #define SET_CONTROL_LINE_STATE  0x22
 
-typedef enum {GO=0, STOP, RESET} runstate_t;
+typedef enum {GO=0, STOP, RESET} runstate_type;
 
 struct {
-   runstate_t state;
+   runstate_type state;
 } runstate_g;
 
 // data structure for GET_LINE_CODING / SET_LINE_CODING class requests
@@ -65,11 +65,8 @@ static uint8_t          abClassReqData[8];
 static volatile BOOL    fBulkInBusy;
 static volatile BOOL    fChainDone;
 
-static uint8_t          txdata[VCOM_FIFO_SIZE];
-static uint8_t          rxdata[VCOM_FIFO_SIZE];
-
-static fifo_t           txfifo;
-static fifo_t           rxfifo;
+static fifo_type           txfifo;
+static fifo_type           rxfifo;
 
 // forward declaration of interrupt handler
 static void USBIntHandler(void) __attribute__ ((interrupt("IRQ")));
@@ -316,8 +313,8 @@ static BOOL HandleClassRequest(TSetupPacket *pSetup, int *piLen, uint8_t **ppbDa
   */
 void VCOM_init(void)
 {
-    fifo_init(&txfifo, txdata);
-    fifo_init(&rxfifo, rxdata);
+    fifo_init(&txfifo);
+    fifo_init(&rxfifo);
     fBulkInBusy = FALSE;
     fChainDone = TRUE;
 }
