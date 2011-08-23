@@ -120,7 +120,7 @@ void datapath_task(const char* portname, const char* logfile, int quiet) {
 
     int                 write_serial = 0; 
     int                 bytes_serial = 0; 
-    int                 value_serial = 0; 
+    long int            value_serial = 0; 
 
     int                 bytes_stdin = 0; 
     int                 value_stdin = 0; 
@@ -193,15 +193,15 @@ void datapath_task(const char* portname, const char* logfile, int quiet) {
         }
 
 //        printf("Read from serial...\n");
-        bytes_serial = read(fd, &value_serial, 4);
+        bytes_serial = read(fd, &value_serial, 8);
         if(bytes_serial < 0) {
 ////            fprintf(stderr, "datapath_task: serial read error. %d\n", bytes_serial);
         } else if (bytes_serial > 0) {
             //printf("\nReceived: %u bytes: 0x%x\n", bytes_serial, value_serial);
             bytecount += bytes_serial;
             if(quiet == 0) {
-                printf("%x\n", value_serial);
-                fprintf(log, "%x %u\n", value_serial, value_serial);
+                printf("0x%lx\n", value_serial);
+                fprintf(log, "%lx %lu\n", value_serial, value_serial);
             }
         } else {}
     }
