@@ -97,9 +97,6 @@ static uint8_t abClassReqData[8];
 static volatile BOOL fBulkInBusy;
 static volatile BOOL fChainDone;
 
-static uint8_t txdata[VCOM_FIFO_SIZE];
-static uint8_t rxdata[VCOM_FIFO_SIZE];
-
 static fifo_type txfifo;
 static fifo_type rxfifo;
 
@@ -349,8 +346,8 @@ static BOOL HandleClassRequest(TSetupPacket *pSetup, int *piLen, uint8_t **ppbDa
   */
 void VCOM_init(void)
 {
-    fifo_init(&txfifo, txdata);
-    fifo_init(&rxfifo, rxdata);
+    fifo_init(&txfifo);
+    fifo_init(&rxfifo);
     fBulkInBusy = FALSE;
     fChainDone = TRUE;
 }
